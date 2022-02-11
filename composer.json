@@ -1,1 +1,17 @@
-
+{
+  "name": "manuelj555/sf-emails",
+  "require": {
+    "php": "^8.1",
+    "symfony/framework-bundle": "^5.4|^6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Optime\\Email\\": ""
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}
