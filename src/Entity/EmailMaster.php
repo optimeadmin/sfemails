@@ -15,7 +15,7 @@ class EmailMaster
     #[ORM\Id]
     #[ORM\Column]
     #[ORM\GeneratedValue]
-    private readonly ?int $id = null;
+    private readonly ?int $id;
 
     #[ORM\Column]
     private string $code;

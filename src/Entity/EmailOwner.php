@@ -15,7 +15,7 @@ class EmailOwner
     #[ORM\Id]
     #[ORM\Column]
     #[ORM\GeneratedValue]
-    private readonly ?int $id = null;
+    private readonly ?int $id;
 
     public function getId(): ?int
     {

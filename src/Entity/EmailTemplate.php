@@ -14,7 +14,7 @@ class EmailTemplate
     #[ORM\Id]
     #[ORM\Column]
     #[ORM\GeneratedValue]
-    private readonly ?int $id = null;
+    private readonly ?int $id;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'email_owner_id', nullable: false)]
