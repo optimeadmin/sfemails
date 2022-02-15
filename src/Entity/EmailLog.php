@@ -9,10 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
 
-#[ORM\Table('emails_bundle_email_master')]
+#[ORM\Table('emails_bundle_email_log')]
 #[ORM\Entity]
-#[ORM\UniqueConstraint('email_master_description', ['description'])]
-class EmailMaster
+class EmailLog
 {
     use ExternalUuidTrait, DatesTrait;
 
@@ -21,18 +20,16 @@ class EmailMaster
     #[ORM\GeneratedValue]
     private readonly ?int $id;
 
-    #[ORM\Column]
-    private string $code;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'email_template_id', nullable: false)]
+    private EmailTemplate $template;
 
     #[ORM\Column(type: 'text')]
-    private string $description;
+    private string $subject;
+
+    #[ORM\Column(type: 'text')]
+    private string $content;
 
     #[ORM\Column]
-    private string $layout;
-
-    #[ORM\Column]
-    private bool $editable;
-
-    #[ORM\Column]
-    private string $target;
+    private array $recipients;
 }
