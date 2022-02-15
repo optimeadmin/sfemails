@@ -2,7 +2,8 @@
   "name": "manuelj555/sf-emails",
   "require": {
     "php": "^8.1",
-    "symfony/framework-bundle": "^5.4|^6.0"
+    "symfony/framework-bundle": "^5.4|^6.0",
+    "manuelj555/sf-utils": "6.0@dev"
   },
   "autoload": {
     "psr-4": {

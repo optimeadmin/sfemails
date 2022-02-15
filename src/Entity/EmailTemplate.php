@@ -6,6 +6,7 @@
 namespace Optime\Email\Bundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Translatable;
 
 #[ORM\Table('emails_bundle_email_template')]
 #[ORM\Entity]
@@ -25,9 +26,11 @@ class EmailTemplate
     private EmailOwner $config;
 
     #[ORM\Column(type: 'text')]
+    #[Translatable]
     private string $subject;
 
     #[ORM\Column(type: 'text')]
+    #[Translatable]
     private string $content;
 
     #[ORM\Column]
