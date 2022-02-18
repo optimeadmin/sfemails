@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Optime\Email\Bundle\:
+        resource: '../../'
+
+    Optime\Email\Bundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
