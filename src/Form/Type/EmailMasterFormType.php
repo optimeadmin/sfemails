@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @author Manuel Aguirre
@@ -24,6 +25,8 @@ class EmailMasterFormType extends AbstractType
         $builder->add('description', TextareaType::class);
         $builder->add('layout', AutoTransFieldType::class, [
             'type' => TextareaType::class,
+            'entry_constraints' => [new NotBlank()],
+            'auto_save' => true,
         ]);
         $builder->add('target');
         $builder->add('editable');

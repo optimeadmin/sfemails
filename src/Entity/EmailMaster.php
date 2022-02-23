@@ -9,11 +9,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Translatable;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
+use Optime\Util\Translation\TranslationsAwareInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Table('emails_bundle_email_master')]
 #[ORM\Entity]
-#[ORM\UniqueConstraint('email_master_description', ['description'])]
-class EmailMaster
+#[ORM\UniqueConstraint('email_master_code', ['code'])]
+#[UniqueEntity("code")]
+class EmailMaster implements TranslationsAwareInterface
 {
     use ExternalUuidTrait, DatesTrait;
 
@@ -23,9 +27,11 @@ class EmailMaster
     private readonly ?int $id;
 
     #[ORM\Column]
+    #[NotBlank]
     private string $code;
 
     #[ORM\Column(type: 'text')]
+    #[NotBlank]
     private string $description;
 
     #[ORM\Column(type: 'text')]
@@ -36,7 +42,10 @@ class EmailMaster
     private bool $editable;
 
     #[ORM\Column]
+    #[NotBlank]
     private string $target;
+
+    private ?string $transLocale = null;
 
     public function getCode(): string
     {
@@ -88,4 +97,13 @@ class EmailMaster
         $this->target = $target;
     }
 
+    public function getCurrentContentsLocale(): ?string
+    {
+        return $this->transLocale;
+    }
+
+    public function setCurrentContentsLocale(string $locale): void
+    {
+        $this->transLocale = $locale;
+    }
 }
