@@ -32,7 +32,7 @@ class EmailTemplateFormType extends AbstractType
             'auto_save' => true,
             'item_options' => [
                 'attr' => [
-                    'rows' => 10,
+                    'rows' => 5,
                 ],
             ],
         ]);

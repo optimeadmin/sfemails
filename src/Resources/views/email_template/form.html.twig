@@ -8,10 +8,40 @@
 
 {% form_theme form 'bootstrap_5_layout.html.twig' %}
 
+{% set form_contents %}
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        {% for locale, subject in form.subject %}
+            <li class="nav-item">
+                <button class="nav-link {{ loop.first ? 'active' }}"
+                        data-bs-toggle="pill"
+                        data-bs-target="#locale-item-{{ locale }}"
+                        type="button"
+                        role="tab">
+                    {{ locale|upper }}
+                </button>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        {% for locale, subject in form.subject %}
+            <div class="tab-pane fade {{ loop.first ? 'show active' }}" id="locale-item-{{ locale }}">
+                {{ form_label(form.subject) }}
+                {{ form_row(subject, {label: false}) }}
+                {{ form_label(form.content) }}
+                {{ form_row(form.content[locale], {label: false}) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endset %}
+
 {% block content %}
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
+
+    {{ form_contents }}
+
+    <hr>
 
     <input class="btn btn-primary" type="submit" value="Save">
 
