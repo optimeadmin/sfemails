@@ -24,4 +24,9 @@ class EmailOwner
     {
         return $this->id;
     }
+
+    public function __toString(): string
+    {
+        return $this->getId();
+    }
 }

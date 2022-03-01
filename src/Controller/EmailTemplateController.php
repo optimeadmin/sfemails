@@ -6,11 +6,9 @@
 namespace Optime\Email\Bundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Optime\Email\Bundle\Entity\EmailLayout;
-use Optime\Email\Bundle\Form\Type\EmailLayoutFormType;
-use Optime\Email\Bundle\Repository\EmailLayoutRepository;
-use Optime\Util\Http\Controller\HandleAjaxForm;
-use Optime\Util\Http\Controller\PartialAjaxView;
+use Optime\Email\Bundle\Entity\EmailTemplate;
+use Optime\Email\Bundle\Form\Type\EmailTemplateFormType;
+use Optime\Email\Bundle\Repository\EmailTemplateRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,30 +17,28 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @author Manuel Aguirre
  */
-#[Route("/config/layout")]
-class EmailLayoutController extends AbstractController
+#[Route("/config/templates")]
+class EmailTemplateController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
     ) {
     }
 
-    #[Route("/", name: "optime_emails_layout_list")]
-    public function index(EmailLayoutRepository $repository): Response
+    #[Route("/", name: "optime_emails_template_list")]
+    public function index(EmailTemplateRepository $repository): Response
     {
         $items = $repository->findAll();
 
-        return $this->render('@OptimeEmail/email_layout/index.html.twig', [
+        return $this->render('@OptimeEmail/email_template/index.html.twig', [
             'items' => $items,
         ]);
     }
 
-    #[Route("/create", name: "optime_emails_layout_create")]
-    #[HandleAjaxForm]
-    #[PartialAjaxView]
+    #[Route("/create", name: "optime_emails_template_create")]
     public function create(Request $request): Response
     {
-        $form = $this->createForm(EmailLayoutFormType::class, new EmailLayout(), [
+        $form = $this->createForm(EmailTemplateFormType::class, new EmailTemplate(), [
             'action' => $request->getRequestUri()
         ]);
         $form->handleRequest($request);
@@ -51,30 +47,30 @@ class EmailLayoutController extends AbstractController
             $this->entityManager->persist($form->getData());
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('optime_emails_layout_list');
+            return $this->redirectToRoute('optime_emails_template_list');
         }
 
-        return $this->render('@OptimeEmail/email_layout/form.html.twig', [
+        return $this->render('@OptimeEmail/email_template/form.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
-    #[Route("/edit/{uuid}/", name: "optime_emails_layout_edit")]
+    #[Route("/edit/{uuid}/", name: "optime_emails_template_edit")]
     public function edit(
         Request $request,
-        EmailLayout $layout,
+        EmailTemplate $template,
     ): Response {
-        $form = $this->createForm(EmailLayoutFormType::class, $layout);
+        $form = $this->createForm(EmailTemplateFormType::class, $template);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            $this->entityManager->persist($layout);
+            $this->entityManager->persist($template);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('optime_emails_layout_list');
+            return $this->redirectToRoute('optime_emails_template_list');
         }
 
-        return $this->render('@OptimeEmail/email_layout/form.html.twig', [
+        return $this->render('@OptimeEmail/email_template/form.html.twig', [
             'form' => $form->createView(),
         ]);
     }

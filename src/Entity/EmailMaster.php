@@ -94,4 +94,9 @@ class EmailMaster
     {
         $this->layout = $layout;
     }
+
+    public function __toString(): string
+    {
+        return $this->getCode();
+    }
 }
