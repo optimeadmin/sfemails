@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('bundles/optimeemail/css/bootstrap.min.css') }}">
     {% block javascripts %}
         <script src="{{ asset('bundles/optimeemail/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/optimeemail/js/jquery.min.js') }}"></script>
     {% endblock %}
 </head>
 <body>
@@ -34,6 +35,12 @@
                         <a class="nav-link active" aria-current="page" href="{{ path('optime_emails_config_list') }}">
                             <span data-feather="home"></span>
                             Emails Config
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ path('optime_emails_layout_list') }}">
+                            <span data-feather="home"></span>
+                            Emails Layout
                         </a>
                     </li>
                     <li class="nav-item">
@@ -76,6 +83,9 @@
         </main>
     </div>
 </div>
+
+{% block javascripts_bottom %}
+{% endblock %}
 
 </body>
 </html>

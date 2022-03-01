@@ -8,6 +8,7 @@ namespace Optime\Email\Bundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Optime\Email\Bundle\Entity\EmailMaster;
 use Optime\Email\Bundle\Form\Type\EmailMasterFormType;
+use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,10 +26,12 @@ class EmailMasterController extends AbstractController
     }
 
     #[Route("/", name: "optime_emails_config_list")]
-    public function index(): Response
+    public function index(EmailMasterRepository $repository): Response
     {
-        return $this->render('@OptimeEmail/email_master/index.html.twig', [
+        $items = $repository->findAll();
 
+        return $this->render('@OptimeEmail/email_master/index.html.twig', [
+            'items' => $items,
         ]);
     }
 
@@ -40,6 +43,24 @@ class EmailMasterController extends AbstractController
 
         if ($form->isSubmitted() and $form->isValid()) {
             $this->entityManager->persist($form->getData());
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('optime_emails_config_list');
+        }
+
+        return $this->render('@OptimeEmail/email_master/form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route("/edit/{uuid}/", name: "optime_emails_config_edit")]
+    public function edit(Request $request, EmailMaster $email): Response
+    {
+        $form = $this->createForm(EmailMasterFormType::class, $email);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() and $form->isValid()) {
+            $this->entityManager->persist($email);
             $this->entityManager->flush();
 
             return $this->redirectToRoute('optime_emails_config_list');

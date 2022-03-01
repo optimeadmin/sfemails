@@ -6,18 +6,17 @@
 namespace Optime\Email\Bundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation\Translatable;
+use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
-use Optime\Util\Translation\TranslationsAwareInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Table('emails_bundle_email_master')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: EmailMasterRepository::class)]
 #[ORM\UniqueConstraint('email_master_code', ['code'])]
 #[UniqueEntity("code")]
-class EmailMaster implements TranslationsAwareInterface
+class EmailMaster
 {
     use ExternalUuidTrait, DatesTrait;
 
@@ -34,9 +33,10 @@ class EmailMaster implements TranslationsAwareInterface
     #[NotBlank]
     private string $description;
 
-    #[ORM\Column(type: 'text')]
-    #[Translatable]
-    private string $layout;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    #[NotBlank]
+    private EmailLayout $layout;
 
     #[ORM\Column]
     private bool $editable;
@@ -44,8 +44,6 @@ class EmailMaster implements TranslationsAwareInterface
     #[ORM\Column]
     #[NotBlank]
     private string $target;
-
-    private ?string $transLocale = null;
 
     public function getCode(): string
     {
@@ -55,11 +53,6 @@ class EmailMaster implements TranslationsAwareInterface
     public function getDescription(): string
     {
         return $this->description;
-    }
-
-    public function getLayout(): string
-    {
-        return $this->layout;
     }
 
     public function isEditable(): bool
@@ -82,11 +75,6 @@ class EmailMaster implements TranslationsAwareInterface
         $this->description = $description;
     }
 
-    public function setLayout(string $layout): void
-    {
-        $this->layout = $layout;
-    }
-
     public function setEditable(bool $editable): void
     {
         $this->editable = $editable;
@@ -97,13 +85,13 @@ class EmailMaster implements TranslationsAwareInterface
         $this->target = $target;
     }
 
-    public function getCurrentContentsLocale(): ?string
+    public function getLayout(): EmailLayout
     {
-        return $this->transLocale;
+        return $this->layout;
     }
 
-    public function setCurrentContentsLocale(string $locale): void
+    public function setLayout(EmailLayout $layout): void
     {
-        $this->transLocale = $locale;
+        $this->layout = $layout;
     }
 }

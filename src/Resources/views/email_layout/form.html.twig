@@ -1,0 +1,20 @@
+{% extends '@OptimeEmail/layout.html.twig' %}
+
+{% block page_header 'Emails Layouts' %}
+
+{% block page_header_actions %}
+    <a href="{{ path('optime_emails_config_create') }}" class="btn btn-primary">Create</a>
+{% endblock page_header_actions %}
+
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block content %}
+    {% ajax_view %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <input class="btn btn-primary" type="submit" value="Save">
+
+        {{ form_end(form) }}
+    {% end_ajax_view %}
+{% endblock %}

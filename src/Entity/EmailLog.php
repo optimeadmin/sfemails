@@ -11,7 +11,7 @@ use Optime\Util\Entity\Traits\ExternalUuidTrait;
 
 #[ORM\Table('emails_bundle_email_log')]
 #[ORM\Entity]
-class EmailLog
+abstract class EmailLog
 {
     use ExternalUuidTrait, DatesTrait;
 
