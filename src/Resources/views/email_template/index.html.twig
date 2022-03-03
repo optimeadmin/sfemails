@@ -11,24 +11,24 @@
         <table class="table table-striped table-sm">
             <thead>
             <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Code</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th>
+                <th style="width: 340px">ID</th>
+                <th>Code</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th class="col-2 col-md-1">Actions</th>
             </tr>
             </thead>
             <tbody>
             {% for item in items %}
-            <tr>
-                <td>{{ item.uuid }}</td>
-                <td>{{ item.config.code }}</td>
-                <td>{{ item.subject }}</td>
-                <td>{{ item.active ? 'Active' : 'Inactive' }}</td>
-                <td>
-                    <a href="{{ path('optime_emails_template_edit', {uuid: item.uuid}) }}">Edit</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>{{ item.uuid }}</td>
+                    <td>{{ item.config.code }}</td>
+                    <td>{{ item.subject }}</td>
+                    <td>{{ item.active ? 'Active' : 'Inactive' }}</td>
+                    <td>
+                        <a href="{{ path('optime_emails_template_edit', {uuid: item.uuid}) }}">Edit</a>
+                    </td>
+                </tr>
             {% endfor %}
             </tbody>
         </table>

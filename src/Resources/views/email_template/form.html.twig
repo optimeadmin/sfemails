@@ -9,9 +9,10 @@
 {% form_theme form 'bootstrap_5_layout.html.twig' %}
 
 {% set form_contents %}
-    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <ul class="nav nav-pills mb-3" id="email-contens-tab" role="tablist">
         {% for locale, subject in form.subject %}
-            <li class="nav-item">
+            {% set has_error = not subject.vars.valid or not form.content[locale].vars.valid %}
+            <li class="nav-item {{ has_error ? 'border-danger border-2 border-bottom pb-2 me-2' }}">
                 <button class="nav-link {{ loop.first ? 'active' }}"
                         data-bs-toggle="pill"
                         data-bs-target="#locale-item-{{ locale }}"
@@ -45,6 +46,22 @@
 
     <input class="btn btn-primary" type="submit" value="Save">
 
+    {% if item.id is not empty %}
+        <a href="{{ path('optime_emails_template_preview', {uuid: item.uuid}) }}"
+           class="btn btn-secondary"
+           target="_blank">Preview</a>
+    {% endif %}
+
     {{ form_end(form) }}
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ include('@OptimeEmail/_import_codemirror.html.twig') }}
+    <script>
+        $(function(){
+            $('#email-contens-tab [data-bs-toggle]').on('shown.bs.tab', (e) => $.applyCodeMirror());
+        });
+    </script>
 {% endblock %}

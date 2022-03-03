@@ -12,13 +12,14 @@ use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
 use Optime\Util\Translation\TranslationsAwareInterface;
 use Optime\Util\Translation\TranslationsAwareTrait;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Table('emails_bundle_email_layout')]
 #[ORM\Entity(repositoryClass: EmailLayoutRepository::class)]
 #[UniqueEntity('description')]
-class EmailLayout implements TranslationsAwareInterface
+class EmailLayout implements TranslationsAwareInterface, Stringable
 {
     use ExternalUuidTrait, DatesTrait, TranslationsAwareTrait;
 
@@ -63,6 +64,6 @@ class EmailLayout implements TranslationsAwareInterface
 
     public function __toString(): string
     {
-        return $this->getDescription();
+        return $this->getContent();
     }
 }

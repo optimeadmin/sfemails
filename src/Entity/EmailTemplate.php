@@ -12,10 +12,11 @@ use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
 use Optime\Util\Translation\TranslationsAwareInterface;
 use Optime\Util\Translation\TranslationsAwareTrait;
+use Stringable;
 
 #[ORM\Table('emails_bundle_email_template')]
 #[ORM\Entity(EmailTemplateRepository::class)]
-class EmailTemplate implements TranslationsAwareInterface
+class EmailTemplate implements TranslationsAwareInterface, Stringable
 {
     use ExternalUuidTrait, DatesTrait, TranslationsAwareTrait;
 
@@ -25,8 +26,8 @@ class EmailTemplate implements TranslationsAwareInterface
     private readonly ?int $id;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'email_owner_id', nullable: false)]
-    private EmailOwner $owner;
+    #[ORM\JoinColumn(name: 'email_app_id', nullable: false)]
+    private EmailApp $app;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'email_master_id', nullable: false)]
@@ -43,9 +44,19 @@ class EmailTemplate implements TranslationsAwareInterface
     #[ORM\Column]
     private bool $active;
 
-    public function getOwner(): EmailOwner
+    public function __construct()
     {
-        return $this->owner;
+        $this->active = true;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id ?? null;
+    }
+
+    public function getApp(): EmailApp
+    {
+        return $this->app;
     }
 
     public function getConfig(): EmailMaster
@@ -68,9 +79,9 @@ class EmailTemplate implements TranslationsAwareInterface
         return $this->active;
     }
 
-    public function setOwner(EmailOwner $owner): void
+    public function setApp(EmailApp $app): void
     {
-        $this->owner = $owner;
+        $this->app = $app;
     }
 
     public function setConfig(EmailMaster $config): void
@@ -91,5 +102,15 @@ class EmailTemplate implements TranslationsAwareInterface
     public function setActive(bool $active): void
     {
         $this->active = $active;
+    }
+
+    public function getLayout(): EmailLayout
+    {
+        return $this->getConfig()->getLayout();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getContent();
     }
 }

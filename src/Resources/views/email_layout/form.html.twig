@@ -20,3 +20,8 @@
         {{ form_end(form) }}
     {% end_ajax_view %}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ include('@OptimeEmail/_import_codemirror.html.twig') }}
+{% endblock %}

@@ -9,3 +9,34 @@ services:
     Optime\Email\Bundle\Controller\:
         resource: '../../Controller'
         tags: ['controller.service_arguments']
+
+    optime_email.twig:
+        class: Twig\Environment
+        arguments:
+            - '@optime_email.twig_loader'
+            -
+                debug: '%kernel.debug%'
+                cache: false
+                strict_variables: false
+                autoescape: false
+        calls:
+            - ['addExtension', ['@?twig.extension.trans']]
+            - ['addExtension', ['@?twig.extension.assets']]
+            - ['addExtension', ['@?twig.extension.routing']]
+            - ['addExtension', ['@?twig.extension.httpfoundation']]
+            - ['addExtension', ['@?optime_email.twig_extension.sandbox']]
+
+    optime_email.twig_loader:
+        class: Twig\Loader\ArrayLoader
+
+    Optime\Email\Bundle\Service\Template\TemplateRenderer:
+        arguments:
+            - '@optime_email.twig'
+            - '@optime_email.twig_loader'
+
+    optime_email.twig_extension.sandbox:
+        autoconfigure: false
+        class: Twig\Extension\SandboxExtension
+        arguments:
+            - '@Optime\Email\Bundle\Service\Template\Twig\Sandbox\SecurityPolicy'
+            - true

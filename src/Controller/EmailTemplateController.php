@@ -38,7 +38,8 @@ class EmailTemplateController extends AbstractController
     #[Route("/create", name: "optime_emails_template_create")]
     public function create(Request $request): Response
     {
-        $form = $this->createForm(EmailTemplateFormType::class, new EmailTemplate(), [
+        $template = new EmailTemplate();
+        $form = $this->createForm(EmailTemplateFormType::class, $template, [
             'action' => $request->getRequestUri()
         ]);
         $form->handleRequest($request);
@@ -52,6 +53,7 @@ class EmailTemplateController extends AbstractController
 
         return $this->render('@OptimeEmail/email_template/form.html.twig', [
             'form' => $form->createView(),
+            'item' => $template,
         ]);
     }
 
@@ -72,6 +74,7 @@ class EmailTemplateController extends AbstractController
 
         return $this->render('@OptimeEmail/email_template/form.html.twig', [
             'form' => $form->createView(),
+            'item' => $template,
         ]);
     }
 }

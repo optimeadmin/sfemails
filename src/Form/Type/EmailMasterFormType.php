@@ -26,6 +26,7 @@ class EmailMasterFormType extends AbstractType
         $builder->add('layout', EntityType::class, [
             'class' => EmailLayout::class,
             'choice_value' => 'uuid',
+            'choice_label' => 'description',
         ]);
         $builder->add('target');
         $builder->add('editable');

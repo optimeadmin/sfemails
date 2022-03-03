@@ -5,6 +5,7 @@
 
 namespace Optime\Email\Bundle\Form\Type;
 
+use Optime\Email\Bundle\Constraints\TwigContent;
 use Optime\Email\Bundle\Entity\EmailTemplate;
 use Optime\Util\Form\Type\AutoTransFieldType;
 use Symfony\Component\Form\AbstractType;
@@ -20,7 +21,7 @@ class EmailTemplateFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('owner');
+        $builder->add('app');
         $builder->add('config');
         $builder->add('subject', AutoTransFieldType::class, [
             'entry_constraints' => [new NotBlank()],
@@ -28,11 +29,12 @@ class EmailTemplateFormType extends AbstractType
         ]);
         $builder->add('content', AutoTransFieldType::class, [
             'type' => TextareaType::class,
-            'entry_constraints' => [new NotBlank()],
+            'entry_constraints' => [new NotBlank(), new TwigContent()],
             'auto_save' => true,
             'item_options' => [
                 'attr' => [
                     'rows' => 5,
+                    'data-code-mirror' => true,
                 ],
             ],
         ]);

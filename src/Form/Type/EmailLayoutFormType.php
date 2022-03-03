@@ -5,6 +5,7 @@
 
 namespace Optime\Email\Bundle\Form\Type;
 
+use Optime\Email\Bundle\Constraints\TwigContent;
 use Optime\Email\Bundle\Entity\EmailLayout;
 use Optime\Util\Form\Type\AutoTransFieldType;
 use Symfony\Component\Form\AbstractType;
@@ -23,11 +24,12 @@ class EmailLayoutFormType extends AbstractType
         $builder->add('description', TextareaType::class);
         $builder->add('content', AutoTransFieldType::class, [
             'type' => TextareaType::class,
-            'entry_constraints' => [new NotBlank()],
+            'entry_constraints' => [new NotBlank(), new TwigContent()],
             'auto_save' => true,
             'item_options' => [
                 'attr' => [
                     'rows' => 10,
+                    'data-code-mirror' => true,
                 ],
             ],
         ]);
