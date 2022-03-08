@@ -1,0 +1,42 @@
+{% extends '@OptimeEmail/layout.html.twig' %}
+
+{% block page_header 'Emails Logs' %}
+
+{% block content %}
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th style="width: 340px">ID</th>
+                <th>Code</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th class="col-3 col-xl-3 col-md-2">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.uuid }}</td>
+                    <td>{{ item.locale }}</td>
+                    <td>{{ item.subject }}</td>
+                    <td>{{ item.active ? 'Active' : 'Inactive' }}</td>
+                    <td class="d-flex flex-column flex-lg-row">
+                        <a class="mb-2 mb-lg-0 flex-fill me-lg-2 btn btn-secondary"
+                           href="{{ path('optime_emails_template_edit', {uuid: item.uuid}) }}">Edit</a>
+
+                        <a href="{{ path('optime_emails_template_preview', {uuid: item.uuid}) }}"
+                           class="mb-2 mb-lg-0 flex-fill me-lg-2 btn btn-outline-secondary"
+                           target="_blank">Preview</a>
+
+                        <a href="{{ path('optime_emails_send_test', {uuid: item.uuid}) }}"
+                           class="mb-2 mb-lg-0 flex-fill me-lg-2 btn btn-outline-secondary"
+                        >Send Test</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

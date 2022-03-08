@@ -8,6 +8,7 @@ namespace Optime\Email\Bundle\Service\Email;
 use Doctrine\ORM\EntityManagerInterface;
 use Optime\Email\Bundle\Entity\EmailLog;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 use function method_exists;
 
@@ -22,6 +23,7 @@ class MailerIntent
 
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private TranslatorInterface $translator,
         private ?Security $security,
         private Mailer $mailer,
         private TemplateData $templateData,
@@ -30,11 +32,16 @@ class MailerIntent
 
     public function send(
         array $templateVars,
-        EmailRecipientInterface $recipient
+        EmailRecipientInterface $recipient,
     ): bool {
+        $locale = $this->resolveLocale($templateVars['_locale'] ?? null);
+        $templateVars['_locale'] = $locale;
+
         $this->lastLog = $log = EmailLog::create(
+            $locale,
             $this->templateData,
             $recipient,
+            $templateVars,
             $this->getLoggedUserIdentifier(),
         );
 
@@ -83,5 +90,10 @@ class MailerIntent
         return $this->loggedUserIdentifier = method_exists($user, 'getId')
             ? $user->getId()
             : $user->getUserIdentifier();
+    }
+
+    private function resolveLocale(?string $locale): string
+    {
+        return $locale ?? $this->translator->getLocale();
     }
 }

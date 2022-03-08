@@ -6,15 +6,22 @@
 namespace Optime\Email\Bundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Optime\Email\Bundle\Repository\EmailLogRepository;
 use Optime\Email\Bundle\Service\Email\EmailRecipientInterface;
 use Optime\Email\Bundle\Service\Email\TemplateData;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
 use Symfony\Component\Mime\Email;
 use Throwable;
+use Traversable;
+use function get_resource_id;
+use function is_iterable;
+use function is_object;
+use function is_resource;
+use function iterator_to_array;
 
 #[ORM\Table('emails_bundle_email_log')]
-#[ORM\Entity]
+#[ORM\Entity(EmailLogRepository::class)]
 class EmailLog
 {
     use ExternalUuidTrait, DatesTrait;
@@ -28,11 +35,17 @@ class EmailLog
     #[ORM\JoinColumn(name: 'email_template_id')]
     private ?EmailTemplate $template;
 
+    #[ORM\Column]
+    private string $locale;
+
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $subject;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $variables;
 
     #[ORM\Column]
     private string $recipient;
@@ -53,14 +66,18 @@ class EmailLog
     private ?string $failureMessage;
 
     public function __construct(
+        string $locale,
         TemplateData $templateData,
         EmailRecipientInterface $recipient,
+        array $templateVars,
         ?string $sessionUserIdentifier,
         ?string $info = null
     ) {
+        $this->locale = $locale;
         $this->emailCode = $templateData->getEmailCode();
         $this->recipient = $recipient->getEmail();
         $this->recipientIdentifier = $recipient->getRecipientId();
+        $this->variables = $this->normalizeVars($templateVars);
         $this->sessionUserIdentifier = $sessionUserIdentifier;
         $this->template = $templateData->getTemplate();
         $this->status = $this->template ? EmailLogStatus::pending : EmailLogStatus::no_template;
@@ -71,14 +88,18 @@ class EmailLog
     }
 
     public static function create(
+        string $locale,
         TemplateData $templateData,
         EmailRecipientInterface $recipient,
+        array $templateVars,
         ?string $sessionUserIdentifier,
     ): self {
         if (null === $templateData->getConfig()) {
             return new self(
+                $locale,
                 $templateData,
                 $recipient,
+                $templateVars,
                 $sessionUserIdentifier,
                 'Undefined emailConfig'
             );
@@ -87,8 +108,10 @@ class EmailLog
         if (null === $templateData->getTemplate()) {
             $app = $templateData->getApp();
             return new self(
+                $locale,
                 $templateData,
                 $recipient,
+                $templateVars,
                 $sessionUserIdentifier,
                 $app
                     ? 'Undefined EmailTemplate for App#' . $app->getId()
@@ -97,8 +120,10 @@ class EmailLog
         }
 
         return new self(
+            $locale,
             $templateData,
             $recipient,
+            $templateVars,
             $sessionUserIdentifier,
         );
     }
@@ -118,5 +143,24 @@ class EmailLog
     public function confirmSend(): void
     {
         $this->status = EmailLogStatus::send;
+    }
+
+    private function normalizeVars(array $vars): array
+    {
+        foreach ($vars as $index => &$var) {
+            if (is_object($var)) {
+                $var = '(object) ' . $var::class;
+            } elseif (is_resource($var)) {
+                $var = '(resource) ' . get_resource_id($var);
+            } elseif (is_iterable($var)) {
+                if ($var instanceof Traversable) {
+                    $var = iterator_to_array($var);
+                }
+
+                $var = $this->normalizeVars($var);
+            }
+        };
+
+        return $vars;
     }
 }

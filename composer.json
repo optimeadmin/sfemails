@@ -3,7 +3,8 @@
   "require": {
     "php": "^8.1",
     "symfony/framework-bundle": "^5.4|^6.0",
-    "manuelj555/sf-utils": "^6.0"
+    "manuelj555/sf-utils": "^6.0",
+    "knplabs/knp-paginator-bundle": "^5.8"
   },
   "autoload": {
     "psr-4": {

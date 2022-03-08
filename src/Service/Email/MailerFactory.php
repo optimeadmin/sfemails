@@ -11,6 +11,7 @@ use Optime\Email\Bundle\Repository\EmailAppRepository;
 use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Manuel Aguirre
@@ -19,6 +20,7 @@ class MailerFactory
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private TranslatorInterface $translator,
         private ?Security $security,
         private Mailer $mailer,
         private EmailMasterRepository $masterRepository,
@@ -62,6 +64,7 @@ class MailerFactory
     {
         return new MailerIntent(
             $this->entityManager,
+            $this->translator,
             $this->security,
             $this->mailer,
             $templateData,
