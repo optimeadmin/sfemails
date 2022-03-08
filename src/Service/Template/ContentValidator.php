@@ -6,6 +6,7 @@
 
 namespace Optime\Email\Bundle\Service\Template;
 
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Throwable;
 
 /**
@@ -23,6 +24,12 @@ class ContentValidator
         try {
             $this->renderer->renderContent($content, $variables);
         } catch (Throwable $exception) {
+            if ($exception instanceof RouteNotFoundException
+                || $exception->getPrevious() instanceof RouteNotFoundException) {
+                return null;
+            }
+
+
             return $exception;
         }
 

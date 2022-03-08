@@ -15,7 +15,7 @@ use Optime\Util\Translation\TranslationsAwareTrait;
 use Stringable;
 
 #[ORM\Table('emails_bundle_email_template')]
-#[ORM\Entity(EmailTemplateRepository::class)]
+#[ORM\Entity(repositoryClass: EmailTemplateRepository::class)]
 class EmailTemplate implements TranslationsAwareInterface, Stringable
 {
     use ExternalUuidTrait, DatesTrait, TranslationsAwareTrait;

@@ -18,4 +18,11 @@ class EmailMasterRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, EmailMaster::class);
     }
+
+    public function byCode(string $code): ?EmailMaster
+    {
+        return $this->findOneBy([
+            'code' => $code,
+        ]);
+    }
 }

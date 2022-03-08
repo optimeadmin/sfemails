@@ -7,10 +7,8 @@ namespace Optime\Email\Bundle\Service\Template;
 
 use Optime\Email\Bundle\Entity\EmailLayout;
 use Optime\Email\Bundle\Entity\EmailTemplate;
-use Stringable;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
-use function spl_object_id;
 
 /**
  * @author Manuel Aguirre
@@ -36,9 +34,13 @@ class TemplateRenderer
         return $this->renderContent($layout, $variables);
     }
 
-    public function render(EmailTemplate $template, array $variables = []): string
+    public function render(EmailTemplate $template, array $variables = [], bool $withLayout = true): string
     {
         $content = $this->renderContent($template, $variables);
+
+        if (!$withLayout) {
+            return $content;
+        }
 
         return $this->renderLayout(
             $template->getLayout(),

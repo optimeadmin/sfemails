@@ -7,6 +7,8 @@ namespace Optime\Email\Bundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Optime\Email\Bundle\Entity\EmailApp;
+use Optime\Email\Bundle\Entity\EmailMaster;
 use Optime\Email\Bundle\Entity\EmailTemplate;
 
 /**
@@ -17,5 +19,14 @@ class EmailTemplateRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, EmailTemplate::class);
+    }
+
+    public function byConfigAndApp(EmailMaster $config, EmailApp $app): ?EmailTemplate
+    {
+        return $this->findOneBy([
+            'config' => $config,
+            'app' => $app,
+            'active' => true,
+        ]);
     }
 }

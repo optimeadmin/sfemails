@@ -3,7 +3,7 @@
 {% block page_header 'Email Template Form' %}
 
 {% block page_header_actions %}
-    <a href="{{ path('optime_emails_template_list') }}" class="btn btn-primary">Back</a>
+    <a href="{{ path('optime_emails_template_list') }}" class="btn btn-outline-secondary">Back</a>
 {% endblock page_header_actions %}
 
 {% form_theme form 'bootstrap_5_layout.html.twig' %}
@@ -38,20 +38,28 @@
 {% block content %}
 
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {% embed '@OptimeEmail/_form_layout.html.twig' %}
+        {% block form %}
+            {{ form_widget(form) }}
 
-    {{ form_contents }}
+            {{ form_contents }}
+        {% endblock %}
 
-    <hr>
+        {% block buttons %}
+            <input class="btn btn-primary" type="submit" value="Save">
 
-    <input class="btn btn-primary" type="submit" value="Save">
+            {% if item.id is not empty %}
+                <hr>
 
-    {% if item.id is not empty %}
-        <a href="{{ path('optime_emails_template_preview', {uuid: item.uuid}) }}"
-           class="btn btn-secondary"
-           target="_blank">Preview</a>
-    {% endif %}
+                <a href="{{ path('optime_emails_template_preview', {uuid: item.uuid}) }}"
+                   class="btn btn-secondary"
+                   target="_blank">Preview</a>
 
+                <a href="{{ path('optime_emails_send_test', {uuid: item.uuid}) }}"
+                   class="btn btn-outline-secondary">Send Test</a>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
     {{ form_end(form) }}
 
 {% endblock %}
@@ -60,7 +68,7 @@
     {{ parent() }}
     {{ include('@OptimeEmail/_import_codemirror.html.twig') }}
     <script>
-        $(function(){
+        $(function () {
             $('#email-contens-tab [data-bs-toggle]').on('shown.bs.tab', (e) => $.applyCodeMirror());
         });
     </script>

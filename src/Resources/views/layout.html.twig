@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>App Email Config - Backend</title>
     <link rel="stylesheet" href="{{ asset('bundles/optimeemail/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/optimeemail/css/app.css') }}">
     {% block javascripts %}
         <script src="{{ asset('bundles/optimeemail/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('bundles/optimeemail/js/jquery.min.js') }}"></script>
@@ -64,6 +65,8 @@
                         {% endblock page_header_actions %}
                     </div>
                 </div>
+
+                {{ include('@OptimeEmail/_flashes.html.twig') }}
 
                 {% block content %}
                 {% endblock %}

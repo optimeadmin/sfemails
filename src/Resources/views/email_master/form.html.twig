@@ -3,7 +3,7 @@
 {% block page_header 'Emails Config' %}
 
 {% block page_header_actions %}
-    <a href="{{ path('optime_emails_config_list') }}" class="btn btn-primary">Back</a>
+    <a href="{{ path('optime_emails_config_list') }}" class="btn btn-outline-secondary">Back</a>
 {% endblock page_header_actions %}
 
 {% form_theme form 'bootstrap_5_layout.html.twig' _self %}
@@ -11,15 +11,11 @@
 {% block content %}
 
     {{ form_start(form) }}
-    {# {{ form_row(form.code) }} #}
-    {# {{ form_row(form.description) }} #}
-    {# {{ form_row(form.layout) }} #}
-    {{ form_widget(form) }}
-
-    <hr>
-
-    <input class="btn btn-primary" type="submit" value="Save">
-
+    {% embed '@OptimeEmail/_form_layout.html.twig' %}
+        {% block form %}
+            {{ form_widget(form) }}
+        {% endblock %}
+    {% endembed %}
     {{ form_end(form) }}
 
     <div class="modal fade" id="modal-form-layout" data-ajax-modal tabindex="-1" aria-hidden="true">
