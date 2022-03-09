@@ -173,6 +173,11 @@ class EmailLog
         return $this->content;
     }
 
+    public function isResend(): bool
+    {
+        return $this->resend;
+    }
+
     public function getTemplate(): ?EmailTemplate
     {
         return $this->template;

@@ -7,6 +7,7 @@ namespace Optime\Email\Bundle\Controller;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Optime\Email\Bundle\Entity\EmailLog;
+use Optime\Email\Bundle\Entity\EmailLogStatus;
 use Optime\Email\Bundle\Form\Type\EmailLogFilterFormType;
 use Optime\Email\Bundle\Repository\EmailLogRepository;
 use Optime\Email\Bundle\Service\Email\MailerLog;
@@ -43,8 +44,12 @@ class EmailLogController extends AbstractController
     }
 
     #[Route("/show/{uuid}/", name: "optime_emails_log_show")]
-    public function create(EmailLog $emailLog): Response
+    public function show(EmailLog $emailLog): Response
     {
+        if ($emailLog->getStatus() !== EmailLogStatus::send) {
+            throw $this->createNotFoundException("Email no enviado aun.");
+        }
+
         return new Response($emailLog->getContent());
     }
 

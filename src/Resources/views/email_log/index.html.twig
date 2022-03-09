@@ -70,6 +70,7 @@
                         <small>
                             {{ item.emailCode }}
                             {% if item.locale is not empty %}({{ item.locale }}){% endif %}
+                            {% if item.resend %}<i>[Resend]</i>{% endif %}
                         </small>
                         <div class="border-top">
                             {{ item.subject|default('---') }}
