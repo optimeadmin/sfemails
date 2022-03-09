@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="{{ asset('bundles/optimeemail/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('bundles/optimeemail/css/app.css') }}">
     {% block javascripts %}
-        <script src="{{ asset('bundles/optimeemail/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/optimeemail/js/popper.min.js') }}"></script>
         <script src="{{ asset('bundles/optimeemail/js/jquery.min.js') }}"></script>
+        <script src="{{ asset('bundles/optimeemail/js/bootstrap.min.js') }}"></script>
     {% endblock %}
 </head>
 <body>
@@ -86,6 +87,12 @@
 </div>
 
 {% block javascripts_bottom %}
+    <script>
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    </script>
 {% endblock %}
 
 </body>

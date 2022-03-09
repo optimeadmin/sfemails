@@ -8,6 +8,7 @@ namespace Optime\Email\Bundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Optime\Email\Bundle\Entity\EmailApp;
+use function count;
 
 /**
  * @author Manuel Aguirre
@@ -23,7 +24,7 @@ class EmailAppRepository extends ServiceEntityRepository
     {
         $apps = $this->findAll();
 
-        if (1 === $this->count($apps)) {
+        if (1 === count($apps)) {
             return $apps[0];
         }
 

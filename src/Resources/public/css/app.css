@@ -10,3 +10,8 @@
 .modal .modal-body .email-form-buttons > div {
     display: inline-flex !important;
 }
+
+.email-form-filter-checkboxs{
+    max-height: 260px;
+    overflow: auto;
+}

@@ -36,6 +36,9 @@ class EmailLog
     private ?EmailTemplate $template;
 
     #[ORM\Column]
+    private bool $resend = false;
+
+    #[ORM\Column]
     private string $locale;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -142,7 +145,87 @@ class EmailLog
 
     public function confirmSend(): void
     {
+        if ($this->status == EmailLogStatus::error) {
+            $this->resend = true;
+            $this->failureMessage = '';
+        }
+
         $this->status = EmailLogStatus::send;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function getTemplate(): ?EmailTemplate
+    {
+        return $this->template;
+    }
+
+    public function getVariables(): ?array
+    {
+        return $this->variables;
+    }
+
+    public function getRecipient(): string
+    {
+        return $this->recipient;
+    }
+
+    public function getRecipientIdentifier(): string
+    {
+        return $this->recipientIdentifier;
+    }
+
+    public function getEmailCode(): string
+    {
+        return $this->emailCode;
+    }
+
+    public function getSessionUserIdentifier(): ?string
+    {
+        return $this->sessionUserIdentifier;
+    }
+
+    public function getStatus(): EmailLogStatus
+    {
+        return $this->status;
+    }
+
+    public function getFailureMessage(): ?string
+    {
+        return $this->failureMessage;
+    }
+
+    public function canResend(): bool
+    {
+        if ($this->getStatus() == EmailLogStatus::send) {
+            return false;
+        }
+        if ($this->getStatus() == EmailLogStatus::no_template) {
+            return false;
+        }
+        if (null === $this->template) {
+            return false;
+        }
+
+        return true;
     }
 
     private function normalizeVars(array $vars): array

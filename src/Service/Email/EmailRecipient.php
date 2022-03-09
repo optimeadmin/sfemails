@@ -5,6 +5,8 @@
 
 namespace Optime\Email\Bundle\Service\Email;
 
+use Optime\Email\Bundle\Entity\EmailLog;
+
 /**
  * @author Manuel Aguirre
  */
@@ -25,6 +27,15 @@ class EmailRecipient implements EmailRecipientInterface
         return new self(
             $email,
             $email,
+        );
+    }
+
+    public static function fromLog(EmailLog $emailLog): self
+    {
+        return new self(
+            $emailLog->getRecipient(),
+            $emailLog->getRecipient(),
+            $emailLog->getRecipientIdentifier(),
         );
     }
 
