@@ -5,12 +5,14 @@
 
 namespace Optime\Email\Bundle\Constraints;
 
+use Error;
 use Optime\Email\Bundle\Entity\EmailTemplate;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
+use function str_contains;
 
 /**
  * @author Manuel Aguirre
@@ -36,8 +38,16 @@ class UniqueTemplateValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, EmailTemplate::class);
         }
 
-        if (!$value->getConfig() || !$value->getApp()) {
-            return;
+        try {
+            if (!$value->getConfig() || !$value->getApp()) {
+                return;
+            }
+        } catch (Error $error) {
+            if (str_contains($error->getMessage(), 'must not be accessed')) {
+                return;
+            } else {
+                throw $error;
+            }
         }
 
         $result = $this->repository->findOneBy([
