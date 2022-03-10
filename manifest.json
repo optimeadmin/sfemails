@@ -1,8 +1,0 @@
-{
-  "bundles": {
-    "Optime\\Email\\Bundle\\OptimeEmailBundle": ["all"]
-  },
-  "copy-from-recipe": {
-    "config/": "%CONFIG_DIR%/",
-  }
-}
