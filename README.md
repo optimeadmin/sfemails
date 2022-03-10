@@ -34,7 +34,7 @@ Crear el archivo `config/routes/optime_emails.yaml`:
 optime_emails:
     resource: "@OptimeEmailBundle/Controller/"
     type:     annotation
-    prefix:   /{_locale}/admin
+    prefix:   /{_locale}/admin/emails
 ```
 
 Correr comando de doctrine:
