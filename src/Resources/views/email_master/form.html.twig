@@ -49,22 +49,24 @@
 {% endblock %}
 
 {% block _email_master_form_layout_widget %}
-    <div class="d-flex">
+    <div class="d-flex gap-2 flex-wrap">
         <div class="flex-grow-1">
             {{ form_widget(form) }}
         </div>
-        <button class="btn btn-outline-primary ms-2"
-                id="btn-preview-layout"
-                data-url="{{ path('optime_emails_layout_preview', {uuid: '__uuid__'}) }}"
-        >Show Template
-        </button>
-        <button class="btn btn-secondary ms-2" id="btn-refresh-layout">Refresh</button>
-        <button class="btn btn-info ms-2"
-                id="btn-create-layout"
-                data-ajax-form="#layout-form-ajax"
-                data-url="{{ path('optime_emails_layout_create') }}">
-            Create
-        </button>
+        <div class="d-flex gap-1">
+            <button class="btn btn-outline-primary"
+                    id="btn-preview-layout"
+                    data-url="{{ path('optime_emails_layout_preview', {uuid: '__uuid__'}) }}"
+            >Show Template
+            </button>
+            <button class="btn btn-secondary" id="btn-refresh-layout">Refresh</button>
+            <button class="btn btn-info"
+                    id="btn-create-layout"
+                    data-ajax-form="#layout-form-ajax"
+                    data-url="{{ path('optime_emails_layout_create') }}">
+                Create
+            </button>
+        </div>
     </div>
 {% endblock _email_master_form_layout_widget %}
 
