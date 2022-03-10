@@ -7,7 +7,7 @@ namespace Optime\Email\Bundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Optime\Email\Bundle\Repository\EmailLogRepository;
-use Optime\Email\Bundle\Service\Email\EmailRecipientInterface;
+use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipientInterface;
 use Optime\Email\Bundle\Service\Email\TemplateData;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;

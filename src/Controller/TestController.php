@@ -6,8 +6,8 @@
 namespace Optime\Email\Bundle\Controller;
 
 use Optime\Email\Bundle\Entity\EmailTemplate;
-use Optime\Email\Bundle\Service\Email\EmailRecipient;
 use Optime\Email\Bundle\Service\Email\MailerFactory;
+use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipient;
 use Optime\Email\Bundle\Service\Template\VariablesExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

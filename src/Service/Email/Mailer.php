@@ -7,6 +7,7 @@ namespace Optime\Email\Bundle\Service\Email;
 
 use Optime\Email\Bundle\Entity\EmailLog;
 use Optime\Email\Bundle\Entity\EmailTemplate;
+use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipientInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 

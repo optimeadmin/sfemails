@@ -7,6 +7,7 @@ namespace Optime\Email\Bundle\Service\Email;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Optime\Email\Bundle\Entity\EmailLog;
+use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipient;
 use Throwable;
 
 /**

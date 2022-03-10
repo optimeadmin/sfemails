@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Optime\Email\Bundle\Entity\EmailLayout;
 use Optime\Email\Bundle\Form\Type\EmailLayoutFormType;
 use Optime\Email\Bundle\Repository\EmailLayoutRepository;
+use Optime\Email\Bundle\Service\Email\Layout\DefaultLayoutCreator;
 use Optime\Util\Http\Controller\HandleAjaxForm;
 use Optime\Util\Http\Controller\PartialAjaxView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,12 +25,15 @@ class EmailLayoutController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private DefaultLayoutCreator $defaultLayoutCreator,
     ) {
     }
 
     #[Route("/", name: "optime_emails_layout_list")]
     public function index(EmailLayoutRepository $repository): Response
     {
+        $this->defaultLayoutCreator->createIfApply();
+
         $items = $repository->findAll();
 
         return $this->render('@OptimeEmail/email_layout/index.html.twig', [

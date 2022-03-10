@@ -18,4 +18,10 @@ class EmailLayoutRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, EmailLayout::class);
     }
+
+    public function save(EmailLayout $layout):void
+    {
+        $this->getEntityManager()->persist($layout);
+        $this->getEntityManager()->flush();
+    }
 }

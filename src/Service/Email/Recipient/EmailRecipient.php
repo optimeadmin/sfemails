@@ -3,7 +3,7 @@
  * @author Manuel Aguirre
  */
 
-namespace Optime\Email\Bundle\Service\Email;
+namespace Optime\Email\Bundle\Service\Email\Recipient;
 
 use Optime\Email\Bundle\Entity\EmailLog;
 

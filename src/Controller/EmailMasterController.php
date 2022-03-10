@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Optime\Email\Bundle\Entity\EmailMaster;
 use Optime\Email\Bundle\Form\Type\EmailMasterFormType;
 use Optime\Email\Bundle\Repository\EmailMasterRepository;
+use Optime\Email\Bundle\Service\Email\Layout\DefaultLayoutCreator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,8 +37,10 @@ class EmailMasterController extends AbstractController
     }
 
     #[Route("/create", name: "optime_emails_config_create")]
-    public function create(Request $request): Response
+    public function create(Request $request, DefaultLayoutCreator $defaultLayoutCreator): Response
     {
+        $defaultLayoutCreator->createIfApply();
+
         $config = new EmailMaster();
         $form = $this->createForm(EmailMasterFormType::class, $config);
         $form->handleRequest($request);
