@@ -22,6 +22,7 @@ use function iterator_to_array;
 
 #[ORM\Table('emails_bundle_email_log')]
 #[ORM\Entity(EmailLogRepository::class)]
+#[ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")]
 class EmailLog
 {
     use ExternalUuidTrait, DatesTrait;

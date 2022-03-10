@@ -24,11 +24,9 @@ class PreviewController extends AbstractController
     }
 
     #[Route("/layout/{uuid}/", name: "optime_emails_layout_preview")]
-    public function index(EmailLayout $layout): Response
+    public function layout(EmailLayout $layout): Response
     {
-        return $this->render('@OptimeEmail/preview/preview.html.twig', [
-            'content' => $this->renderer->renderLayout($layout),
-        ]);
+        return new Response($this->renderer->renderLayout($layout));
     }
 
     #[Route("/template/{uuid}/", name: "optime_emails_template_preview")]

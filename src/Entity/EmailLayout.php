@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Table('emails_bundle_email_layout')]
 #[ORM\Entity(repositoryClass: EmailLayoutRepository::class)]
+#[ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")]
 #[UniqueEntity('description')]
 class EmailLayout implements TranslationsAwareInterface, Stringable
 {

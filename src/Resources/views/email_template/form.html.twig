@@ -46,10 +46,10 @@
         {% endblock %}
 
         {% block buttons %}
-            <input class="btn btn-primary" type="submit" value="Save">
+            {{ parent() }}
 
             {% if item.id is not empty %}
-                <hr>
+                <hr class="d-none d-xl-block">
 
                 <a href="{{ path('optime_emails_template_preview', {uuid: item.uuid}) }}"
                    class="btn btn-secondary"

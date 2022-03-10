@@ -76,6 +76,7 @@ class EmailLayoutController extends AbstractController
 
         return $this->render('@OptimeEmail/email_layout/form.html.twig', [
             'form' => $form->createView(),
+            'layout' => $layout,
         ]);
     }
 }

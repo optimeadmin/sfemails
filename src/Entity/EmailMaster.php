@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 #[ORM\Table('emails_bundle_email_master')]
 #[ORM\Entity(repositoryClass: EmailMasterRepository::class)]
 #[ORM\UniqueConstraint('email_master_code', ['code'])]
+#[ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")]
 #[UniqueEntity("code")]
 class EmailMaster
 {

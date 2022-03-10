@@ -12,6 +12,7 @@ use Optime\Util\Entity\Traits\DatesTrait;
 #[ORM\Table('emails_bundle_email_app')]
 #[ORM\Entity(repositoryClass: EmailAppRepository::class)]
 #[ORM\MappedSuperclass]
+#[ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")]
 class EmailApp
 {
     use DatesTrait;

@@ -108,6 +108,10 @@
                                class="ms-2"
                                onclick="return confirm('Are you sure to resend this email?')">Resend</a>
                         {% endif %}
+                        {% if item.template is not empty %}
+                            <a href="{{ path('optime_emails_template_edit', {uuid: item.template.uuid}) }}"
+                               class="ms-2">Edit Template</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% else %}

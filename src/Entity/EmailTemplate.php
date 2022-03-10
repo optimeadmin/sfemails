@@ -16,6 +16,7 @@ use Stringable;
 
 #[ORM\Table('emails_bundle_email_template')]
 #[ORM\Entity(repositoryClass: EmailTemplateRepository::class)]
+#[ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")]
 class EmailTemplate implements TranslationsAwareInterface, Stringable
 {
     use ExternalUuidTrait, DatesTrait, TranslationsAwareTrait;

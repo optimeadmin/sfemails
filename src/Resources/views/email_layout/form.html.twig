@@ -15,6 +15,17 @@
             {% block form %}
                 {{ form_widget(form) }}
             {% endblock %}
+            {% block buttons %}
+                {{ parent() }}
+
+                {% if layout.uuid is defined and layout.uuid is not empty %}
+                    <hr class="d-none d-xl-block">
+
+                    <a href="{{ path('optime_emails_layout_preview', {'uuid': layout.uuid}) }}"
+                       class="btn btn-outline-secondary" target="_blank">Show Preview</a>
+                {% endif %}
+
+            {% endblock %}
         {% endembed %}
         {{ form_end(form) }}
     {% end_ajax_view %}
