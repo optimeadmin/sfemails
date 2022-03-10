@@ -7,6 +7,28 @@
 {% endblock page_header_actions %}
 
 {% block content %}
+
+    {% if items|length > 0 %}
+        <div class="row row-cols-4">
+            {% for item in items %}
+                <div class="col">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.config.code }}</h5>
+                            <p class="card-text">
+                                {{ item.subject }}
+                            </p>
+                            <a href="#" class="btn btn-primary"></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="col alert alert-secondary">No items found.</div>
+    {% endif %}
+
+
     <div class="table-responsive">
         <table class="table table-striped table-sm">
             <thead>

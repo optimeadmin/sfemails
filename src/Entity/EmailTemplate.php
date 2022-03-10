@@ -13,6 +13,7 @@ use Optime\Util\Entity\Traits\ExternalUuidTrait;
 use Optime\Util\Translation\TranslationsAwareInterface;
 use Optime\Util\Translation\TranslationsAwareTrait;
 use Stringable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Table('emails_bundle_email_template')]
 #[ORM\Entity(repositoryClass: EmailTemplateRepository::class)]

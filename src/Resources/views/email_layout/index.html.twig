@@ -7,27 +7,67 @@
 {% endblock page_header_actions %}
 
 {% block content %}
-    <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            <thead>
-            <tr>
-                <th style="width: 340px">ID</th>
-                <th>Code</th>
-                <th class="col-2 col-md-1">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
+
+    {% if items|length > 0 %}
+        <div class="row row-cols-4">
             {% for item in items %}
-            <tr>
-                <td>{{ item.uuid }}</td>
-                <td>{{ item.description }}</td>
-                <td>
-                    <a href="{{ path('optime_emails_layout_edit', {uuid: item.uuid}) }}">Edit</a>
-                </td>
-            </tr>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ item.uuid }}
+                        </div>
+                        <div class="card-body">
+                            {# <h5 class="card-title">{{ item.uuid }}</h5> #}
+                            <p class="card-text">
+                                {{ item.description }}
+                            </p>
+
+                            <div class="d-flex gap-1">
+                                <a href="{{ path('optime_emails_layout_edit', {uuid: item.uuid}) }}"
+                                   class="btn btn-primary flex-fill">Edit</a>
+                                <a href="{{ path('optime_emails_layout_preview', {uuid: item.uuid}) }}"
+                                   class="btn btn-outline-secondary flex-fill btn-preview-layout"
+                                   target="_blank">Show Preview</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-            </tbody>
-        </table>
+        </div>
+    {% else %}
+        <div class="col alert alert-secondary">No items found.</div>
+    {% endif %}
+
+    <div class="modal fade" id="modal-preview-layout" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Layout Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe width="100%" style="min-height: 600px"></iframe>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
+
+{% block javascripts_bottom %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $(".btn-preview-layout").on('click', e => {
+                e.preventDefault();
+
+                $("#modal-preview-layout .modal-body iframe").prop(
+                    'src',
+                    $(e.currentTarget).attr('href')
+                );
+
+                $("#modal-preview-layout").modal('show');
+            });
+        });
+    </script>
+{% endblock javascripts_bottom %}

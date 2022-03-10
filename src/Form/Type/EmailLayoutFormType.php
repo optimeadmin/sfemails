@@ -31,6 +31,7 @@ class EmailLayoutFormType extends AbstractType
                     'rows' => 10,
                     'data-code-mirror' => true,
                 ],
+                'required' => false,
             ],
         ]);
     }

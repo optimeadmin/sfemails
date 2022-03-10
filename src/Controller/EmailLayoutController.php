@@ -42,16 +42,21 @@ class EmailLayoutController extends AbstractController
     #[PartialAjaxView]
     public function create(Request $request): Response
     {
-        $form = $this->createForm(EmailLayoutFormType::class, new EmailLayout(), [
+        $layout = new EmailLayout();
+        $form = $this->createForm(EmailLayoutFormType::class, $layout, [
             'action' => $request->getRequestUri()
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            $this->entityManager->persist($form->getData());
+            $this->entityManager->persist($layout);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('optime_emails_layout_list');
+            $this->addFlash('success', 'Item created successfully.');
+
+            return $this->redirectToRoute('optime_emails_layout_edit', [
+                'uuid' => $layout->getUuid(),
+            ]);
         }
 
         return $this->render('@OptimeEmail/email_layout/form.html.twig', [
@@ -71,7 +76,11 @@ class EmailLayoutController extends AbstractController
             $this->entityManager->persist($layout);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('optime_emails_layout_list');
+            $this->addFlash('success', 'Item edited successfully.');
+
+            return $this->redirectToRoute('optime_emails_layout_edit', [
+                'uuid' => $layout->getUuid(),
+            ]);
         }
 
         return $this->render('@OptimeEmail/email_layout/form.html.twig', [
