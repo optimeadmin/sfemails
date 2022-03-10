@@ -37,7 +37,7 @@
 
 {% block content %}
 
-    {{ form_start(form) }}
+    {{ form_start(form, {attr: { novalidate: true }}) }}
     {% embed '@OptimeEmail/_form_layout.html.twig' %}
         {% block form %}
             {{ form_widget(form) }}

@@ -7,17 +7,19 @@ namespace Optime\Email\Bundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Translatable;
+use Optime\Email\Bundle\Constraints\UniqueTemplate;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
 use Optime\Util\Translation\TranslationsAwareInterface;
 use Optime\Util\Translation\TranslationsAwareTrait;
 use Stringable;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Table('emails_bundle_email_template')]
 #[ORM\Entity(repositoryClass: EmailTemplateRepository::class)]
 #[ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")]
+#[UniqueTemplate]
 class EmailTemplate implements TranslationsAwareInterface, Stringable
 {
     use ExternalUuidTrait, DatesTrait, TranslationsAwareTrait;
@@ -29,18 +31,22 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'email_app_id', nullable: false)]
+    #[NotBlank]
     private EmailApp $app;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'email_master_id', nullable: false)]
+    #[NotBlank]
     private EmailMaster $config;
 
     #[ORM\Column(type: 'text')]
     #[Translatable]
+    #[NotBlank]
     private string $subject;
 
     #[ORM\Column(type: 'text')]
     #[Translatable]
+    #[NotBlank]
     private string $content;
 
     #[ORM\Column]

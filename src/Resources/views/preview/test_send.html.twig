@@ -16,7 +16,7 @@
         {% endblock %}
         {% block buttons %}
             <input class="btn btn-primary" type="submit" value="Send">
-            <hr>
+            <hr class="d-none d-xl-block">
             <a href="{{ path('optime_emails_template_edit', {
                 uuid: template.uuid,
             }) }}" class="btn btn-outline-secondary">Edit</a>

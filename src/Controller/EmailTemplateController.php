@@ -45,10 +45,14 @@ class EmailTemplateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            $this->entityManager->persist($form->getData());
+            $this->entityManager->persist($template);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('optime_emails_template_list');
+            $this->addFlash('success', 'Item created successfully.');
+
+            return $this->redirectToRoute('optime_emails_template_edit', [
+                'uuid' => $template->getUuid(),
+            ]);
         }
 
         return $this->render('@OptimeEmail/email_template/form.html.twig', [
@@ -69,7 +73,11 @@ class EmailTemplateController extends AbstractController
             $this->entityManager->persist($template);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('optime_emails_template_list');
+            $this->addFlash('success', 'Item edited successfully.');
+
+            return $this->redirectToRoute('optime_emails_template_edit', [
+                'uuid' => $template->getUuid(),
+            ]);
         }
 
         return $this->render('@OptimeEmail/email_template/form.html.twig', [

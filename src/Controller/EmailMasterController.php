@@ -38,14 +38,19 @@ class EmailMasterController extends AbstractController
     #[Route("/create", name: "optime_emails_config_create")]
     public function create(Request $request): Response
     {
-        $form = $this->createForm(EmailMasterFormType::class, new EmailMaster());
+        $config = new EmailMaster();
+        $form = $this->createForm(EmailMasterFormType::class, $config);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            $this->entityManager->persist($form->getData());
+            $this->entityManager->persist($config);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('optime_emails_config_list');
+            $this->addFlash('success', 'Item created successfully.');
+
+            return $this->redirectToRoute('optime_emails_config_edit', [
+                'uuid' => $config->getUuid(),
+            ]);
         }
 
         return $this->render('@OptimeEmail/email_master/form.html.twig', [
@@ -63,7 +68,11 @@ class EmailMasterController extends AbstractController
             $this->entityManager->persist($email);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('optime_emails_config_list');
+            $this->addFlash('success', 'Item edited successfully.');
+
+            return $this->redirectToRoute('optime_emails_config_edit', [
+                'uuid' => $email->getUuid(),
+            ]);
         }
 
         return $this->render('@OptimeEmail/email_master/form.html.twig', [
