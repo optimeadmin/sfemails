@@ -26,7 +26,5 @@ class OptimeEmailExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
-
-        $container->addResource(new DirectoryResource(dirname(__DIR__)));
     }
 }

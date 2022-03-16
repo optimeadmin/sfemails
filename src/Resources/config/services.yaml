@@ -27,6 +27,7 @@ services:
             - ['addExtension', ['@?optime_email.twig_extension.sandbox']]
 
     optime_email.twig_loader:
+        autoconfigure: false
         class: Twig\Loader\ArrayLoader
 
     Optime\Email\Bundle\Service\Template\TemplateRenderer:
