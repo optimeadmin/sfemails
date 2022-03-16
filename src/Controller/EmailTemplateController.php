@@ -8,6 +8,7 @@ namespace Optime\Email\Bundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Optime\Email\Bundle\Entity\EmailTemplate;
 use Optime\Email\Bundle\Form\Type\EmailTemplateFormType;
+use Optime\Email\Bundle\Repository\EmailAppRepository;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +37,7 @@ class EmailTemplateController extends AbstractController
     }
 
     #[Route("/create", name: "optime_emails_template_create")]
-    public function create(Request $request): Response
+    public function create(Request $request, EmailAppRepository $appRepository): Response
     {
         $template = new EmailTemplate();
         $form = $this->createForm(EmailTemplateFormType::class, $template, [
@@ -58,6 +59,7 @@ class EmailTemplateController extends AbstractController
         return $this->render('@OptimeEmail/email_template/form.html.twig', [
             'form' => $form->createView(),
             'item' => $template,
+            'empty_apps' => $appRepository->isEmpty(),
         ]);
     }
 
@@ -65,6 +67,7 @@ class EmailTemplateController extends AbstractController
     public function edit(
         Request $request,
         EmailTemplate $template,
+        EmailAppRepository $appRepository,
     ): Response {
         $form = $this->createForm(EmailTemplateFormType::class, $template);
         $form->handleRequest($request);
@@ -83,6 +86,7 @@ class EmailTemplateController extends AbstractController
         return $this->render('@OptimeEmail/email_template/form.html.twig', [
             'form' => $form->createView(),
             'item' => $template,
+            'empty_apps' => $appRepository->isEmpty(),
         ]);
     }
 }

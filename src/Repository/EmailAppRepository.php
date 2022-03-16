@@ -30,4 +30,9 @@ class EmailAppRepository extends ServiceEntityRepository
 
         return null;
     }
+
+    public function isEmpty(): bool
+    {
+        return 0 === $this->count([]);
+    }
 }

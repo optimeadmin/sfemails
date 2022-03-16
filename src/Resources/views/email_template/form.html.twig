@@ -40,6 +40,23 @@
     {{ form_start(form, {attr: { novalidate: true }}) }}
     {% embed '@OptimeEmail/_form_layout.html.twig' %}
         {% block form %}
+
+            <div class="mb-3">
+                {{ form_label(form.app) }}
+                <div class="d-flex gap-2 align-items-start">
+                    <div class="flex-fill">
+                        {{ form_widget(form.app) }}
+                        {{ form_errors(form.app) }}
+                    </div>
+
+                    {% if empty_apps %}
+                        <a class="btn btn-outline-secondary"
+                           href="{{ path('optime_emails_app_create_default') }}"
+                           onclick="return confirm('Confirm page reload?')"
+                        >Create Default App</a>
+                    {% endif %}
+                </div>
+            </div>
             {{ form_widget(form) }}
 
             {{ form_contents }}
