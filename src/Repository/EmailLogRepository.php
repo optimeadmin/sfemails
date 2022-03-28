@@ -29,7 +29,7 @@ class EmailLogRepository extends ServiceEntityRepository
     public function queryAll(array $filters = null): QueryBuilder
     {
         $query = $this->createQueryBuilder('l')
-            ->join('l.template', 't')
+            ->leftJoin('l.template', 't')
             ->orderBy('l.id', 'DESC');
 
         $addFilterIfApply = static function (string $key, string $field = null) use ($query, $filters) {
