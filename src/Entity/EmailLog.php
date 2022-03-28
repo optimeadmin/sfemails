@@ -66,7 +66,7 @@ class EmailLog
     #[ORM\Column(type: 'string', enumType: EmailLogStatus::class, nullable: true)]
     private EmailLogStatus $status;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $failureMessage;
 
     public function __construct(

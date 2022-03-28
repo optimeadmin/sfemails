@@ -47,6 +47,10 @@ class MailerIntent
         );
 
         try {
+            if (!$this->templateData->hasTemplate()) {
+                return false;
+            }
+
             $this->mailer->send(
                 $this->templateData->getTemplate(),
                 $templateVars,

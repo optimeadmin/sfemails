@@ -42,4 +42,9 @@ class TemplateData
     {
         return $this->app;
     }
+
+    public function hasTemplate(): bool
+    {
+        return null !== $this->getConfig() && null !== $this->getTemplate();
+    }
 }

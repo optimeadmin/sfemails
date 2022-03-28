@@ -31,7 +31,7 @@ class MailerFactory
 
     public function create(
         string $emailCode,
-        ?EmailApp $app,
+        EmailApp $app = null,
     ): MailerIntent {
         $config = $this->masterRepository->byCode($emailCode);
 
