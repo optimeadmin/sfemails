@@ -24,3 +24,8 @@
     {% endembed %}
     {{ form_end(form) }}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ include('@OptimeEmail/_import_codemirror.html.twig') }}
+{% endblock %}

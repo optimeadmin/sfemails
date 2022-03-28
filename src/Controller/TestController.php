@@ -16,14 +16,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use function array_reduce;
 use function base64_decode;
 use function base64_encode;
-use function explode;
 use function json_decode;
 use function json_encode;
-use function str_replace;
-use const PHP_EOL;
 
 /**
  * @author Manuel Aguirre
@@ -43,8 +39,7 @@ class TestController extends AbstractController
         if ($request->query->has('form')) {
             $data = json_decode(base64_decode($request->query->get('form')), true);
         } else {
-            $vars = $this->variablesExtractor->extract($template);
-            $vars = array_reduce($vars, fn($vars, $item) => $vars . $item . ': ' . PHP_EOL, '');
+            $vars = $this->variablesExtractor->extractAsYaml($template);
             $data = ['vars' => $vars];
         }
 
@@ -52,6 +47,8 @@ class TestController extends AbstractController
             ->add('vars', TextareaType::class, [
                 'attr' => [
                     'rows' => 10,
+                    'data-mode' => 'yaml',
+                    'data-code-mirror' => true,
                 ],
                 'constraints' => new NotBlank(),
             ])
@@ -89,13 +86,6 @@ class TestController extends AbstractController
 
     private function getVars(string $vars): array
     {
-        $data = [];
-
-        foreach (explode(PHP_EOL, $vars) as $var) {
-            $row = explode(':', $var, 2);
-            $data[str_replace(['{', '}', ' '], '', $row[0] ?? '')] = trim($row[1] ?? '');
-        }
-
-        return $data;
+        return $this->variablesExtractor->buildVarsFromYaml($vars);
     }
 }

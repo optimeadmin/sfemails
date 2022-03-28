@@ -3,6 +3,7 @@
 {# <link rel="stylesheet" href="{{ asset('bundles/optimeemail/codemirror/darcula.css') }}"> #}
 <script src="{{ asset('bundles/optimeemail/codemirror/codemirror.js') }}"></script>
 <script src="{{ asset('bundles/optimeemail/codemirror/twig.js') }}"></script>
+<script src="{{ asset('bundles/optimeemail/codemirror/yaml.js') }}"></script>
 <script src="{{ asset('bundles/optimeemail/codemirror/mode/multiplex.js') }}"></script>
 <style>
     .CodeMirror {
@@ -28,11 +29,19 @@
                     return;
                 }
 
-                editor = CodeMirror.fromTextArea(this, {
-                    lineNumbers: true,
-                    mode: {name: "twig", base: "text/html"},
-                    theme: 'neo',
-                });
+                if ($this.data('mode')) {
+                    editor = CodeMirror.fromTextArea(this, {
+                        lineNumbers: true,
+                        mode: $this.data('mode'),
+                        theme: 'neo',
+                    });
+                } else {
+                    editor = CodeMirror.fromTextArea(this, {
+                        lineNumbers: true,
+                        mode: {name: "twig", base: "text/html"},
+                        theme: 'neo',
+                    });
+                }
 
                 $this.data('codeMirrorInstance', editor);
 
