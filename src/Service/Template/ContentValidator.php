@@ -6,8 +6,10 @@
 
 namespace Optime\Email\Bundle\Service\Template;
 
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Throwable;
+use function dd;
 
 /**
  * @author Manuel Aguirre
@@ -26,6 +28,11 @@ class ContentValidator
         } catch (Throwable $exception) {
             if ($exception instanceof RouteNotFoundException
                 || $exception->getPrevious() instanceof RouteNotFoundException) {
+                return null;
+            }
+
+            if ($exception instanceof InvalidParameterException
+                || $exception->getPrevious() instanceof InvalidParameterException) {
                 return null;
             }
 
