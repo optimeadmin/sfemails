@@ -1,5 +1,5 @@
 {
-  "name": "manuelj555/sf-emails",
+  "name": "optimeconsulting/sf-emails",
   "require": {
     "php": "^8.1",
     "symfony/framework-bundle": "^5.4|^6.0",
