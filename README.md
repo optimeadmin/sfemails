@@ -144,3 +144,41 @@ class XXXMailerSender
 }
 
 ```
+
+
+#### App Resolver:
+
+```php
+
+use Optime\Email\Bundle\Service\Email\MailerFactory;
+use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipient;
+use Optime\Email\Bundle\Repository\EmailAppRepository;
+use Optime\Email\Bundle\Service\Email\App\EmailAppResolver;
+
+class XXXMailerSender
+{
+    public function __construct(
+        private MailerFactory $factory,
+        private EmailAppRepository $appRepository,
+    ) {
+    }
+
+    public function send(Event $event, User $user): void
+    {
+        $appResolver = new EmailAppResolver(function() use ($event) {
+            return $this->appRepository->findByEvent($event)
+        });
+    
+        $intent = $this->factory->create('template_code_xxx', $appResolver);
+        
+        $recipient = new EmailRecipient($user->getEmail(), $user->firstName());
+        $variables = [
+            'first_name' => $user->firstName(),
+            'last_name' => $user->lastName(),
+        ];
+
+        $intent->send($variables, $recipient);
+    }
+}
+
+```
