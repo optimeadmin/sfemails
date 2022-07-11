@@ -20,6 +20,7 @@ class TemplateData
         private ?EmailMaster $config,
         private ?EmailTemplate $template,
         private ?EmailApp $app,
+        private bool $appFromResolver = false,
     ) {
     }
 
@@ -41,6 +42,11 @@ class TemplateData
     public function getApp(): ?EmailApp
     {
         return $this->app;
+    }
+
+    public function isAppFromResolver(): bool
+    {
+        return $this->appFromResolver;
     }
 
     public function hasTemplate(): bool

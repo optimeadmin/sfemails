@@ -58,7 +58,7 @@ class MailerFactory
 
             if (!$app) {
                 return $this->createMailerIntent(
-                    new TemplateData($emailCode, $config, null, null)
+                    new TemplateData($emailCode, $config, null, null, true)
                 );
             }
         }

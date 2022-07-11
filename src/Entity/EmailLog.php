@@ -119,7 +119,11 @@ class EmailLog
                 $sessionUserIdentifier,
                 $app
                     ? 'Undefined EmailTemplate for App#' . $app->getId()
-                    : 'Undefined EmailTemplate',
+                    :
+                    ($templateData->isAppFromResolver()
+                        ? 'App Resolving Failed'
+                        : 'Undefined EmailTemplate')
+                ,
             );
         }
 
