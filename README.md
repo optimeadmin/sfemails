@@ -44,3 +44,103 @@ symfony console doctrine:schema:update -f
 ```
 
 <hr>
+
+## Uso
+
+Ejemplo básico:
+
+```php
+
+use Optime\Email\Bundle\Service\Email\MailerFactory;
+use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipient;
+
+class XXXMailerSender
+{
+    public function __construct(
+        private MailerFactory $factory
+    ) {
+    }
+
+    public function send(User $user): void
+    {
+        $intent = $this->factory->create('template_code_xxx');
+        
+        $recipient = new EmailRecipient($user->getEmail(), $user->firstName());
+        $variables = [
+            'first_name' => $user->firstName(),
+            'last_name' => $user->lastName(),
+        ];
+
+        $intent->send($variables, $recipient);
+    }
+}
+
+Custom EmailApp:
+
+```php
+
+use Optime\Email\Bundle\Service\Email\MailerFactory;
+use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipient;
+use Optime\Email\Bundle\Repository\EmailAppRepository;
+
+class XXXMailerSender
+{
+    public function __construct(
+        private MailerFactory $factory,
+        private EmailAppRepository $appRepository,
+    ) {
+    }
+
+    public function send(User $user): void
+    {
+        $app = $this->appRepository->find(3);
+        $intent = $this->factory->create('template_code_xxx', $app);
+        
+        $recipient = new EmailRecipient($user->getEmail(), $user->firstName());
+        $variables = [
+            'first_name' => $user->firstName(),
+            'last_name' => $user->lastName(),
+        ];
+
+        $intent->send($variables, $recipient);
+    }
+}
+
+```
+
+Varios usuarios:
+
+```php
+
+use Optime\Email\Bundle\Service\Email\MailerFactory;
+use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipient;
+use Optime\Email\Bundle\Repository\EmailAppRepository;
+
+class XXXMailerSender
+{
+    public function __construct(
+        private MailerFactory $factory,
+        private EmailAppRepository $appRepository,
+    ) {
+    }
+
+    public function send(User $userA, User $userB, User $userC): void
+    {
+        $app = $this->appRepository->find(3);
+        $intent = $this->factory->create('template_code_xxx', $app);
+        
+        foreach([$userA, $userB, $userC] as $user) {
+                    
+            $recipient = new EmailRecipient($user->getEmail(), $user->firstName());
+            
+            $variables = [
+                'first_name' => $user->firstName(),
+                'last_name' => $user->lastName(),
+            ];
+
+            $intent->send($variables, $recipient);
+        }
+    }
+}
+
+```
