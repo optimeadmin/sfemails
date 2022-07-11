@@ -10,6 +10,7 @@ use Optime\Email\Bundle\Entity\EmailApp;
 use Optime\Email\Bundle\Repository\EmailAppRepository;
 use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
+use Optime\Email\Bundle\Service\Email\App\EmailAppResolverInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -31,13 +32,13 @@ class MailerFactory
 
     public function create(
         string $emailCode,
-        EmailApp $app = null,
+        EmailApp|EmailAppResolverInterface $app = null,
     ): MailerIntent {
         $config = $this->masterRepository->byCode($emailCode);
 
         if (!$config) {
             return $this->createMailerIntent(
-                new TemplateData($emailCode, null, null, $app)
+                new TemplateData($emailCode, null, null, null)
             );
         }
 
@@ -46,6 +47,16 @@ class MailerFactory
             $app = $this->appRepository->findDefaultIfApply();
 
             if (null === $app) {
+                return $this->createMailerIntent(
+                    new TemplateData($emailCode, $config, null, null)
+                );
+            }
+        }
+
+        if ($app instanceof EmailAppResolverInterface) {
+            $app = $app->resolve($config);
+
+            if (!$app) {
                 return $this->createMailerIntent(
                     new TemplateData($emailCode, $config, null, null)
                 );
