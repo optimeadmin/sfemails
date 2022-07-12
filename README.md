@@ -37,6 +37,49 @@ optime_emails:
     prefix:   /{_locale}/admin/emails
 ```
 
+#### Crear entidad EmailApp
+
+La clase EmailApp debe implementar Optime\Email\Bundle\Entity\EmailAppInterface:
+
+```php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Optime\Email\Bundle\Entity\EmailAppInterface;
+
+#[ORM\Entity]
+class EmailApp implements EmailAppInterface
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function __toString(): string
+    {
+        return (string)$this->getId();
+    }
+}
+```
+
+Agregar configuracion de la entidad EmailApp en el `config/packages/doctrine.yaml`:
+
+```yaml
+doctrine:
+    ...
+    orm:
+        ...
+        resolve_target_entities:
+            Optime\Email\Bundle\Entity\EmailAppInterface: App\Entity\EmailApp
+
+```
+
 Correr comando de doctrine:
 
 ```
@@ -81,7 +124,7 @@ Custom EmailApp:
 
 use Optime\Email\Bundle\Service\Email\MailerFactory;
 use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipient;
-use Optime\Email\Bundle\Repository\EmailAppRepository;
+use App\Repository\EmailAppRepository;
 
 class XXXMailerSender
 {
@@ -114,7 +157,7 @@ Varios usuarios:
 
 use Optime\Email\Bundle\Service\Email\MailerFactory;
 use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipient;
-use Optime\Email\Bundle\Repository\EmailAppRepository;
+use App\Repository\EmailAppRepository;
 
 class XXXMailerSender
 {
@@ -145,14 +188,13 @@ class XXXMailerSender
 
 ```
 
-
 #### App Resolver:
 
 ```php
 
 use Optime\Email\Bundle\Service\Email\MailerFactory;
 use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipient;
-use Optime\Email\Bundle\Repository\EmailAppRepository;
+use App\Repository\EmailAppRepository;
 use Optime\Email\Bundle\Service\Email\App\EmailAppResolver;
 
 class XXXMailerSender
