@@ -31,7 +31,7 @@ class EmailLogFilterFormType extends AbstractType
     {
         if (1 < $this->emailAppProvider->count()) {
             $builder->add('app', EntityType::class, [
-                'class' => EmailAppInterface::class,
+                'class' => $this->emailAppProvider->getEmailAppClass(),
                 'required' => false,
                 'placeholder' => '- Select -',
                 'multiple' => true,
