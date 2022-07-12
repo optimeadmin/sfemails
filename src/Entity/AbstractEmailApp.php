@@ -6,16 +6,12 @@
 namespace Optime\Email\Bundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Optime\Email\Bundle\Repository\EmailAppRepository;
 use Optime\Util\Entity\Traits\DatesTrait;
 
-#[ORM\Table('emails_bundle_email_app')]
-#[ORM\Entity(repositoryClass: EmailAppRepository::class)]
+#[ORM\Table("emails_bundle_email_app1")]
 #[ORM\MappedSuperclass]
-#[ORM\InheritanceType("SINGLE_TABLE")]
-#[ORM\DiscriminatorColumn(name: "inheritance_discriminator", type: "string")]
 #[ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")]
-class EmailApp
+abstract class AbstractEmailApp
 {
     use DatesTrait;
 
@@ -31,6 +27,6 @@ class EmailApp
 
     public function __toString(): string
     {
-        return $this->getId();
+        return (string)$this->getId();
     }
 }

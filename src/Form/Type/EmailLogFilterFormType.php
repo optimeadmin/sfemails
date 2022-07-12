@@ -5,10 +5,10 @@
 
 namespace Optime\Email\Bundle\Form\Type;
 
-use Optime\Email\Bundle\Entity\EmailApp;
+use Optime\Email\Bundle\Entity\EmailAppInterface;
 use Optime\Email\Bundle\Entity\EmailLogStatus;
 use Optime\Email\Bundle\Entity\EmailMaster;
-use Optime\Email\Bundle\Repository\EmailAppRepository;
+use Optime\Email\Bundle\Service\Email\App\EmailAppProvider;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -23,15 +23,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class EmailLogFilterFormType extends AbstractType
 {
     public function __construct(
-        private EmailAppRepository $appRepository,
+        private EmailAppProvider $emailAppProvider
     ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (1 < $this->appRepository->count([])) {
+        if (1 < $this->emailAppProvider->count()) {
             $builder->add('app', EntityType::class, [
-                'class' => EmailApp::class,
+                'class' => EmailAppInterface::class,
                 'required' => false,
                 'placeholder' => '- Select -',
                 'multiple' => true,

@@ -10,6 +10,7 @@ use Optime\Email\Bundle\Entity\EmailTemplate;
 use Optime\Email\Bundle\Form\Type\EmailTemplateFormType;
 use Optime\Email\Bundle\Repository\EmailAppRepository;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
+use Optime\Email\Bundle\Service\Email\App\EmailAppProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +38,7 @@ class EmailTemplateController extends AbstractController
     }
 
     #[Route("/create", name: "optime_emails_template_create")]
-    public function create(Request $request, EmailAppRepository $appRepository): Response
+    public function create(Request $request, EmailAppProvider $emailAppProvider): Response
     {
         $template = new EmailTemplate();
         $form = $this->createForm(EmailTemplateFormType::class, $template, [
@@ -59,7 +60,7 @@ class EmailTemplateController extends AbstractController
         return $this->render('@OptimeEmail/email_template/form.html.twig', [
             'form' => $form->createView(),
             'item' => $template,
-            'empty_apps' => $appRepository->isEmpty(),
+            'empty_apps' => 0 === $emailAppProvider->count(),
         ]);
     }
 
@@ -67,7 +68,7 @@ class EmailTemplateController extends AbstractController
     public function edit(
         Request $request,
         EmailTemplate $template,
-        EmailAppRepository $appRepository,
+        EmailAppProvider $emailAppProvider,
     ): Response {
         $form = $this->createForm(EmailTemplateFormType::class, $template);
         $form->handleRequest($request);
@@ -86,7 +87,7 @@ class EmailTemplateController extends AbstractController
         return $this->render('@OptimeEmail/email_template/form.html.twig', [
             'form' => $form->createView(),
             'item' => $template,
-            'empty_apps' => $appRepository->isEmpty(),
+            'empty_apps' => $emailAppProvider->count() === 0,
         ]);
     }
 }

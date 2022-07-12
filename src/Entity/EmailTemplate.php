@@ -32,7 +32,7 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'email_app_id', nullable: false)]
     #[NotBlank]
-    private EmailApp $app;
+    private EmailAppInterface $app;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'email_master_id', nullable: false)]
@@ -62,7 +62,7 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
         return $this->id ?? null;
     }
 
-    public function getApp(): EmailApp
+    public function getApp(): EmailAppInterface
     {
         return $this->app;
     }
@@ -87,7 +87,7 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
         return $this->active;
     }
 
-    public function setApp(EmailApp $app): void
+    public function setApp(EmailAppInterface $app): void
     {
         $this->app = $app;
     }

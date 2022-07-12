@@ -6,10 +6,11 @@
 namespace Optime\Email\Bundle\Service\Email;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Optime\Email\Bundle\Entity\EmailApp;
+use Optime\Email\Bundle\Entity\EmailAppInterface;
 use Optime\Email\Bundle\Repository\EmailAppRepository;
 use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
+use Optime\Email\Bundle\Service\Email\App\EmailAppProvider;
 use Optime\Email\Bundle\Service\Email\App\EmailAppResolverInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -26,13 +27,13 @@ class MailerFactory
         private Mailer $mailer,
         private EmailMasterRepository $masterRepository,
         private EmailTemplateRepository $templateRepository,
-        private EmailAppRepository $appRepository,
+        private EmailAppProvider $emailAppProvider,
     ) {
     }
 
     public function create(
         string $emailCode,
-        EmailApp|EmailAppResolverInterface $app = null,
+        EmailAppInterface|EmailAppResolverInterface $app = null,
     ): MailerIntent {
         $config = $this->masterRepository->byCode($emailCode);
 
@@ -44,7 +45,7 @@ class MailerFactory
 
         if (null === $app) {
             // revisamos a ver si hay una app por efecto
-            $app = $this->appRepository->findDefaultIfApply();
+            $app = $this->emailAppProvider->getDefaultIfApply();
 
             if (null === $app) {
                 return $this->createMailerIntent(

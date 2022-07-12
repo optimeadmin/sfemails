@@ -6,7 +6,7 @@
 namespace Optime\Email\Bundle\Service\Email;
 
 
-use Optime\Email\Bundle\Entity\EmailApp;
+use Optime\Email\Bundle\Entity\EmailAppInterface;
 use Optime\Email\Bundle\Entity\EmailMaster;
 use Optime\Email\Bundle\Entity\EmailTemplate;
 
@@ -19,7 +19,7 @@ class TemplateData
         private string $emailCode,
         private ?EmailMaster $config,
         private ?EmailTemplate $template,
-        private ?EmailApp $app,
+        private ?EmailAppInterface $app,
         private bool $appFromResolver = false,
     ) {
     }
@@ -39,7 +39,7 @@ class TemplateData
         return $this->template;
     }
 
-    public function getApp(): ?EmailApp
+    public function getApp(): ?EmailAppInterface
     {
         return $this->app;
     }

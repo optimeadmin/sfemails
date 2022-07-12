@@ -6,8 +6,8 @@
 namespace Optime\Email\Bundle\Form\Type;
 
 use Optime\Email\Bundle\Constraints\TwigContent;
-use Optime\Email\Bundle\Entity\EmailApp;
 use Optime\Email\Bundle\Entity\EmailTemplate;
+use Optime\Email\Bundle\Service\Email\App\EmailAppProvider;
 use Optime\Util\Form\Type\AutoTransFieldType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,10 +21,14 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class EmailTemplateFormType extends AbstractType
 {
+    public function __construct(private EmailAppProvider $appProvider)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('app', EntityType::class, [
-            'class' => EmailApp::class,
+            'class' => $this->appProvider->getEmailAppClass(),
         ]);
         $builder->add('config');
         $builder->add('subject', AutoTransFieldType::class, [
