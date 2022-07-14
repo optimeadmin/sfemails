@@ -100,8 +100,8 @@
                             {{ item.dates.createdAt|date('Y/m/d H:i:s') }}
                         </span>
                     </td>
-                    <td class="text-start text-xxl-center text-nowrap">
-                        <div class="d-grid d-xxl-flex gap-2">
+                    <td class="text-end text-xxl-center text-nowrap">
+                        <div class="d-grid d-xxl-flex gap-2 justify-content-around">
                             {% if item.status.send %}
                                 <a target="_blank"
                                    href="{{ path('optime_emails_log_show', {uuid: item.uuid}) }}">Show</a>
@@ -110,7 +110,39 @@
                                    onclick="return confirm('Are you sure to resend this email?')">Resend</a>
                             {% endif %}
                             {% if item.template is not empty %}
-                                <a href="{{ path('optime_emails_template_edit', {uuid: item.template.uuid}) }}">Edit Template</a>
+                                <a href="{{ path('optime_emails_template_edit', {uuid: item.template.uuid}) }}">Edit
+                                    Template</a>
+                            {% endif %}
+                            {% if item.variables is not empty %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#modal-vars-{{ item.id }}">
+                                    Show Vars
+                                </a>
+                                <div class="modal fade" id="modal-vars-{{ item.id }}">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Email Variables</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="table table-bordered text-start">
+                                                    {% for name, value in item.variables %}
+                                                        <tr>
+                                                            <td>{{ name }}</td>
+                                                            <td>{{ value }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             {% endif %}
                         </div>
                     </td>

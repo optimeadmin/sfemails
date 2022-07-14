@@ -5,15 +5,13 @@
 
 namespace Optime\Email\Bundle\Service\Email;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Optime\Email\Bundle\Entity\EmailAppInterface;
 use Optime\Email\Bundle\Repository\EmailAppRepository;
 use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
 use Optime\Email\Bundle\Service\Email\App\EmailAppProvider;
 use Optime\Email\Bundle\Service\Email\App\EmailAppResolverInterface;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Optime\Email\Bundle\Service\Template\Variable\TemplateVarsNormalizer;
 
 /**
  * @author Manuel Aguirre
@@ -21,10 +19,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class MailerFactory
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private TranslatorInterface $translator,
-        private ?Security $security,
         private Mailer $mailer,
+        private MailerIntentUtils $mailerIntentUtils,
         private EmailMasterRepository $masterRepository,
         private EmailTemplateRepository $templateRepository,
         private EmailAppProvider $emailAppProvider,
@@ -75,10 +71,8 @@ class MailerFactory
     private function createMailerIntent(TemplateData $templateData): MailerIntent
     {
         return new MailerIntent(
-            $this->entityManager,
-            $this->translator,
-            $this->security,
             $this->mailer,
+            $this->mailerIntentUtils,
             $templateData,
         );
     }
