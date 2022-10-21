@@ -184,6 +184,7 @@ class XXXMailerSender
             $variables = [
                 'first_name' => $user->firstName(),
                 'last_name' => $user->lastName(),
+                '_locale' => $user->getLocale(), // opcional, si se pasa se usa ese valor para los textos, y si no, se usa el locale de la petición actual.
             ];
 
             $intent->send($variables, $recipient);
