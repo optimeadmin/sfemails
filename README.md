@@ -68,6 +68,10 @@ class EmailApp implements EmailAppInterface
 }
 ```
 
+**Tener en cuenta que si se están usando anotaciones para el proyecto, la entidad EmailApp tambien debe usar anotaciones en vez de atributos de php.**
+
+<hr/>
+
 Agregar configuracion de la entidad EmailApp en el `config/packages/doctrine.yaml`:
 
 ```yaml
@@ -117,6 +121,7 @@ class XXXMailerSender
         $intent->send($variables, $recipient);
     }
 }
+```
 
 Custom EmailApp:
 
