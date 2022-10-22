@@ -94,6 +94,8 @@ symfony console doctrine:schema:update -f
 
 Este bundle requiere del bundle de sfutils, el se va a instalar automáticamente. De todas formas será necesario configurar dicho bundle siguiendo su [documentación](https://github.com/optimeadmin/sf_utils/blob/master/README.md).
 
+Tambien será necesario instalar y configurar las extensiones de doctrine, especificamente la de traducciones, para ello seguir la documentación del bundle [StofDoctrineExtensionsBundle](https://symfony.com/bundles/StofDoctrineExtensionsBundle/current/index.html)
+
 <hr>
 
 ## Uso
