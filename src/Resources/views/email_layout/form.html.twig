@@ -6,14 +6,16 @@
     <a href="{{ path('optime_emails_layout_list') }}" class="btn btn-outline-secondary">Back</a>
 {% endblock page_header_actions %}
 
-{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% form_theme form '@OptimeUtil/form.html.twig' 'bootstrap_5_layout.html.twig' %}
 
 {% block content %}
     {% ajax_view %}
         {{ form_start(form, {attr: { novalidate: true }}) }}
         {% embed '@OptimeEmail/_form_layout.html.twig' %}
             {% block form %}
-                {{ form_widget(form) }}
+                {{ form_row(form.description) }}
+                {{ form_label(form.content) }}
+                {{ form_widget(form.content) }}
             {% endblock %}
             {% block buttons %}
                 {{ parent() }}

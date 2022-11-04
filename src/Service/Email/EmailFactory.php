@@ -7,6 +7,7 @@ namespace Optime\Email\Bundle\Service\Email;
 
 use Optime\Email\Bundle\Entity\EmailTemplate;
 use Optime\Email\Bundle\Service\Template\TemplateRenderer;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use function strip_tags;
 
@@ -24,8 +25,10 @@ class EmailFactory
         EmailTemplate $template,
         array $templateData,
     ): Email {
+        $app = $template->getApp();
+
         return (new Email())
-            ->from('from@from.com')
+            ->from(new Address($app->getFromEmail(), $app->getFromName()))
             ->subject($this->renderSubject($template, $templateData))
             ->text($this->renderText($template, $templateData))
             ->html($this->renderHtml($template, $templateData));

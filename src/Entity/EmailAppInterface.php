@@ -13,4 +13,8 @@ namespace Optime\Email\Bundle\Entity;
 interface EmailAppInterface
 {
     public function __toString(): string;
+
+    public function getFromEmail(): string;
+
+    public function getFromName(): string;
 }
