@@ -65,6 +65,16 @@ class EmailApp implements EmailAppInterface
     {
         return (string)$this->getId();
     }
+
+    public function getFromEmail(): string
+    {
+        return 'from@from.com';
+    }
+
+    public function getFromName(): string
+    {
+        return 'From Name';
+    }
 }
 ```
 
