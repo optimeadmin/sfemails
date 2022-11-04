@@ -4,7 +4,7 @@ Bundle para manejo de envio y contenido de correos.
 ## Instalación
 
 ```
-composer require "optimeconsulting/sf-emails" "^2.0@dev"
+composer require "optimeconsulting/sf-emails" "^3.0@dev"
 ```
 
 ## Configuración 
