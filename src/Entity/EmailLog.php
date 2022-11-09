@@ -12,6 +12,7 @@ use Optime\Email\Bundle\Service\Email\TemplateData;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Uid\Uuid;
 use Throwable;
 use Traversable;
 use function get_resource_id;
@@ -26,6 +27,8 @@ use function iterator_to_array;
 class EmailLog
 {
     use ExternalUuidTrait, DatesTrait;
+
+    public const UUID_VARIABLE = '_email_id';
 
     #[ORM\Id]
     #[ORM\Column]
@@ -88,6 +91,9 @@ class EmailLog
 
         if (null !== $info) {
             $this->failureMessage = $info;
+        }
+        if (isset($templateVars[self::UUID_VARIABLE]) && $templateVars[self::UUID_VARIABLE] instanceof Uuid) {
+            $this->uuid = $templateVars[self::UUID_VARIABLE];
         }
     }
 

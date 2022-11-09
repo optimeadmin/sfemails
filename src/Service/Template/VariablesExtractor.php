@@ -5,6 +5,7 @@
 
 namespace Optime\Email\Bundle\Service\Template;
 
+use Optime\Email\Bundle\Entity\EmailLog;
 use Optime\Email\Bundle\Entity\EmailTemplate;
 use Symfony\Component\Yaml\Yaml;
 use function array_filter;
@@ -50,6 +51,8 @@ class VariablesExtractor
         foreach ($vars as $varName) {
             $json[$varName] = '';
         }
+
+        unset($json[EmailLog::UUID_VARIABLE]);
 
         return Yaml::dump($json + $prependVars);
     }

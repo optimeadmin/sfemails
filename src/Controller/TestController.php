@@ -50,7 +50,8 @@ class TestController extends AbstractController
                     'data-mode' => 'yaml',
                     'data-code-mirror' => true,
                 ],
-                'constraints' => new NotBlank(),
+//                'constraints' => new NotBlank(),
+                'required' => false,
             ])
             ->add('recipient', EmailType::class, [
                 'constraints' => new NotBlank(),
@@ -59,7 +60,7 @@ class TestController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            $vars = $this->getVars($form['vars']->getData());
+            $vars = $this->getVars($form['vars']->getData() ?? '{}');
 
             $success = $this->mailerFactory->create(
                 $template->getConfig()->getCode(),
