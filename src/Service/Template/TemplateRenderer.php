@@ -42,23 +42,21 @@ class TemplateRenderer
         return $this->renderContent($layout, $variables);
     }
 
-    public function render(EmailTemplate $template, array $variables = [], bool $withLayout = true): string
+    public function render(EmailTemplate $template, array $variables = []): RenderedTemplate
     {
         $entities = [$template, $template->getLayout()];
         $this->refreshEntityForEmail($variables, $entities);
 
-        $content = $this->renderContent($template, $variables);
-
-        if ($withLayout) {
-            $content = $this->renderLayout(
-                $template->getLayout(),
-                [...$variables, 'content' => $content],
-            );
-        }
+        $subject = $this->renderContent($template->getSubject(), $variables);
+        $templateContent = $this->renderContent($template, $variables);
+        $allContent = $this->renderLayout(
+            $template->getLayout(),
+            [...$variables, 'content' => $templateContent],
+        );
 
         $this->restoreEntityLocale($variables, $entities);
 
-        return $content;
+        return new RenderedTemplate($subject, $allContent, $templateContent);
     }
 
     private function doRender(string|TemplateWrapper $template, array $vars): string

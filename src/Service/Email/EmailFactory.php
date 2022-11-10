@@ -27,28 +27,12 @@ class EmailFactory
     ): Email {
         $app = $template->getApp();
 
+        $templateContent = $this->renderer->render($template, $templateData);
+
         return (new Email())
             ->from(new Address($app->getFromEmail(), $app->getFromName()))
-            ->subject($this->renderSubject($template, $templateData))
-            ->text($this->renderText($template, $templateData))
-            ->html($this->renderHtml($template, $templateData));
-    }
-
-    private function renderHtml(EmailTemplate $template, array $templateContext): string
-    {
-        return $this->renderer->render($template, $templateContext);
-    }
-
-    private function renderText(EmailTemplate $template, array $templateContext): string
-    {
-        return strip_tags($this->renderer->render($template, $templateContext, false));
-    }
-
-    private function renderSubject(EmailTemplate $template, array $templateContext): string
-    {
-        return strip_tags($this->renderer->renderContent(
-            $template->getSubject(),
-            $templateContext
-        ));
+            ->subject($templateContent->getSubject())
+            ->text($templateContent->rawContent())
+            ->html($templateContent->getContent());
     }
 }
