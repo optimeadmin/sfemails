@@ -246,3 +246,7 @@ class XXXMailerSender
 }
 
 ```
+
+#### Variable `_email_id`:
+
+Todos los templates tienen disponible una variable especial llamada `_email_id` la cual contiene el uuid del log del correo para poder con dicho valor generar una url y que los usuarios puedan ver el contenido del correo en el navegador.
