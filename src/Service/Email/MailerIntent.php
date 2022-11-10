@@ -40,7 +40,7 @@ class MailerIntent
         );
 
         try {
-            if (!$this->templateData->hasTemplate()) {
+            if (!$this->isValidIntent()) {
                 return false;
             }
 
@@ -70,5 +70,10 @@ class MailerIntent
     public function getLastLog(): ?EmailLog
     {
         return $this->lastLog;
+    }
+
+    public function isValidIntent(): bool
+    {
+        return $this->templateData->hasTemplate();
     }
 }
