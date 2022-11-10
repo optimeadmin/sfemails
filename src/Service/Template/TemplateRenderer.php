@@ -5,16 +5,13 @@
 
 namespace Optime\Email\Bundle\Service\Template;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Optime\Email\Bundle\Entity\EmailLayout;
 use Optime\Email\Bundle\Entity\EmailTemplate;
-use Optime\Util\Translation\TranslationsAwareInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 use Twig\TemplateWrapper;
-use function is_array;
 
 /**
  * @author Manuel Aguirre
@@ -25,7 +22,7 @@ class TemplateRenderer
         private Environment $twig,
         private ArrayLoader $twigLoader,
         private TranslatorInterface $translator,
-        private EntityManagerInterface $entityManager,
+        private LocalizedTemplateProvider $localizedTemplateProvider,
     ) {
     }
 
@@ -44,17 +41,15 @@ class TemplateRenderer
 
     public function render(EmailTemplate $template, array $variables = []): RenderedTemplate
     {
-        $entities = [$template, $template->getLayout()];
-        $this->refreshEntityForEmail($variables, $entities);
+        $locale = $this->getLocale($variables);
+        $localizedTemplate = $this->localizedTemplateProvider->get($template, $locale);
 
-        $subject = $this->renderContent($template->getSubject(), $variables);
-        $templateContent = $this->renderContent($template, $variables);
-        $allContent = $this->renderLayout(
-            $template->getLayout(),
-            [...$variables, 'content' => $templateContent],
+        $subject = $this->renderContent($localizedTemplate->subject, $variables);
+        $templateContent = $this->renderContent($localizedTemplate->content, $variables);
+        $allContent = $this->renderContent(
+            $localizedTemplate->layout,
+            [...$variables, 'content' => $templateContent]
         );
-
-        $this->restoreEntityLocale($variables, $entities);
 
         return new RenderedTemplate($subject, $allContent, $templateContent);
     }
@@ -85,38 +80,6 @@ class TemplateRenderer
     private function getLocale(array $templateVars): string
     {
         return $templateVars['_locale'] ?? $this->translator->getLocale();
-    }
-
-    private function refreshEntityForEmail(array $templateVars, TranslationsAwareInterface|array $entity): void
-    {
-        $locale = $this->getLocale($templateVars);
-
-        if ($locale !== $this->translator->getLocale()) {
-            if (!is_array($entity)) {
-                $entity = [$entity];
-            }
-
-            foreach ($entity as $item) {
-                $item->setCurrentContentsLocale($locale);
-                $this->entityManager->refresh($item);
-            }
-        }
-    }
-
-    private function restoreEntityLocale(array $templateVars, TranslationsAwareInterface|array $entity): void
-    {
-        $locale = $this->getLocale($templateVars);
-
-        if ($locale !== $this->translator->getLocale()) {
-            if (!is_array($entity)) {
-                $entity = [$entity];
-            }
-
-            foreach ($entity as $item) {
-                $item->setCurrentContentsLocale($this->translator->getLocale());
-                $this->entityManager->refresh($item);
-            }
-        }
     }
 
     private function restoreLocaleIfApply(string $locale): void
