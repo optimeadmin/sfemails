@@ -94,7 +94,9 @@ class EmailLog
         }
         if (isset($templateVars[self::UUID_VARIABLE]) && $templateVars[self::UUID_VARIABLE] instanceof Uuid) {
             $this->uuid = $templateVars[self::UUID_VARIABLE];
+            unset($this->variables[self::UUID_VARIABLE]);
         }
+
     }
 
     public static function create(
