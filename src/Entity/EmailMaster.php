@@ -10,6 +10,7 @@ use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Table('emails_bundle_email_master')]
@@ -26,8 +27,9 @@ class EmailMaster
     #[ORM\GeneratedValue]
     private readonly ?int $id;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(type: 'string', length: 50)]
     #[NotBlank]
+    #[Length(max: 50)]
     private string $code;
 
     #[ORM\Column(type: 'text')]
@@ -42,8 +44,9 @@ class EmailMaster
     #[ORM\Column]
     private bool $editable;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 50)]
     #[NotBlank]
+    #[Length(max: 50)]
     private string $target;
 
     public function getCode(): string

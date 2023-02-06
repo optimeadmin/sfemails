@@ -42,7 +42,7 @@ class EmailLog
     #[ORM\Column]
     private bool $resend = false;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 3)]
     private string $locale;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -54,19 +54,19 @@ class EmailLog
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $variables;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 150)]
     private string $recipient;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 50)]
     private string $emailCode;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 50)]
     private string $recipientIdentifier;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: true, length: 50)]
     private ?string $sessionUserIdentifier;
 
-    #[ORM\Column(type: 'string', enumType: EmailLogStatus::class, nullable: true)]
+    #[ORM\Column(type: 'string', enumType: EmailLogStatus::class, nullable: true, length: 20)]
     private EmailLogStatus $status;
 
     #[ORM\Column(type: 'text', nullable: true)]
