@@ -39,6 +39,10 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
     #[NotBlank]
     private EmailMaster $config;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'email_layout_id', nullable: true)]
+    private ?EmailLayout $layout = null;
+
     #[ORM\Column(type: 'text')]
     #[Translatable]
     #[NotBlank]
@@ -114,11 +118,21 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
 
     public function getLayout(): EmailLayout
     {
-        return $this->getConfig()->getLayout();
+        return $this->getCustomLayout() ?? $this->getConfig()->getLayout();
     }
 
     public function __toString(): string
     {
         return $this->getContent();
+    }
+
+    public function setCustomLayout(?EmailLayout $layout): void
+    {
+        $this->layout = $layout;
+    }
+
+    public function getCustomLayout(): ?EmailLayout
+    {
+        return $this->layout;
     }
 }

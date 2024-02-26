@@ -6,11 +6,13 @@
 namespace Optime\Email\Bundle\Form\Type;
 
 use Optime\Email\Bundle\Constraints\TwigContent;
+use Optime\Email\Bundle\Entity\EmailLayout;
 use Optime\Email\Bundle\Entity\EmailTemplate;
 use Optime\Email\Bundle\Service\Email\App\EmailAppProvider;
 use Optime\Util\Form\Type\AutoTransFieldType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,6 +33,19 @@ class EmailTemplateFormType extends AbstractType
             'class' => $this->appProvider->getEmailAppClass(),
         ]);
         $builder->add('config');
+        $builder->add('useCustomLayout', CheckboxType::class, [
+            'getter' => function (?EmailTemplate $template) {
+                return (bool)$template?->getCustomLayout();
+            },
+            'setter' => fn() => null,
+            'label' => 'Use Custom Layout'
+        ]);
+        $builder->add('customLayout', EntityType::class, [
+            'required' => false,
+            'label' => 'Select Custom Layout',
+            'class' => EmailLayout::class,
+            'choice_label' => 'label',
+        ]);
         $builder->add('subject', AutoTransFieldType::class, [
             'entry_constraints' => [new NotBlank()],
             'auto_save' => true,

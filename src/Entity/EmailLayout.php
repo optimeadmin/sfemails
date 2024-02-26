@@ -15,6 +15,7 @@ use Optime\Util\Translation\TranslationsAwareTrait;
 use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use function sprintf;
 
 #[ORM\Table('emails_bundle_email_layout')]
 #[ORM\Entity(repositoryClass: EmailLayoutRepository::class)]
@@ -66,5 +67,10 @@ class EmailLayout implements TranslationsAwareInterface, Stringable
     public function __toString(): string
     {
         return $this->getContent();
+    }
+
+    public function getLabel(): string
+    {
+        return sprintf('%s (#%s)', $this->getDescription(), $this->getId());
     }
 }

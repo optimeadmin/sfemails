@@ -57,6 +57,12 @@
                     {% endif %}
                 </div>
             </div>
+            {{ form_row(form.config) }}
+            {{ form_row(form.useCustomLayout) }}
+            <div data-custom-layout style="display: none">
+                {{ form_row(form.customLayout) }}
+            </div>
+            {{ form_row(form.active) }}
             {{ form_widget(form) }}
 
             {{ form_contents }}
@@ -85,8 +91,18 @@
     {{ parent() }}
     {{ include('@OptimeEmail/_import_codemirror.html.twig') }}
     <script>
-        $(function () {
-            $('#email-contens-tab [data-bs-toggle]').on('shown.bs.tab', (e) => $.applyCodeMirror());
-        });
+      $(function () {
+        $('#email-contens-tab [data-bs-toggle]').on('shown.bs.tab', (e) => $.applyCodeMirror())
+
+        const $layoutField = $('[data-custom-layout]')
+        $("#{{ form.useCustomLayout.vars.id }}").on('change', function (event) {
+          if (event.target.checked) {
+            $layoutField.show()
+          } else {
+            $layoutField.hide()
+            $layoutField.find('select').val('')
+          }
+        }).trigger('change')
+      })
     </script>
 {% endblock %}
