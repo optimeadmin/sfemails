@@ -233,9 +233,6 @@ class EmailLog
 
     public function canResend(): bool
     {
-        if ($this->getStatus() == EmailLogStatus::send) {
-            return false;
-        }
         if ($this->getStatus() == EmailLogStatus::no_template) {
             return false;
         }
