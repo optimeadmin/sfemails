@@ -9,9 +9,8 @@ use Optime\Email\Bundle\Entity\EmailAppInterface;
 use Optime\Email\Bundle\Repository\EmailAppRepository;
 use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
-use Optime\Email\Bundle\Service\Email\App\EmailAppProvider;
+use Optime\Email\Bundle\Service\Email\App\DefaultEmailAppResolverInterface;
 use Optime\Email\Bundle\Service\Email\App\EmailAppResolverInterface;
-use Optime\Email\Bundle\Service\Template\Variable\TemplateVarsNormalizer;
 
 /**
  * @author Manuel Aguirre
@@ -23,7 +22,7 @@ class MailerFactory
         private MailerIntentUtils $mailerIntentUtils,
         private EmailMasterRepository $masterRepository,
         private EmailTemplateRepository $templateRepository,
-        private EmailAppProvider $emailAppProvider,
+        private DefaultEmailAppResolverInterface $defaultEmailAppResolver,
     ) {
     }
 
@@ -41,7 +40,7 @@ class MailerFactory
 
         if (null === $app) {
             // revisamos a ver si hay una app por efecto
-            $app = $this->emailAppProvider->getDefaultIfApply();
+            $app = $this->defaultEmailAppResolver->getDefaultIfApply($config);
 
             if (null === $app) {
                 return $this->createMailerIntent(

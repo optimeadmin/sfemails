@@ -10,13 +10,14 @@ namespace Optime\Email\Bundle\Service\Email\App;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Optime\Email\Bundle\Entity\EmailAppInterface;
+use Optime\Email\Bundle\Entity\EmailMaster;
 use ReflectionClass;
 use ReflectionException;
 
 /**
  * @author Manuel Aguirre
  */
-class EmailAppProvider
+class EmailAppProvider implements DefaultEmailAppResolverInterface
 {
     public function __construct(private EntityManagerInterface $entityManager)
     {
@@ -27,7 +28,7 @@ class EmailAppProvider
         return $this->getRepository()->count([]);
     }
 
-    public function getDefaultIfApply(): ?EmailAppInterface
+    public function getDefaultIfApply(EmailMaster $config): ?EmailAppInterface
     {
         if (1 !== $this->count()) {
             return null;
