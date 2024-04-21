@@ -1,0 +1,48 @@
+{
+  "name": "sf-emails",
+  "version": "1.0.0",
+  "description": "Bundle para manejo de email templates",
+  "main": "webpack.config.js",
+  "engines": {
+    "node": ">=18 <21"
+  },
+  "directories": {
+    "doc": "doc"
+  },
+  "dependencies": {
+    "@babel/preset-react": "^7.17.12",
+    "@symfony/webpack-encore": "^4.5.0",
+    "@tanstack/react-query": "^5.12.2",
+    "axios": "^1.6.2",
+    "core-js": "^3.22.7",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "webpack-notifier": "^1.15.0"
+  },
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manuelj555/ManuelTranslationBundle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manuelj555/ManuelTranslationBundle/issues"
+  },
+  "homepage": "https://github.com/manuelj555/ManuelTranslationBundle#readme",
+  "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.12.1",
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0"
+  }
+}

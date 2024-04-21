@@ -2,7 +2,7 @@
   "name": "optimeconsulting/sf-emails",
   "require": {
     "php": "^8.1",
-    "symfony/framework-bundle": "^5.4|^6.0",
+    "symfony/framework-bundle": "^6.3|^7.0",
     "optimeconsulting/sf-utils": "^6.0",
     "knplabs/knp-paginator-bundle": "^5.8|^6.0",
     "symfony/string": "*"
