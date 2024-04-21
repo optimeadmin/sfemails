@@ -18,6 +18,7 @@ Encore
     config.useBuiltIns = 'usage';
     config.corejs = 3;
   })
+  .enableTypeScriptLoader()
   .enableReactPreset()
 ;
 

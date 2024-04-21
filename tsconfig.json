@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react"
+  },
+  "include": [
+    "assets/**/*.ts",
+    "assets/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

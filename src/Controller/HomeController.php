@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/home")]
 class HomeController extends AbstractController
 {
-    #[Route("/", name: "optime_emails_home")]
+    #[Route("/{path<.*>?}", name: "optime_emails_home")]
     public function index(): Response
     {
         return $this->render('@OptimeEmail/home.html.twig', [
