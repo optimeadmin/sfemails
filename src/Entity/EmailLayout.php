@@ -7,9 +7,11 @@ namespace Optime\Email\Bundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Translatable;
+use Optime\Email\Bundle\Dto\EmailLayoutDto;
 use Optime\Email\Bundle\Repository\EmailLayoutRepository;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
+use Optime\Util\Translation\Persister\TranslatableContentPersister;
 use Optime\Util\Translation\TranslationsAwareInterface;
 use Optime\Util\Translation\TranslationsAwareTrait;
 use Stringable;
@@ -38,6 +40,15 @@ class EmailLayout implements TranslationsAwareInterface, Stringable
     #[Translatable]
     #[NotBlank]
     private ?string $content = '';
+
+    public static function create(EmailLayoutDto $dto): self
+    {
+        $layout = new self();
+        $layout->setDescription($dto->description);
+        $layout->setContent((string)$dto->content);
+
+        return $layout;
+    }
 
     public function getId(): ?int
     {

@@ -13,5 +13,6 @@
         ></div>
     </div>
 
-    <script src="{{ asset('bundles/optimeemail/build/app.js') }}"></script>
+    {{ include('@OptimeEmail/_import_codemirror_for_react.html.twig') }}
+    <script defer src="{{ asset('bundles/optimeemail/build/app.js') }}"></script>
 {% endblock %}

@@ -1,16 +1,12 @@
 import React from 'react'
 import { PageHeader, PageLayout } from '../../components/ui/layout/PageLayout'
 import { Table } from 'react-bootstrap'
-import { useQuery } from '@tanstack/react-query'
-import { getLayouts } from '../../api/layouts'
 import { LayoutItem } from '../../components/layout/LayoutItem'
 import { Link } from 'react-router-dom'
+import { useGetLayouts } from '../../hooks/layout'
 
 export function LayoutsPage () {
-  const { data: layouts } = useQuery({
-    queryKey: ['layouts'],
-    queryFn: ({ signal }) => getLayouts(signal),
-  })
+  const { layouts } = useGetLayouts()
 
   return (
     <PageLayout>

@@ -21,9 +21,9 @@ export function FormRow ({ name, children, ...props }: FormRowProps) {
     if (!$container.current) return
 
     if (isValid) {
-      $container.current?.querySelector('.form-control')?.classList.remove('is-invalid')
+      $container.current?.querySelector('.form-control, .CodeMirror')?.classList.remove('is-invalid')
     } else {
-      $container.current?.querySelector('.form-control')?.classList.add('is-invalid')
+      $container.current?.querySelector('.form-control, .CodeMirror')?.classList.add('is-invalid')
     }
   }, [$container, isValid])
 

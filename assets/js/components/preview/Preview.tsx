@@ -14,7 +14,7 @@ export function Preview ({ url }: { url: string }) {
   return (
     <Tabs defaultActiveKey={locale}>
       {locales.map(localeTab => (
-        <Tab title={localeTab.toUpperCase()} eventKey={localeTab} mountOnEnter={false}>
+        <Tab key={localeTab} title={localeTab.toUpperCase()} eventKey={localeTab} mountOnEnter={false}>
           <Iframe url={url.replace(search, `/${localeTab}/`)}/>
         </Tab>
       ))}

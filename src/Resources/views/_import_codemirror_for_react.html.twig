@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="{{ asset('bundles/optimeemail/codemirror/codemirror.css') }}">
+{#<link rel="stylesheet" href="{{ asset('bundles/optimeemail/codemirror/neo.css') }}">#}
+{#<link rel="stylesheet" href="{{ asset('bundles/optimeemail/codemirror/neat.css') }}">#}
+<link rel="stylesheet" href="{{ asset('bundles/optimeemail/codemirror/idea.css') }}">
+{# <link rel="stylesheet" href="{{ asset('bundles/optimeemail/codemirror/dracula.css') }}">#}
+<script defer src="{{ asset('bundles/optimeemail/codemirror/codemirror.js') }}"></script>
+<script defer src="{{ asset('bundles/optimeemail/codemirror/twig.js') }}"></script>
+<script defer src="{{ asset('bundles/optimeemail/codemirror/xml.js') }}"></script>
+<script defer src="{{ asset('bundles/optimeemail/codemirror/mode/multiplex.js') }}"></script>
+<style>
+    .CodeMirror {
+        border: 1px solid #dddddd;
+        width: 100%;
+        flex: 1;
+    }
+    .CodeMirror.is-invalid {
+        border-color: #dc3545;
+    }
+</style>

@@ -35,7 +35,7 @@ function PreviewAction ({ uuid }: { uuid: string }) {
       <Button size="sm" variant="outline-secondary" onClick={() => setShowPreview(true)}>Preview</Button>
       <Modal show={showPreview} onHide={() => setShowPreview(false)} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Hi!</Modal.Title>
+          <Modal.Title>Preview</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Preview url={previewUrl}/>

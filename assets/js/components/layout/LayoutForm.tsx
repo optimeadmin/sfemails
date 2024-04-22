@@ -1,25 +1,26 @@
 import React from 'react'
 import { FormErrors, FormLabel, FormRow } from '../ui/form/field'
-import { Button, Col, FormControl, Row } from 'react-bootstrap'
+import { Col, FormControl, Row } from 'react-bootstrap'
 import { FieldWithLocale, TranslatableFields } from '../ui/form/TranslatableFields'
 import { ActionsContainer } from '../ui/form/ActionsContainer'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Layout } from '../../types'
-import { useMutation } from '@tanstack/react-query'
+import { useSaveLayout } from '../../hooks/layout'
+import { ButtonWithLoading } from '../ui/ButtonWithLoading'
+import { ControlledCodeMirror } from '../ui/CodeMirror'
 
 export function LayoutForm () {
+  const navigate = useNavigate()
   const form = useForm<Layout>()
   const { register } = form
 
-  const { mutateAsync, isPending } = useMutation({
-    async mutationFn () {
-      console.log('Mutando')
-    }
-  })
+  const { save, isPending } = useSaveLayout(form.setError)
 
-  function sendForm (data: Layout) {
+  async function sendForm (data: Layout) {
     console.log({ data })
+    await save(data)
+    navigate('/layouts')
   }
 
   return (
@@ -39,10 +40,7 @@ export function LayoutForm () {
                 <Col xs={12} xl={6}>
                   <FormRow name={`content.${locale}`}>
                     <FieldWithLocale locale={locale} className="mb-3">
-                      <FormControl
-                        as="textarea" {...register(`content.${locale}`, { required: true })}
-                        rows={15}
-                      />
+                      <ControlledCodeMirror name={`content.${locale}`} rules={{ required: true }}/>
                     </FieldWithLocale>
                     <FormErrors/>
                   </FormRow>
@@ -55,7 +53,7 @@ export function LayoutForm () {
 
       <ActionsContainer>
         <Link to="/layouts" className="btn btn-outline-secondary">Cancel</Link>
-        <Button type="submit">Create</Button>
+        <ButtonWithLoading type="submit" isLoading={isPending}>Create</ButtonWithLoading>
       </ActionsContainer>
     </form>
   )
