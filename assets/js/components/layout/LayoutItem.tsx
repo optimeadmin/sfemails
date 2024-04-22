@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import { Layout } from '../../types'
+import { ExistentLayout, Layout } from '../../types'
 import { stringAsDate } from '../../utils/dates'
 import { Button, Modal } from 'react-bootstrap'
 import { useUrl } from '../../contexts/UrlContext'
 import { Preview } from '../preview/Preview'
 
-export function LayoutItem ({ layout }: { layout: Layout }) {
+export function LayoutItem ({ layout }: { layout: ExistentLayout }) {
   return (
-    <tr>
+    <tr className='table-row-middle'>
       <td>{layout.id}</td>
       <td>
         {layout.description}

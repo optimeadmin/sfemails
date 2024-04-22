@@ -21,3 +21,7 @@
     font-size: .70rem;
     color: rgba(112, 112, 112, 0.84);
 }
+
+.table-row-middle td, td.table-row-middle {
+    vertical-align: middle;
+}

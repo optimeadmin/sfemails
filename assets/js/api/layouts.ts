@@ -1,8 +1,8 @@
-import { Layout } from '../types'
+import { ExistentLayout } from '../types'
 import { axiosApi } from './axiosInstances'
 
-export async function getLayouts (signal: AbortSignal): Promise<Layout[]> {
+export async function getLayouts (signal: AbortSignal): Promise<ExistentLayout[]> {
   const { data } = await axiosApi.get(`/layouts`, { signal })
 
-  return data as Layout[]
+  return data as ExistentLayout[]
 }

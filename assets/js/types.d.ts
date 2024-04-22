@@ -8,8 +8,14 @@ type TypeWithDates = {
 }
 
 export type Layout = {
-  id: number,
-  uuid?: string,
   label: string,
   description?: string,
+  content?: Record<string, string | null>,
 } & TypeWithDates
+
+export type ExistentLayout = {
+  id: number,
+  uuid: string,
+  label: string,
+  description?: string,
+} & Layout
