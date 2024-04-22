@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Layout } from './pages/Layout'
 import { LayoutsPage } from './pages/layout/LayoutsPage'
 import { CreateLayoutPage } from './pages/layout/CreateLayoutPage'
+import { EditLayoutPage } from './pages/layout/EditLayoutPage'
 
 export function Router ({ basename }: { basename: string }) {
   const router = useMemo(() => createBrowserRouter([
@@ -11,6 +12,7 @@ export function Router ({ basename }: { basename: string }) {
         { path: '/', element: <h3>Soy la ruta</h3> },
         { path: '/layouts', element: <LayoutsPage/> },
         { path: '/layouts/create', element: <CreateLayoutPage/> },
+        { path: '/layouts/edit/:uuid', element: <EditLayoutPage/> },
         { path: '/templates', element: <h3>Soy la ruta (templates)</h3> },
         { path: '/logs', element: <h3>Soy la ruta (logs)</h3> },
       ]

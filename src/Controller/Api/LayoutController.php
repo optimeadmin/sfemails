@@ -13,6 +13,7 @@ use Optime\Email\Bundle\Entity\EmailLayout;
 use Optime\Email\Bundle\Repository\EmailLayoutRepository;
 use Optime\Email\Bundle\Service\Email\Layout\DefaultLayoutCreator;
 use Optime\Util\Translation\Persister\TranslatableContentPersister;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -40,6 +41,12 @@ class LayoutController extends AbstractController
         $items = $this->repository->findAll();
 
         return $this->json(array_map(EmailLayoutDto::fromEntity(...), $items));
+    }
+
+    #[Route('/{uuid}', methods: 'get')]
+    public function getOneByUuid(#[MapEntity] EmailLayout $layout): JsonResponse
+    {
+        return $this->json(EmailLayoutDto::fromEntity($layout));
     }
 
     #[Route('', methods: 'post')]

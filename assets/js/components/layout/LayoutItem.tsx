@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
-import { ExistentLayout, Layout } from '../../types'
+import { ExistentLayout } from '../../types'
 import { stringAsDate } from '../../utils/dates'
 import { Button, Modal } from 'react-bootstrap'
 import { useUrl } from '../../contexts/UrlContext'
 import { Preview } from '../preview/Preview'
+import { Link } from 'react-router-dom'
 
 export function LayoutItem ({ layout }: { layout: ExistentLayout }) {
   return (
-    <tr className='table-row-middle'>
+    <tr className="table-row-middle">
       <td>{layout.id}</td>
       <td>
         {layout.description}
@@ -17,7 +18,7 @@ export function LayoutItem ({ layout }: { layout: ExistentLayout }) {
       <td>{stringAsDate(layout.dates.updatedAt)}</td>
       <td>
         <div className="d-flex gap-1">
-          <Button size="sm" variant="outline-primary">Edit</Button>
+          <Link to={`/layouts/edit/${layout.uuid}`} className="btn btn-sm btn-outline-primary">Edit</Link>
           <PreviewAction uuid={layout.uuid as string}/>
         </div>
       </td>

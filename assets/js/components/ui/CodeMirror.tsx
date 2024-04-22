@@ -14,9 +14,12 @@ type CodeMirrorProps = {
 export function CodeMirror ({ onChange, value }: CodeMirrorProps) {
   const $input = useRef<HTMLTextAreaElement | null>(null)
   const onChangeRef = useRef<OnChangeType | undefined>(undefined)
+  const defaultValueRef = useRef<any>(value)
+  const editor = useRef<any>(null)
 
   useInsertionEffect(() => {
     onChangeRef.current = onChange
+    defaultValueRef.current = value
   })
 
   useEffect(() => {
@@ -28,17 +31,23 @@ export function CodeMirror ({ onChange, value }: CodeMirrorProps) {
       theme: 'idea',
     })
 
-    editor.on('change', () => {
+    editor.on('change', (obj: any, { origin }: { origin: string }) => {
+      if (origin === 'setValue') return // prevent infinite rerender
+
       onChangeRef.current?.(editor.getValue())
     })
+
+    if (defaultValueRef.current) {
+      editor.setValue(defaultValueRef.current)
+    }
 
     return () => {
       editor.toTextArea()
     }
-  }, [$input, onChangeRef])
+  }, [$input, onChangeRef, defaultValueRef])
 
   return (
-    <textarea ref={$input} defaultValue={value}></textarea>
+    <textarea ref={$input}></textarea>
   )
 }
 

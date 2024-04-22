@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Layout } from '../types'
-import { getLayouts, saveLayout } from '../api/layouts'
+import { getLayout, getLayouts, saveLayout } from '../api/layouts'
 import { addServerError } from '../utils/errors'
 import { AxiosError } from 'axios'
 import { FieldValues, UseFormSetError } from 'react-hook-form'
@@ -34,5 +34,17 @@ export function useGetLayouts () {
   return {
     isLoading,
     layouts,
+  }
+}
+
+export function useGetLayoutByUuid (uuid: string) {
+  const { isLoading, data: layout } = useQuery({
+    queryKey: ['layouts', 'item', uuid],
+    queryFn: ({ signal }) => getLayout(uuid, signal),
+  })
+
+  return {
+    isLoading,
+    layout,
   }
 }

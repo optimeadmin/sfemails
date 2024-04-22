@@ -5,20 +5,19 @@ import { FieldWithLocale, TranslatableFields } from '../ui/form/TranslatableFiel
 import { ActionsContainer } from '../ui/form/ActionsContainer'
 import { Link, useNavigate } from 'react-router-dom'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Layout } from '../../types'
+import { ExistentLayout, Layout } from '../../types'
 import { useSaveLayout } from '../../hooks/layout'
 import { ButtonWithLoading } from '../ui/ButtonWithLoading'
 import { ControlledCodeMirror } from '../ui/CodeMirror'
 
-export function LayoutForm () {
+export function LayoutForm ({ layout }: { layout?: ExistentLayout }) {
   const navigate = useNavigate()
-  const form = useForm<Layout>()
+  const form = useForm<Layout>({ values: layout })
   const { register } = form
 
   const { save, isPending } = useSaveLayout(form.setError)
 
   async function sendForm (data: Layout) {
-    console.log({ data })
     await save(data)
     navigate('/layouts')
   }
