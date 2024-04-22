@@ -10,7 +10,7 @@ Encore
   .setOutputPath('./src/Resources/public/build/')
   .setPublicPath('./')
   .setManifestKeyPrefix('bundles/optimeemail')
-  .addEntry('app', './assets/js/app.js')
+  .addEntry('app', './assets/js/app.tsx')
   .disableSingleRuntimeChunk()
   .enableBuildNotifications()
   .enableSourceMaps(!Encore.isProduction())
