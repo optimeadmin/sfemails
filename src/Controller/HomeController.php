@@ -6,6 +6,7 @@
 namespace Optime\Email\Bundle\Controller;
 
 use BadMethodCallException;
+use Optime\Util\Translation\LocalesProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,10 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route("/home/{path<.*>?}", name: "optime_emails_home")]
-    public function index(): Response
+    public function index(LocalesProviderInterface $localesProvider): Response
     {
         return $this->render('@OptimeEmail/home.html.twig', [
             'items' => [],
+            'locales' => $localesProvider->getLocales(),
         ]);
     }
 

@@ -37,7 +37,7 @@ class EmailLayout implements TranslationsAwareInterface, Stringable
     #[ORM\Column(type: 'text')]
     #[Translatable]
     #[NotBlank]
-    private string $content;
+    private ?string $content = '';
 
     public function getId(): ?int
     {
@@ -49,7 +49,7 @@ class EmailLayout implements TranslationsAwareInterface, Stringable
         return $this->description;
     }
 
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -59,14 +59,14 @@ class EmailLayout implements TranslationsAwareInterface, Stringable
         $this->description = $description;
     }
 
-    public function setContent(string $content): void
+    public function setContent(?string $content): void
     {
         $this->content = $content;
     }
 
     public function __toString(): string
     {
-        return $this->getContent();
+        return (string)$this->getContent();
     }
 
     public function getLabel(): string

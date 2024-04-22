@@ -6,6 +6,8 @@
 {% block body_content %}
     <div class="container-fluid mt-4 px-4">
         <div id="emails_config_root"
+             data-locale="{{ app.locale }}"
+             data-locales="{{ locales|json_encode }}"
              data-basename="{{ path('optime_emails_home') }}"
              data-api-url="{{ path('optime_emails_api_url') }}"
         ></div>

@@ -3,8 +3,7 @@ import { PageHeader, PageLayout } from '../components/ui/layout/PageLayout'
 import { Button, Table } from 'react-bootstrap'
 import { useQuery } from '@tanstack/react-query'
 import { getLayouts } from '../api/layouts'
-import { stringAsDate } from '../utils/dates'
-import { Layout } from '../types'
+import { LayoutItem } from '../components/layout/LayoutItem'
 
 export function LayoutsPage () {
   const { data: layouts } = useQuery({
@@ -33,25 +32,5 @@ export function LayoutsPage () {
         </tbody>
       </Table>
     </PageLayout>
-  )
-}
-
-function LayoutItem ({ layout }: { layout: Layout }) {
-  return (
-    <tr>
-      <td>{layout.id}</td>
-      <td>
-        {layout.description}
-        <small className="d-block uuid-small">{layout.uuid}</small>
-      </td>
-      <td>{stringAsDate(layout.dates.createdAt)}</td>
-      <td>{stringAsDate(layout.dates.updatedAt)}</td>
-      <td>
-        <div className="d-flex gap-1">
-          <Button size="sm" variant="outline-primary">Edit</Button>
-          <Button size="sm" variant="outline-secondary">Preview</Button>
-        </div>
-      </td>
-    </tr>
   )
 }

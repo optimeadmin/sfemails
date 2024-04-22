@@ -1,6 +1,9 @@
 import React, { createContext, PropsWithChildren, useContext } from 'react'
 
-type LocaleContextType = {}
+type LocaleContextType = {
+  locale: string,
+  locales: string[],
+}
 
 const LocaleContext = createContext<LocaleContextType | null>(null)
 

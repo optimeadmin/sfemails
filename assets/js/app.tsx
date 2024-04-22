@@ -4,10 +4,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Router } from './Router'
 import { LocaleProvider } from './contexts/LocaleContext'
 import { axiosApi } from './api/axiosInstances'
+import { UrlProvider } from './contexts/UrlContext'
 
 const $container = document.getElementById('emails_config_root') as HTMLElement
 const basename = $container.dataset.basename ?? '/'
-export const endpointApi = $container.dataset.apiUrl ?? '/'
+const endpointApi = $container.dataset.apiUrl ?? '/'
+const locale = $container.dataset.locale ?? 'en'
+const locales = JSON.parse($container.dataset.locales ?? '[]')
+
 const root = createRoot($container)
 
 if (endpointApi.length > 1) {
@@ -25,9 +29,11 @@ const queryClient = new QueryClient({
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <LocaleProvider locale={'en'} locales={['en', 'es']}>
-        <Router basename={basename}/>
-      </LocaleProvider>
+      <UrlProvider basename={basename} apiUrl={endpointApi}>
+        <LocaleProvider locale={locale} locales={locales}>
+          <Router basename={basename}/>
+        </LocaleProvider>
+      </UrlProvider>
     </QueryClientProvider>
   </React.StrictMode>
 )
