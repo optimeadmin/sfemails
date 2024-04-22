@@ -11,7 +11,6 @@ use Optime\Email\Bundle\Dto\EmailLayoutDto;
 use Optime\Email\Bundle\Repository\EmailLayoutRepository;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
-use Optime\Util\Translation\Persister\TranslatableContentPersister;
 use Optime\Util\Translation\TranslationsAwareInterface;
 use Optime\Util\Translation\TranslationsAwareTrait;
 use Stringable;
@@ -83,5 +82,11 @@ class EmailLayout implements TranslationsAwareInterface, Stringable
     public function getLabel(): string
     {
         return sprintf('%s (#%s)', $this->getDescription(), $this->getId());
+    }
+
+    public function update(EmailLayoutDto $dto): void
+    {
+        $dto->description && $this->setDescription($dto->description);
+        $dto->content && $this->setContent((string)$dto->content);
     }
 }

@@ -12,7 +12,7 @@ use Optime\Email\Bundle\Dto\EmailLayoutDto;
 use Optime\Email\Bundle\Entity\EmailLayout;
 use Optime\Email\Bundle\Repository\EmailLayoutRepository;
 use Optime\Email\Bundle\Service\Email\Layout\DefaultLayoutCreator;
-use Optime\Util\Translation\Persister\TranslatableContentPersister;
+use Optime\Util\Translation\Translation;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,7 +29,7 @@ class LayoutController extends AbstractController
         private readonly EmailLayoutRepository $repository,
         private readonly DefaultLayoutCreator $defaultLayoutCreator,
         private readonly EntityManagerInterface $entityManager,
-        private readonly TranslatableContentPersister $contentPersister,
+        private readonly Translation $translation,
     ) {
     }
 
@@ -55,7 +55,22 @@ class LayoutController extends AbstractController
         $layout = EmailLayout::create($dto);
         $this->entityManager->persist($layout);
 
-        $this->contentPersister->prepare($layout)->persist('content', $dto->content);
+        $this->translation->preparePersist($layout)->persist('content', $dto->content);
+        $this->entityManager->flush();
+
+        return $this->json(EmailLayoutDto::fromEntity($layout));
+    }
+
+    #[Route('/{uuid}', methods: 'patch')]
+    public function update(
+        #[MapEntity] EmailLayout $layout,
+        #[MapRequestPayload] EmailLayoutDto $dto
+    ): JsonResponse {
+        $this->translation->refreshInDefaultLocale($layout);
+        $layout->update($dto);
+        $this->entityManager->persist($layout);
+
+        $this->translation->preparePersist($layout)->persist('content', $dto->content);
         $this->entityManager->flush();
 
         return $this->json(EmailLayoutDto::fromEntity($layout));
