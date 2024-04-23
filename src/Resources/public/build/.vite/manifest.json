@@ -1,11 +1,11 @@
 {
   "assets/js/app.tsx": {
-    "file": "app1.js",
-    "name": "app1",
+    "file": "app.js",
+    "name": "app",
     "src": "assets/js/app.tsx",
     "isEntry": true,
     "css": [
-      "app1.css"
+      "app.css"
     ]
   }
 }

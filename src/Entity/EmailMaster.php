@@ -53,12 +53,7 @@ class EmailMaster
     public static function create(ConfigDto $dto, EmailLayout $layout): self
     {
         $entity = new self();
-
-        $entity->setCode($dto->code);
-        $entity->setDescription($dto->description);
-        $entity->setTarget($dto->target);
-        $entity->setEditable($dto->editable);
-        $entity->setLayout($layout);
+        $entity->update($dto, $layout);
 
         return $entity;
     }
@@ -116,5 +111,14 @@ class EmailMaster
     public function __toString(): string
     {
         return $this->getCode();
+    }
+
+    public function update(ConfigDto $dto, ?EmailLayout $layout = null): void
+    {
+        $this->setCode($dto->code);
+        $this->setDescription($dto->description);
+        $this->setTarget($dto->target);
+        $this->setEditable($dto->editable);
+        $layout && $this->setLayout($layout);
     }
 }

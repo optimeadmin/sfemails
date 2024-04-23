@@ -4,7 +4,7 @@ import { getLayout, saveLayout } from '../api/layouts'
 import { addServerError } from '../utils/errors'
 import { AxiosError } from 'axios'
 import { useForm, UseFormSetError } from 'react-hook-form'
-import { getConfigs, saveConfig } from '../api/configs.ts'
+import { getConfig, getConfigs, saveConfig } from '../api/configs.ts'
 import { useGetLayouts } from './layout.ts'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
@@ -42,15 +42,15 @@ export function useGetConfigs () {
   }
 }
 
-export function useGetLayoutByUuid (uuid: string) {
-  const { isLoading, data: layout } = useQuery({
-    queryKey: ['layouts', 'item', uuid],
-    queryFn: ({ signal }) => getLayout(uuid, signal),
+export function useGetConfigByUuid (uuid: string) {
+  const { isLoading, data: config } = useQuery({
+    queryKey: ['configs', 'item', uuid],
+    queryFn: ({ signal }) => getConfig(uuid, signal),
   })
 
   return {
     isLoading,
-    layout,
+    config,
   }
 }
 

@@ -8,6 +8,7 @@ import { ExistentConfig } from '../../types'
 import { ButtonWithLoading } from '../ui/ButtonWithLoading'
 import { PreviewLayoutAction } from '../layout/PreviewLayoutAction.tsx'
 import { useConfigForm } from '../../hooks/config.ts'
+import { CreateLayoutInConfig } from './CreateLayoutInConfig.tsx'
 
 export function ConfigForm ({ config }: { config?: ExistentConfig }) {
   const { isLoadingLayouts, isPending, layouts, form, sendForm } = useConfigForm(config)
@@ -40,6 +41,7 @@ export function ConfigForm ({ config }: { config?: ExistentConfig }) {
                   ))}
                 </FormSelect>
                 <LayoutPreview/>
+                <CreateLayoutInConfig />
               </div>
               <FormErrors/>
             </FormRow>
@@ -65,7 +67,7 @@ export function ConfigForm ({ config }: { config?: ExistentConfig }) {
       </FormProvider>
 
       <ActionsContainer>
-        <Link to="/" className="btn btn-outline-secondary">Cancel</Link>
+        <Link to="/" className="btn btn-outline-secondary" data-bs-hide>Cancel</Link>
         <ButtonWithLoading type="submit" isLoading={isPending}>{isEdit ? 'Save' : 'Create'}</ButtonWithLoading>
       </ActionsContainer>
     </form>

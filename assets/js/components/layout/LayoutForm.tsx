@@ -11,7 +11,13 @@ import { ButtonWithLoading } from '../ui/ButtonWithLoading'
 import { ControlledCodeMirror } from '../ui/CodeMirror'
 import { toast } from 'react-toastify'
 
-export function LayoutForm ({ layout }: { layout?: ExistentLayout }) {
+type LayoutFormProps = {
+  layout?: ExistentLayout
+  fromModal?: boolean,
+  onSuccess?: (data: Layout) => void | Promise<void>,
+}
+
+export function LayoutForm ({ layout, fromModal = false, onSuccess }: LayoutFormProps) {
   const navigate = useNavigate()
   const form = useForm<Layout>({ values: layout })
   const { register } = form
@@ -22,7 +28,12 @@ export function LayoutForm ({ layout }: { layout?: ExistentLayout }) {
   async function sendForm (data: Layout) {
     try {
       await save(data)
-      navigate('/layouts')
+      if (!fromModal) {
+        navigate('/layouts')
+      }
+
+      onSuccess?.(data)
+
       toast.success(isEdit ? 'Layout saved successfully!' : 'Layout created successfully!')
     } catch (e) {
       toast.error('Ups, an error has occurred!')
@@ -58,7 +69,7 @@ export function LayoutForm ({ layout }: { layout?: ExistentLayout }) {
       </FormProvider>
 
       <ActionsContainer>
-        <Link to="/layouts" className="btn btn-outline-secondary">Cancel</Link>
+        <Link to="/layouts" className="btn btn-outline-secondary" data-bs-hide>Cancel</Link>
         <ButtonWithLoading type="submit" isLoading={isPending}>{isEdit ? 'Save' : 'Create'}</ButtonWithLoading>
       </ActionsContainer>
     </form>

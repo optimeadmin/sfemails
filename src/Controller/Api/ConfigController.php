@@ -9,14 +9,11 @@ namespace Optime\Email\Bundle\Controller\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Optime\Email\Bundle\Dto\ConfigDto;
-use Optime\Email\Bundle\Dto\EmailLayoutDto;
-use Optime\Email\Bundle\Entity\EmailLayout;
 use Optime\Email\Bundle\Entity\EmailMaster;
 use Optime\Email\Bundle\Exception\LayoutNotFoundException;
 use Optime\Email\Bundle\Repository\EmailLayoutRepository;
 use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Optime\Util\Exception\ValidationException;
-use Optime\Util\Translation\Translation;
 use Optime\Util\Validator\DomainValidator;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +31,6 @@ class ConfigController extends AbstractController
         private readonly EmailMasterRepository $repository,
         private readonly EmailLayoutRepository $layoutRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly Translation $translation,
         private readonly DomainValidator $validator,
     ) {
     }
@@ -48,9 +44,9 @@ class ConfigController extends AbstractController
     }
 
     #[Route('/{uuid}', methods: 'get')]
-    public function getOneByUuid(#[MapEntity] EmailLayout $layout): JsonResponse
+    public function getOneByUuid(#[MapEntity] EmailMaster $config): JsonResponse
     {
-        return $this->json(EmailLayoutDto::fromEntity($layout));
+        return $this->json(ConfigDto::fromEntity($config));
     }
 
     #[Route('', methods: 'post')]
@@ -72,16 +68,20 @@ class ConfigController extends AbstractController
 
     #[Route('/{uuid}', methods: 'patch')]
     public function update(
-        #[MapEntity] EmailLayout $layout,
-        #[MapRequestPayload] EmailLayoutDto $dto
+        #[MapEntity] EmailMaster $config,
+        #[MapRequestPayload] ConfigDto $dto
     ): JsonResponse {
-        $this->translation->refreshInDefaultLocale($layout);
-        $layout->update($dto);
-        $this->entityManager->persist($layout);
+        try {
+            $config->update($dto, $this->layoutRepository->byUuid($dto->layoutUuid));
+            $this->validator->handle($config);
+            $this->entityManager->persist($config);
+            $this->entityManager->flush();
+        } catch (LayoutNotFoundException) {
+            return $this->json(ValidationException::create('Invalid Layout', 'layoutUuid'), 422);
+        } catch (ValidationException $e) {
+            return $this->json($e->getErrors(), 422);
+        }
 
-        $this->translation->preparePersist($layout)->persist('content', $dto->content);
-        $this->entityManager->flush();
-
-        return $this->json(EmailLayoutDto::fromEntity($layout));
+        return $this->json(ConfigDto::fromEntity($config));
     }
 }

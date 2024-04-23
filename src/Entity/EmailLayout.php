@@ -43,8 +43,7 @@ class EmailLayout implements TranslationsAwareInterface, Stringable
     public static function create(EmailLayoutDto $dto): self
     {
         $layout = new self();
-        $layout->setDescription($dto->description);
-        $layout->setContent((string)$dto->content);
+        $layout->update($dto);
 
         return $layout;
     }

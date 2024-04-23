@@ -6,6 +6,7 @@ import { CreateLayoutPage } from './pages/layout/CreateLayoutPage'
 import { EditLayoutPage } from './pages/layout/EditLayoutPage'
 import { ConfigsPage } from './pages/config/ConfigsPage.tsx'
 import { CreateConfigPage } from './pages/config/CreateConfigPage.tsx'
+import { EditConfigPage } from './pages/config/EditConfigPage.tsx'
 
 export function Router ({ basename }: { basename: string }) {
   const router = useMemo(() => createBrowserRouter([
@@ -15,7 +16,7 @@ export function Router ({ basename }: { basename: string }) {
           path: '/', children: [
             { index: true, element: <ConfigsPage/> },
             { path: '/config/create', element: <CreateConfigPage/> },
-            { path: '/config/edit/:uuid', element: <EditLayoutPage/> },
+            { path: '/config/edit/:uuid', element: <EditConfigPage/> },
           ]
         },
         {

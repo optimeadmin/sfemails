@@ -1,4 +1,4 @@
-import { Config, ExistentConfig, ExistentLayout } from '../types'
+import { Config, ExistentConfig } from '../types'
 import { axiosApi } from './axiosInstances'
 
 export async function getConfigs (signal: AbortSignal): Promise<ExistentConfig[]> {
@@ -7,10 +7,10 @@ export async function getConfigs (signal: AbortSignal): Promise<ExistentConfig[]
   return data as ExistentConfig[]
 }
 
-export async function getLayout (uuid: string, signal: AbortSignal): Promise<ExistentLayout> {
-  const { data } = await axiosApi.get(`/layouts/${uuid}`, { signal })
+export async function getConfig (uuid: string, signal: AbortSignal): Promise<ExistentConfig> {
+  const { data } = await axiosApi.get(`/configs/${uuid}`, { signal })
 
-  return data as ExistentLayout
+  return data as ExistentConfig
 }
 
 export async function saveConfig (config: Config | ExistentConfig): Promise<void> {
