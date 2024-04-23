@@ -8,8 +8,6 @@ import { ConfigItem } from '../../components/config/ConfigItem.tsx'
 export function ConfigsPage () {
   const { configs } = useGetConfigs()
 
-  console.log(configs?.[0])
-
   return (
     <PageLayout>
       <PageHeader title={'Emails Configuration'} actions={
@@ -19,10 +17,11 @@ export function ConfigsPage () {
       <Table>
         <thead>
           <tr>
-            <th>Code</th>
             <th>Description</th>
-            <th style={{ width: 150 }}>Created At</th>
-            <th style={{ width: 150 }}>Updated At</th>
+            <th>Target</th>
+            <th className='text-center'>Editable</th>
+            <th className='text-center' style={{ width: 150 }}>Created At</th>
+            <th className='text-center' style={{ width: 150 }}>Updated At</th>
             <th style={{ width: 200 }}>Actions</th>
           </tr>
         </thead>

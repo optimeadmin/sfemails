@@ -14,7 +14,7 @@ export async function getLayout (uuid: string, signal: AbortSignal): Promise<Exi
 }
 
 export async function saveLayout (layout: Layout | ExistentLayout): Promise<void> {
-  if ('id' in layout && layout.id) {
+  if ('uuid' in layout && layout.uuid) {
     await axiosApi.patch(`/layouts/${layout.uuid}`, layout)
   } else {
     await axiosApi.post(`/layouts`, layout)

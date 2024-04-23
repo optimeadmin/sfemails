@@ -5,7 +5,7 @@ import { addServerError } from '../utils/errors'
 import { AxiosError } from 'axios'
 import { FieldValues, UseFormSetError } from 'react-hook-form'
 
-export function useSaveLayout (addError?: UseFormSetError<FieldValues>) {
+export function useSaveLayout (addError?: UseFormSetError<FieldValues | Layout>) {
   const queryClient = useQueryClient()
   const { mutateAsync, isPending } = useMutation({
     async mutationFn (layout: Layout) {
@@ -29,6 +29,7 @@ export function useGetLayouts () {
   const { isLoading, data: layouts } = useQuery({
     queryKey: ['layouts'],
     queryFn: ({ signal }) => getLayouts(signal),
+    staleTime: 1000 * 60 * 5,
   })
 
   return {

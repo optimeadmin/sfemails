@@ -6,7 +6,7 @@ type ViolationItem = {
   title: string,
 }
 
-export function addServerError (axiosError: AxiosError, addError?: UseFormSetError<FieldValues>) {
+export function addServerError (axiosError: AxiosError, addError?: UseFormSetError<any>) {
   const { status, data } = axiosError.response as AxiosResponse
 
   if (!addError || status !== 422 || !('violations' in data)) return

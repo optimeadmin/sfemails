@@ -1,4 +1,4 @@
-import { ExistentConfig, ExistentLayout, Layout } from '../types'
+import { Config, ExistentConfig, ExistentLayout } from '../types'
 import { axiosApi } from './axiosInstances'
 
 export async function getConfigs (signal: AbortSignal): Promise<ExistentConfig[]> {
@@ -13,10 +13,10 @@ export async function getLayout (uuid: string, signal: AbortSignal): Promise<Exi
   return data as ExistentLayout
 }
 
-export async function saveLayout (layout: Layout | ExistentLayout): Promise<void> {
-  if ('id' in layout && layout.id) {
-    await axiosApi.patch(`/layouts/${layout.uuid}`, layout)
+export async function saveConfig (config: Config | ExistentConfig): Promise<void> {
+  if ('uuid' in config && config.uuid) {
+    await axiosApi.patch(`/configs/${config.uuid}`, config)
   } else {
-    await axiosApi.post(`/layouts`, layout)
+    await axiosApi.post(`/configs`, config)
   }
 }

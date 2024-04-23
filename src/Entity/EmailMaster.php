@@ -6,6 +6,7 @@
 namespace Optime\Email\Bundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Optime\Email\Bundle\Dto\ConfigDto;
 use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 #[ORM\Entity(repositoryClass: EmailMasterRepository::class)]
 #[ORM\UniqueConstraint('email_master_code', ['code'])]
 #[ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")]
-#[UniqueEntity("code")]
+#[UniqueEntity("code", message: "This email code already exists")]
 class EmailMaster
 {
     use ExternalUuidTrait, DatesTrait;
@@ -48,6 +49,19 @@ class EmailMaster
     #[NotBlank]
     #[Length(max: 50)]
     private string $target;
+
+    public static function create(ConfigDto $dto, EmailLayout $layout): self
+    {
+        $entity = new self();
+
+        $entity->setCode($dto->code);
+        $entity->setDescription($dto->description);
+        $entity->setTarget($dto->target);
+        $entity->setEditable($dto->editable);
+        $entity->setLayout($layout);
+
+        return $entity;
+    }
 
     public function getCode(): string
     {

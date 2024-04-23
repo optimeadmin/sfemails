@@ -15,6 +15,7 @@ export function LayoutForm ({ layout }: { layout?: ExistentLayout }) {
   const navigate = useNavigate()
   const form = useForm<Layout>({ values: layout })
   const { register } = form
+  const isEdit = !!layout
 
   const { save, isPending } = useSaveLayout(form.setError)
 
@@ -22,7 +23,7 @@ export function LayoutForm ({ layout }: { layout?: ExistentLayout }) {
     try {
       await save(data)
       navigate('/layouts')
-      toast.success(!!layout ? 'Layout saved successfully!' : 'Layout created successfully!')
+      toast.success(isEdit ? 'Layout saved successfully!' : 'Layout created successfully!')
     } catch (e) {
       toast.error('Ups, an error has occurred!')
     }
@@ -58,7 +59,7 @@ export function LayoutForm ({ layout }: { layout?: ExistentLayout }) {
 
       <ActionsContainer>
         <Link to="/layouts" className="btn btn-outline-secondary">Cancel</Link>
-        <ButtonWithLoading type="submit" isLoading={isPending}>Create</ButtonWithLoading>
+        <ButtonWithLoading type="submit" isLoading={isPending}>{isEdit ? 'Save' : 'Create'}</ButtonWithLoading>
       </ActionsContainer>
     </form>
   )

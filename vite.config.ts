@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     manifest: true,
     rollupOptions: {
-      input: 'assets/js/app.tsx',
+      input: { app: 'assets/js/app.tsx' },
       output: {
         dir: './src/Resources/public/build/',
         entryFileNames: `[name].js`,
