@@ -46,12 +46,12 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
     #[ORM\Column(type: 'text')]
     #[Translatable]
     #[NotBlank]
-    private string $subject;
+    private ?string $subject = null;
 
     #[ORM\Column(type: 'text')]
     #[Translatable]
     #[NotBlank]
-    private string $content;
+    private ?string $content = null;
 
     #[ORM\Column]
     private bool $active;
@@ -76,12 +76,12 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
         return $this->config;
     }
 
-    public function getSubject(): string
+    public function getSubject(): ?string
     {
         return $this->subject;
     }
 
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -101,12 +101,12 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
         $this->config = $config;
     }
 
-    public function setSubject(string $subject): void
+    public function setSubject(?string $subject): void
     {
         $this->subject = $subject;
     }
 
-    public function setContent(string $content): void
+    public function setContent(?string $content): void
     {
         $this->content = $content;
     }

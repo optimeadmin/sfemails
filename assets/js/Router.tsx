@@ -7,6 +7,7 @@ import { EditLayoutPage } from './pages/layout/EditLayoutPage'
 import { ConfigsPage } from './pages/config/ConfigsPage.tsx'
 import { CreateConfigPage } from './pages/config/CreateConfigPage.tsx'
 import { EditConfigPage } from './pages/config/EditConfigPage.tsx'
+import { TemplatesPage } from './pages/templates/TemplatesPage.tsx'
 
 export function Router ({ basename }: { basename: string }) {
   const router = useMemo(() => createBrowserRouter([
@@ -26,7 +27,13 @@ export function Router ({ basename }: { basename: string }) {
             { path: 'edit/:uuid', element: <EditLayoutPage/> },
           ]
         },
-        { path: '/templates', element: <h3>Soy la ruta (templates) Siiii</h3> },
+        {
+          path: '/templates', children: [
+            { index: true, element: <TemplatesPage/> },
+            { path: 'create', element: <CreateLayoutPage/> },
+            { path: 'edit/:uuid', element: <EditLayoutPage/> },
+          ]
+        },
         { path: '/logs', element: <h3>Soy la ruta (logs)</h3> },
       ]
     },

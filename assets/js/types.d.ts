@@ -23,8 +23,23 @@ export type Config = {
   layoutUuid: string,
   editable: boolean,
   target: string,
-} & TypeWithDates
+}
 
 export type ExistentConfig = {
   uuid: string,
-} & Config
+} & Config & TypeWithDates
+
+export type EmailTemplate = {
+  appId: string,
+  layoutUuid?: string,
+  configUuid: string,
+  subject?: Record<string, string | null>,
+  content?: Record<string, string | null>,
+  active: boolean,
+}
+
+export type ExistentEmailTemplate = {
+  uuid: string,
+  appTitle: string,
+  configCode: string,
+} & EmailTemplate & TypeWithDates

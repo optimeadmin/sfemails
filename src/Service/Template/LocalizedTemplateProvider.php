@@ -44,6 +44,11 @@ class LocalizedTemplateProvider
             );
         }
 
-        return $this->loadedTemplates[$template->getId()][$locale];
+        return $this->loadedTemplates[$template->getId()][$locale] ??= new LocalizedTemplate(
+            '-- [no value ' . $locale . '] --',
+            '-- [no value ' . $locale . '] --',
+            '-- [no value ' . $locale . '] --',
+            $locale
+        );
     }
 }

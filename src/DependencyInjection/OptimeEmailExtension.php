@@ -6,6 +6,7 @@
 namespace Optime\Email\Bundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -20,6 +21,8 @@ class OptimeEmailExtension extends Extension
     {
 //        $configuration = new Configuration();
 //        $config = $this->processConfiguration($configuration, $configs);
+
+        $container->addResource(new DirectoryResource(dirname(__DIR__)));
 
         $loader = new YamlFileLoader(
             $container,
