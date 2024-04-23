@@ -13,7 +13,7 @@ export function Router ({ basename }: { basename: string }) {
         { path: '/layouts', element: <LayoutsPage/> },
         { path: '/layouts/create', element: <CreateLayoutPage/> },
         { path: '/layouts/edit/:uuid', element: <EditLayoutPage/> },
-        { path: '/templates', element: <h3>Soy la ruta (templates)</h3> },
+        { path: '/templates', element: <h3>Soy la ruta (templates) Siiii</h3> },
         { path: '/logs', element: <h3>Soy la ruta (logs)</h3> },
       ]
     },

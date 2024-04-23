@@ -6,7 +6,7 @@ type TranslatableFieldsProps = {
 }
 
 export function TranslatableFields ({ render }: TranslatableFieldsProps) {
-  const { locale, locales } = useLocales()
+  const { locales } = useLocales()
 
   return (
     <>

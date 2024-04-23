@@ -14,5 +14,20 @@
     </div>
 
     {{ include('@OptimeEmail/_import_codemirror_for_react.html.twig') }}
-    <script defer src="{{ asset('bundles/optimeemail/build/app.js') }}"></script>
+
+    {% if true %}
+        <script type="module">
+          import RefreshRuntime from 'http://localhost:5173/@react-refresh'
+
+          RefreshRuntime.injectIntoGlobalHook(window)
+          window.$RefreshReg$ = () => {}
+          window.$RefreshSig$ = () => (type) => type
+          window.__vite_plugin_react_preamble_installed__ = true
+        </script>
+        <script defer type="module" src="http://localhost:5173/@vite/client"></script>
+        <script defer type="module" src="http://localhost:5173/assets/js/app.tsx"></script>
+    {% else %}
+        <link rel="stylesheet" href="{{ asset('bundles/optimeemail/build/app.css') }}">
+        <script defer src="{{ asset('bundles/optimeemail/build/app.js') }}"></script>
+    {% endif %}
 {% endblock %}

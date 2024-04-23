@@ -1,3 +1,5 @@
+import 'vite/modulepreload-polyfill'
+import 'react-toastify/dist/ReactToastify.css'
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -5,6 +7,7 @@ import { Router } from './Router'
 import { LocaleProvider } from './contexts/LocaleContext'
 import { axiosApi } from './api/axiosInstances'
 import { UrlProvider } from './contexts/UrlContext'
+import { ToastContainer } from 'react-toastify'
 
 const $container = document.getElementById('emails_config_root') as HTMLElement
 const basename = $container.dataset.basename ?? '/'
@@ -32,6 +35,11 @@ root.render(
       <UrlProvider basename={basename} apiUrl={endpointApi}>
         <LocaleProvider locale={locale} locales={locales}>
           <Router basename={basename}/>
+          <ToastContainer
+            autoClose={5000}
+            hideProgressBar
+            position='top-center'
+          />
         </LocaleProvider>
       </UrlProvider>
     </QueryClientProvider>

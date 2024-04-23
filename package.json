@@ -2,53 +2,38 @@
   "name": "sf-emails",
   "version": "1.0.0",
   "description": "Bundle para manejo de email templates",
-  "main": "webpack.config.js",
+  "type": "module",
   "engines": {
     "node": ">=18 <21"
   },
-  "directories": {
-    "doc": "doc"
-  },
   "scripts": {
-    "dev-server": "encore dev-server",
-    "dev": "encore dev",
-    "watch": "encore dev --watch",
-    "build": "encore production --progress"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/manuelj555/ManuelTranslationBundle.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/manuelj555/ManuelTranslationBundle/issues"
-  },
-  "homepage": "https://github.com/manuelj555/ManuelTranslationBundle#readme",
+  "author": "Manuel Aguirre",
+  "license": "Internal",
   "dependencies": {
-    "@babel/preset-react": "^7.17.12",
-    "@symfony/webpack-encore": "^4.6.1",
     "@tanstack/react-query": "^5.31",
     "axios": "^1.6.2",
-    "core-js": "^3.22.7",
     "react": "^18.1.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.1.0",
     "react-hook-form": "^7.51.3",
     "react-router-dom": "^6.22.3",
-    "webpack-notifier": "^1.15.0"
+    "react-toastify": "^10.0.5"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.28.11",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
+    "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.57.0",
     "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "ts-loader": "^9.0.0"
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
   }
 }

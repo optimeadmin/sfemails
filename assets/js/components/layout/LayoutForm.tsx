@@ -9,6 +9,7 @@ import { ExistentLayout, Layout } from '../../types'
 import { useSaveLayout } from '../../hooks/layout'
 import { ButtonWithLoading } from '../ui/ButtonWithLoading'
 import { ControlledCodeMirror } from '../ui/CodeMirror'
+import { toast } from 'react-toastify'
 
 export function LayoutForm ({ layout }: { layout?: ExistentLayout }) {
   const navigate = useNavigate()
@@ -18,8 +19,13 @@ export function LayoutForm ({ layout }: { layout?: ExistentLayout }) {
   const { save, isPending } = useSaveLayout(form.setError)
 
   async function sendForm (data: Layout) {
-    await save(data)
-    navigate('/layouts')
+    try {
+      await save(data)
+      navigate('/layouts')
+      toast.success(!!layout ? 'Layout saved successfully!' : 'Layout created successfully!')
+    } catch (e) {
+      toast.error('Ups, an error has occurred!')
+    }
   }
 
   return (

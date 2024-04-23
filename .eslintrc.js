@@ -26,9 +26,14 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: [
-    'react'
+    'react',
+    'react-refresh'
   ],
   rules: {
-    indent: [2, 'error']
-  }
+    indent: [2, 'error'],
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+  },
 }
