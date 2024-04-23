@@ -4,12 +4,13 @@ import { Layout } from './pages/Layout'
 import { LayoutsPage } from './pages/layout/LayoutsPage'
 import { CreateLayoutPage } from './pages/layout/CreateLayoutPage'
 import { EditLayoutPage } from './pages/layout/EditLayoutPage'
+import { ConfigsPage } from './pages/config/ConfigsPage.tsx'
 
 export function Router ({ basename }: { basename: string }) {
   const router = useMemo(() => createBrowserRouter([
     {
       element: <Layout/>, children: [
-        { path: '/', element: <h3>Soy la ruta</h3> },
+        { path: '/', element: <ConfigsPage /> },
         { path: '/layouts', element: <LayoutsPage/> },
         { path: '/layouts/create', element: <CreateLayoutPage/> },
         { path: '/layouts/edit/:uuid', element: <EditLayoutPage/> },

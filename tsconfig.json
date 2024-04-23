@@ -5,6 +5,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "strict": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -13,12 +14,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
-    /* Linting */
-    "strict": true,
-//    "noUnusedLocals": true,
-//    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "assets/**/*.ts",
@@ -27,5 +22,5 @@
   "exclude": [
     "node_modules"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+//  "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ExistentLayout } from '../../types'
 import { stringAsDate } from '../../utils/dates'
-import { Button, Modal } from 'react-bootstrap'
-import { useUrl } from '../../contexts/UrlContext'
-import { Preview } from '../preview/Preview'
 import { Link } from 'react-router-dom'
+import { PreviewLayoutAction } from './PreviewLayoutAction.tsx'
 
 export function LayoutItem ({ layout }: { layout: ExistentLayout }) {
   return (
@@ -19,29 +17,9 @@ export function LayoutItem ({ layout }: { layout: ExistentLayout }) {
       <td>
         <div className="d-flex gap-1">
           <Link to={`/layouts/edit/${layout.uuid}`} className="btn btn-sm btn-outline-primary">Edit</Link>
-          <PreviewAction uuid={layout.uuid as string}/>
+          <PreviewLayoutAction uuid={layout.uuid as string} title={'Preview'}/>
         </div>
       </td>
     </tr>
-  )
-}
-
-function PreviewAction ({ uuid }: { uuid: string }) {
-  const { apiUrl } = useUrl()
-  const [showPreview, setShowPreview] = useState(false)
-  const previewUrl = `${apiUrl}/preview/layout/${uuid}`
-
-  return (
-    <>
-      <Button size="sm" variant="outline-secondary" onClick={() => setShowPreview(true)}>Preview</Button>
-      <Modal show={showPreview} onHide={() => setShowPreview(false)} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Preview</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Preview url={previewUrl}/>
-        </Modal.Body>
-      </Modal>
-    </>
   )
 }

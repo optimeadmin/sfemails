@@ -15,6 +15,16 @@ export type Layout = {
 export type ExistentLayout = {
   id: number,
   uuid: string,
-  label: string,
-  description?: string,
 } & Layout & TypeWithDates
+
+export type Config = {
+  code: string,
+  description: string,
+  layoutUuid: string,
+  editable: boolean,
+  target: string,
+} & TypeWithDates
+
+export type ExistentConfig = {
+  uuid: string,
+} & Config
