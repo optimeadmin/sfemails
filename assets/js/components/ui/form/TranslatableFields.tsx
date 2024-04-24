@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, ReactNode } from 'react'
 import { useLocales } from '../../../contexts/LocaleContext'
+import { Tab, Tabs, TabsProps } from 'react-bootstrap'
 
 type TranslatableFieldsProps = {
   render: ({ locale }: { locale: string }) => ReactNode,
@@ -16,6 +17,24 @@ export function TranslatableFields ({ render }: TranslatableFieldsProps) {
         </React.Fragment>
       ))}
     </>
+  )
+}
+
+type TranslatableFieldsTabsProps = TranslatableFieldsProps & TabsProps
+
+export function TranslatableFieldsTabs ({ render, ...tabProps }: TranslatableFieldsTabsProps) {
+  const { locales, locale } = useLocales()
+
+  if (locales.length <= 1) return render({ locale })
+
+  return (
+    <Tabs {...tabProps} defaultActiveKey={locales.at(0)}>
+      {locales.map(localeItem => (
+        <Tab key={localeItem} eventKey={localeItem} title={localeItem.toUpperCase()}>
+          {render({ locale: localeItem })}
+        </Tab>
+      ))}
+    </Tabs>
   )
 }
 

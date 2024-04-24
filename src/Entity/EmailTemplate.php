@@ -8,6 +8,7 @@ namespace Optime\Email\Bundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Translatable;
 use Optime\Email\Bundle\Constraints\UniqueTemplate;
+use Optime\Email\Bundle\Dto\EmailTemplateDto;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
 use Optime\Util\Entity\Traits\DatesTrait;
 use Optime\Util\Entity\Traits\ExternalUuidTrait;
@@ -59,6 +60,23 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
     public function __construct()
     {
         $this->active = true;
+    }
+
+    public static function create(
+        EmailTemplateDto $dto,
+        EmailAppInterface $app,
+        EmailMaster $config,
+        ?EmailLayout $layout = null,
+    ): self {
+        $entity = new self();
+        $entity->setApp($app);
+        $entity->setConfig($config);
+        $entity->setCustomLayout($layout);
+        $entity->setSubject((string)$dto->subject);
+        $entity->setContent((string)$dto->content);
+        $entity->setActive($dto->active);
+
+        return $entity;
     }
 
     public function getId(): ?int

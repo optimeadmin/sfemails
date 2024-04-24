@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Optime\Email\Bundle\Entity\EmailAppInterface;
 use Optime\Email\Bundle\Entity\EmailMaster;
+use Optime\Email\Bundle\Exception\EmailAppNotFoundException;
 use ReflectionClass;
 use ReflectionException;
 
@@ -53,9 +54,20 @@ class EmailAppProvider implements DefaultEmailAppResolverInterface
         }
     }
 
-    private function getRepository(): EntityRepository
+    public function getRepository(): EntityRepository
     {
         return $this->entityManager->getRepository(EmailAppInterface::class);
+    }
+
+    public function getByIndex(int|string $index): EmailAppInterface
+    {
+        $apps = $this->getRepository()->findAll();
+
+        if (!isset($apps[$index])) {
+            throw new EmailAppNotFoundException("No existe el indice '{$index}' en el array de apps");
+        }
+
+        return $apps[$index];
     }
 
     public function getEmailAppClass(): ?string

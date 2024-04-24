@@ -23,7 +23,7 @@ class EmailTemplateDto
 {
     public ?Uuid $uuid = null;
     #[NotBlank]
-    public ?Uuid $appUuid = null;
+    public int|string|null $appId = null;
 
     public ?string $appTitle = null;
 
@@ -50,7 +50,7 @@ class EmailTemplateDto
     {
         $dto = new self();
         $dto->uuid = $template->getUuid();
-//        $dto->appUuid = $template->getApp();
+//        $dto->appId = $template->getApp();
         $dto->appTitle = (string)$template->getApp();
         $dto->layoutUuid = $template->getCustomLayout()?->getUuid();
 

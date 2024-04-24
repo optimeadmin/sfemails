@@ -14,6 +14,7 @@ export function addServerError (axiosError: AxiosError, addError?: UseFormSetErr
   console.log(data.violations)
 
   data.violations.forEach(({ propertyPath, title }: ViolationItem) => {
+    if (!propertyPath) return
     addError(propertyPath, { type: 'server', message: title })
   })
 }

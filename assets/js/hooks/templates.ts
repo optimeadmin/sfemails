@@ -1,23 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Config, ExistentConfig } from '../types'
+import { EmailTemplate, ExistentEmailTemplate } from '../types'
 import { addServerError } from '../utils/errors'
 import { AxiosError } from 'axios'
 import { useForm, UseFormSetError } from 'react-hook-form'
-import { getConfig, saveConfig } from '../api/configs.ts'
-import { useGetLayouts } from './layout.ts'
+import { getConfig } from '../api/configs.ts'
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { getTemplates } from '../api/templates.ts'
+import { getTemplates, saveEmailTemplate } from '../api/templates.ts'
 
-export function useSaveTemplate (addError?: UseFormSetError<Config>) {
+export function useSaveTemplate (addError?: UseFormSetError<EmailTemplate>) {
   const queryClient = useQueryClient()
   const { mutateAsync, isPending } = useMutation({
-    async mutationFn (config: Config) {
-      await saveConfig(config)
+    async mutationFn (emailTemplate: EmailTemplate) {
+      await saveEmailTemplate(emailTemplate)
     },
     async onSuccess () {
-      return queryClient.invalidateQueries({ queryKey: ['configs'] })
+      return queryClient.invalidateQueries({ queryKey: ['templates'] })
     },
     onError (error: AxiosError) {
       addServerError(error, addError)
@@ -55,35 +53,25 @@ export function useGetTemplateByUuid (uuid: string) {
   }
 }
 
-export function useTemplateForm (config?: ExistentConfig) {
-  const { layouts, isLoading: isLoadingLayouts } = useGetLayouts()
+export function useTemplateForm (emailTemplate?: ExistentEmailTemplate) {
   const navigate = useNavigate()
-  const form = useForm<Config>({ values: config })
-  const isEdit = !!config
+  const form = useForm<EmailTemplate>({ values: emailTemplate })
+  const isEdit = !!emailTemplate
 
-  useEffect(() => {
-    if (!layouts || layouts.length === 0) return
-    if (config) return
+  const { save, isPending } = useSaveTemplate(form.setError)
 
-    form.setValue('layoutUuid', layouts[0].uuid)
-  }, [form, layouts, config])
-
-  const { save, isPending } = useSaveConfig(form.setError)
-
-  async function sendForm (data: Config) {
+  async function sendForm (data: EmailTemplate) {
     try {
       await save(data)
-      navigate('/')
-      toast.success(isEdit ? 'Config saved successfully!' : 'Config created successfully!')
+      navigate('/templates')
+      toast.success(isEdit ? 'Email Template saved successfully!' : 'Email Template created successfully!')
     } catch (e) {
       toast.error('Ups, an error has occurred!')
     }
   }
 
   return {
-    isLoadingLayouts,
     isPending,
-    layouts,
     form,
     sendForm,
   }

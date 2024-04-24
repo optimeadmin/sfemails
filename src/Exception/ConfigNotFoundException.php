@@ -13,10 +13,10 @@ use Optime\Util\Exception\ValidationException;
 /**
  * @author Manuel Aguirre
  */
-class LayoutNotFoundException extends LogicException implements InvalidValueErrorInterface
+class ConfigNotFoundException extends LogicException implements InvalidValueErrorInterface
 {
     public function toValidationException(): ValidationException
     {
-        return ValidationException::create('Invalid Layout', 'layoutUuid');
+        return ValidationException::create('Invalid Config', 'configUuid');
     }
 }

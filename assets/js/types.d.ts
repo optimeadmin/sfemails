@@ -30,7 +30,7 @@ export type ExistentConfig = {
 } & Config & TypeWithDates
 
 export type EmailTemplate = {
-  appId: string,
+  appId: number,
   layoutUuid?: string,
   configUuid: string,
   subject?: Record<string, string | null>,
@@ -43,3 +43,8 @@ export type ExistentEmailTemplate = {
   appTitle: string,
   configCode: string,
 } & EmailTemplate & TypeWithDates
+
+export type EmailApp = {
+  id: number,
+  title: string,
+}
