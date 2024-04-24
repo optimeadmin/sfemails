@@ -9,6 +9,7 @@ namespace Optime\Email\Bundle\Dto;
 
 use Optime\Email\Bundle\Constraints\TwigContent;
 use Optime\Email\Bundle\Entity\EmailTemplate;
+use Optime\Email\Bundle\Service\Email\App\EmailAppProvider;
 use Optime\Util\Entity\Embedded\Date;
 use Optime\Util\Translation\TranslatableContent;
 use Optime\Util\Translation\Validation\TranslatableConstraint;
@@ -32,6 +33,7 @@ class EmailTemplateDto
     public ?string $configCode = null;
 
     public ?Uuid $layoutUuid = null;
+    public ?string $layoutTitle = null;
 
     #[NotBlank]
     #[TranslatableConstraint([new NotBlank(), new TwigContent()], '')]
@@ -46,13 +48,14 @@ class EmailTemplateDto
 
     public ?Date $dates = null;
 
-    public static function fromEntity(EmailTemplate $template): self
+    public static function fromEntity(EmailTemplate $template, EmailAppProvider $appProvider): self
     {
         $dto = new self();
         $dto->uuid = $template->getUuid();
-//        $dto->appId = $template->getApp();
+        $dto->appId = $appProvider->getIndexByApp($template->getApp());
         $dto->appTitle = (string)$template->getApp();
         $dto->layoutUuid = $template->getCustomLayout()?->getUuid();
+        $dto->layoutTitle = $template->getLayout()->getDescription();
 
         $dto->configUuid = $template->getConfig()->getUuid();
         $dto->configCode = $template->getConfig()->getCode();

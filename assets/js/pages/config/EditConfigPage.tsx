@@ -10,9 +10,11 @@ export function EditConfigPage () {
 
   return (
     <PageLayout>
-      <PageHeader title={'Create Email Config'} actions={
-        <Link to="/" className="btn btn-outline-secondary">Back</Link>
-      }/>
+      <PageHeader
+        title="Edit Email Config"
+        subtitle={uuid}
+        actions={<Link to="/" className="btn btn-outline-secondary">Back</Link>}
+      />
 
       <ConfigForm config={config} key={config?.uuid}/>
     </PageLayout>

@@ -7,20 +7,12 @@ declare(strict_types=1);
 
 namespace Optime\Email\Bundle\Controller\Api;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Optime\Email\Bundle\Dto\ConfigDto;
 use Optime\Email\Bundle\Dto\EmailTemplateDto;
-use Optime\Email\Bundle\Entity\EmailMaster;
+use Optime\Email\Bundle\Dto\Factory\EmailTemplateDtoFactory;
 use Optime\Email\Bundle\Entity\EmailTemplate;
-use Optime\Email\Bundle\Exception\InvalidValueErrorInterface;
-use Optime\Email\Bundle\Exception\LayoutNotFoundException;
-use Optime\Email\Bundle\Repository\EmailLayoutRepository;
-use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
-use Optime\Email\Bundle\Service\Email\App\EmailAppProvider;
+use Optime\Email\Bundle\Service\Template\UseCase\PersistEmailTemplateUseCase;
 use Optime\Util\Exception\ValidationException;
-use Optime\Util\Translation\Translation;
-use Optime\Util\Validator\DomainValidator;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,12 +27,7 @@ class TemplateController extends AbstractController
 {
     public function __construct(
         private readonly EmailTemplateRepository $repository,
-        private readonly EmailLayoutRepository $layoutRepository,
-        private readonly EmailMasterRepository $configRepository,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DomainValidator $validator,
-        private readonly EmailAppProvider $appProvider,
-        private readonly Translation $translation,
+        private readonly EmailTemplateDtoFactory $dtoFactory,
     ) {
     }
 
@@ -49,57 +36,41 @@ class TemplateController extends AbstractController
     {
         $items = $this->repository->findAll();
 
-        return $this->json(array_map(EmailTemplateDto::fromEntity(...), $items));
+        return $this->json($this->dtoFactory->fromItems($items));
     }
 
     #[Route('/{uuid}', methods: 'get')]
     public function getOneByUuid(#[MapEntity] EmailTemplate $emailTemplate): JsonResponse
     {
-        return $this->json(EmailTemplateDto::fromEntity($emailTemplate));
+        return $this->json($this->dtoFactory->create($emailTemplate));
     }
 
     #[Route('', methods: 'post')]
-    public function create(#[MapRequestPayload] EmailTemplateDto $dto): JsonResponse
-    {
+    public function create(
+        #[MapRequestPayload] EmailTemplateDto $dto,
+        PersistEmailTemplateUseCase $useCase
+    ): JsonResponse {
         try {
-            $app = $this->appProvider->getByIndex($dto->appId);
-            $config = $this->configRepository->byUuid($dto->configUuid);
-            $layout = $dto->layoutUuid ? $this->layoutRepository->byUuid($dto->layoutUuid) : null;
-
-            $emailTemplate = EmailTemplate::create($dto, $app, $config, $layout);
-            $this->validator->handle($emailTemplate);
-            $this->entityManager->persist($emailTemplate);
-
-            $persister = $this->translation->preparePersist($emailTemplate);
-            $persister->persist('subject', $dto->subject);
-            $persister->persist('content', $dto->content);
-
-            $this->entityManager->flush();
-        } catch (InvalidValueErrorInterface $e) {
-            return $this->json($e->toValidationException(), 422);
+            $emailTemplate = $useCase->create($dto);
         } catch (ValidationException $e) {
             return $this->json($e->getErrors(), 422);
         }
 
-        return $this->json(EmailTemplateDto::fromEntity($emailTemplate));
+        return $this->json($this->dtoFactory->create($emailTemplate));
     }
 
     #[Route('/{uuid}', methods: 'patch')]
     public function update(
-        #[MapEntity] EmailMaster $config,
-        #[MapRequestPayload] ConfigDto $dto
+        #[MapEntity] EmailTemplate $emailTemplate,
+        #[MapRequestPayload] EmailTemplateDto $dto,
+        PersistEmailTemplateUseCase $useCase,
     ): JsonResponse {
         try {
-            $config->update($dto, $this->layoutRepository->byUuid($dto->layoutUuid));
-            $this->validator->handle($config);
-            $this->entityManager->persist($config);
-            $this->entityManager->flush();
-        } catch (LayoutNotFoundException) {
-            return $this->json(ValidationException::create('Invalid Layout', 'layoutUuid'), 422);
+            $useCase->update($emailTemplate, $dto);
         } catch (ValidationException $e) {
             return $this->json($e->getErrors(), 422);
         }
 
-        return $this->json(ConfigDto::fromEntity($config));
+        return $this->json($this->dtoFactory->create($emailTemplate));
     }
 }

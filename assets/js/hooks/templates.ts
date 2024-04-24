@@ -6,7 +6,7 @@ import { useForm, UseFormSetError } from 'react-hook-form'
 import { getConfig } from '../api/configs.ts'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { getTemplates, saveEmailTemplate } from '../api/templates.ts'
+import { getEmailTemplate, getTemplates, saveEmailTemplate } from '../api/templates.ts'
 
 export function useSaveTemplate (addError?: UseFormSetError<EmailTemplate>) {
   const queryClient = useQueryClient()
@@ -44,7 +44,7 @@ export function useGetTemplates () {
 export function useGetTemplateByUuid (uuid: string) {
   const { isLoading, data: template } = useQuery({
     queryKey: ['templates', 'item', uuid],
-    queryFn: ({ signal }) => getConfig(uuid, signal),
+    queryFn: ({ signal }) => getEmailTemplate(uuid, signal),
   })
 
   return {

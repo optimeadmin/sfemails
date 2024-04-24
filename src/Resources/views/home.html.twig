@@ -4,7 +4,7 @@
 {% block page_header_container '' %}
 
 {% block body_content %}
-    <div class="container-fluid mt-4 px-4">
+    <div class="container-fluid mt-4 px-4 mb-5 pb-3">
         <div id="emails_config_root"
              data-locale="{{ app.locale }}"
              data-locales="{{ locales|json_encode }}"
@@ -15,7 +15,7 @@
 
     {{ include('@OptimeEmail/_import_codemirror_for_react.html.twig') }}
 
-    {% if true %}
+    {% if false %}
         <script type="module">
           import RefreshRuntime from 'http://localhost:5173/@react-refresh'
 

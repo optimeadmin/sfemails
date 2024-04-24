@@ -32,6 +32,7 @@ export type ExistentConfig = {
 export type EmailTemplate = {
   appId: number,
   layoutUuid?: string,
+  layoutTitle?: string,
   configUuid: string,
   subject?: Record<string, string | null>,
   content?: Record<string, string | null>,

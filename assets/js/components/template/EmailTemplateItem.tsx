@@ -12,6 +12,7 @@ export function EmailTemplateItem ({ emailTemplate }: { emailTemplate: ExistentE
         <small className="d-block uuid-small user-select-all">{emailTemplate.uuid}</small>
       </td>
       <td>{emailTemplate.appTitle || 'Default'}</td>
+      <td>{emailTemplate.layoutTitle}</td>
       <td className="text-center">{emailTemplate.active ? 'Active' : 'Inactive'}</td>
       <td className="text-center">{stringAsDate(emailTemplate.dates.createdAt)}</td>
       <td className="text-center">{stringAsDate(emailTemplate.dates.updatedAt)}</td>

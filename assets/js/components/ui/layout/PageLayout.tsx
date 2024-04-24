@@ -11,16 +11,21 @@ export function PageLayout ({ children }: PageLayoutType) {
 }
 
 type PageHeaderType = {
-  title: string,
+  title: ReactNode,
+  subtitle?: ReactNode,
   actions: ReactNode,
 }
 
-export function PageHeader ({ title, actions }: PageHeaderType) {
+export function PageHeader ({ title, subtitle, actions }: PageHeaderType) {
   return (
     <div
-      className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-5 border-bottom">
+      className="d-flex justify-content-between
+      flex-wrap flex-md-nowrap align-items-center
+      pt-3 pb-2 mb-5 border-bottom gap-2"
+    >
       <h1 className="h2">{title}</h1>
-      <div className="d-flex gap-2">
+      {subtitle && <small className="fs-6 text-secondary">{subtitle}</small>}
+      <div className="d-flex gap-2 ms-auto">
         {actions}
       </div>
     </div>

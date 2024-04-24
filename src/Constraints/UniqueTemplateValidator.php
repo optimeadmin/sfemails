@@ -60,11 +60,16 @@ class UniqueTemplateValidator extends ConstraintValidator
             return;
         }
 
-        $this->context->buildViolation($constraint->message)
+        $violation = $this->context->buildViolation($constraint->message)
             ->setParameters([
                 '{emailCode}' => $value->getConfig()?->getCode(),
                 '{app}' => (string)$value->getApp(),
-            ])
-            ->addViolation();
+            ]);
+
+        if ($constraint->errorPath) {
+            $violation->atPath($constraint->errorPath);
+        }
+
+        $violation->addViolation();
     }
 }

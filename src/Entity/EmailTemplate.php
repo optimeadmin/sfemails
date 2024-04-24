@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 #[ORM\Table('emails_bundle_email_template')]
 #[ORM\Entity(repositoryClass: EmailTemplateRepository::class)]
 #[ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")]
-#[UniqueTemplate]
+#[UniqueTemplate(errorPath: 'configUuid')]
 class EmailTemplate implements TranslationsAwareInterface, Stringable
 {
     use ExternalUuidTrait, DatesTrait, TranslationsAwareTrait;
@@ -69,12 +69,7 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
         ?EmailLayout $layout = null,
     ): self {
         $entity = new self();
-        $entity->setApp($app);
-        $entity->setConfig($config);
-        $entity->setCustomLayout($layout);
-        $entity->setSubject((string)$dto->subject);
-        $entity->setContent((string)$dto->content);
-        $entity->setActive($dto->active);
+        $entity->update($dto, $app, $config, $layout);
 
         return $entity;
     }
@@ -152,5 +147,19 @@ class EmailTemplate implements TranslationsAwareInterface, Stringable
     public function getCustomLayout(): ?EmailLayout
     {
         return $this->layout;
+    }
+
+    public function update(
+        EmailTemplateDto $dto,
+        EmailAppInterface $app,
+        EmailMaster $config,
+        ?EmailLayout $layout = null
+    ): void {
+        $this->setApp($app);
+        $this->setConfig($config);
+        $this->setCustomLayout($layout);
+        $this->setSubject((string)$dto->subject);
+        $this->setContent((string)$dto->content);
+        $this->setActive($dto->active);
     }
 }

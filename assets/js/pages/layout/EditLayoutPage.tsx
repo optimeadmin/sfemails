@@ -10,7 +10,7 @@ export function EditLayoutPage () {
 
   return (
     <PageLayout>
-      <PageHeader title={'Create Layout'} actions={
+      <PageHeader title='Edit Layout' subtitle={uuid} actions={
         <Link to="/layouts" className="btn btn-outline-secondary">Back</Link>
       }/>
 

@@ -20,6 +20,7 @@ export function TemplatesPage () {
           <tr>
             <th>Information</th>
             <th className="">Application</th>
+            <th className="">Layout</th>
             <th className="text-center">Status</th>
             <th className="text-center" style={{ width: 150 }}>Created At</th>
             <th className="text-center" style={{ width: 150 }}>Updated At</th>

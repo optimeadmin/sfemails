@@ -14,13 +14,16 @@ use Optime\Email\Bundle\Entity\EmailMaster;
 use Optime\Email\Bundle\Exception\EmailAppNotFoundException;
 use ReflectionClass;
 use ReflectionException;
+use function array_search;
 
 /**
  * @author Manuel Aguirre
  */
 class EmailAppProvider implements DefaultEmailAppResolverInterface
 {
-    public function __construct(private EntityManagerInterface $entityManager)
+    private ?array $loadedApps = null;
+
+    public function __construct(private readonly EntityManagerInterface $entityManager)
     {
     }
 
@@ -61,13 +64,25 @@ class EmailAppProvider implements DefaultEmailAppResolverInterface
 
     public function getByIndex(int|string $index): EmailAppInterface
     {
-        $apps = $this->getRepository()->findAll();
+        $this->loadedApps ??= $this->getRepository()->findAll();
 
-        if (!isset($apps[$index])) {
+        if (!isset($this->loadedApps[$index])) {
             throw new EmailAppNotFoundException("No existe el indice '{$index}' en el array de apps");
         }
 
-        return $apps[$index];
+        return $this->loadedApps[$index];
+    }
+
+    public function getIndexByApp(EmailAppInterface $app): int
+    {
+        $this->loadedApps ??= $this->getRepository()->findAll();
+        $index = array_search($app, $this->loadedApps);
+
+        if (false === $index) {
+            throw new EmailAppNotFoundException("No existe la app '{$app}' en el array de apps");
+        }
+
+        return (int)$index;
     }
 
     public function getEmailAppClass(): ?string

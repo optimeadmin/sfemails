@@ -36,7 +36,7 @@ export function TemplateForm ({ emailTemplate }: { emailTemplate?: ExistentEmail
                 id="form_email_template_active_field"
                 {...register('active')}
                 label="Active"
-                defaultChecked
+                defaultChecked={emailTemplate?.active ?? true}
               />
               <FormErrors/>
             </FormRow>
@@ -101,8 +101,8 @@ function ConfigField () {
 
 function CustomLayoutField () {
   const { layouts, isLoading: isLoadingLayouts } = useGetLayouts()
-  const { register, setValue, clearErrors } = useFormContext()
-  const [useCustomLayout, setUseCustomLayout] = useState(false)
+  const { register, setValue, clearErrors, getValues } = useFormContext()
+  const [useCustomLayout, setUseCustomLayout] = useState(() => !!getValues('layoutUuid'))
 
   useEffect(() => {
     if (useCustomLayout) return
@@ -114,6 +114,7 @@ function CustomLayoutField () {
   return (
     <FormRow className="mb-3" name="layoutUuid">
       <Form.Switch
+        defaultChecked={useCustomLayout}
         onChange={({ target }) => setUseCustomLayout(target.checked)}
         className="mb-2"
         id="form_email_template_use_custom_layout_field"
