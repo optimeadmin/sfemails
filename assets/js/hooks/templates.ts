@@ -3,7 +3,6 @@ import { EmailTemplate, ExistentEmailTemplate } from '../types'
 import { addServerError } from '../utils/errors'
 import { AxiosError } from 'axios'
 import { useForm, UseFormSetError } from 'react-hook-form'
-import { getConfig } from '../api/configs.ts'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { getEmailTemplate, getTemplates, saveEmailTemplate } from '../api/templates.ts'
@@ -63,10 +62,14 @@ export function useTemplateForm (emailTemplate?: ExistentEmailTemplate) {
   async function sendForm (data: EmailTemplate) {
     try {
       await save(data)
-      navigate('/templates')
-      toast.success(isEdit ? 'Email Template saved successfully!' : 'Email Template created successfully!')
+      if (!isEdit) {
+        navigate('/templates')
+      }
+      toast.success(isEdit ? 'Email Template saved successfully!' : 'Email Template created successfully!', {
+        autoClose: isEdit ? 1000 : 3000
+      })
     } catch (e) {
-      toast.error('Ups, an error has occurred!')
+      toast.error('Ups, an error has occurred!', { autoClose: 1000 })
     }
   }
 

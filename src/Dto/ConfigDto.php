@@ -29,6 +29,7 @@ class ConfigDto
     public ?string $description = null;
     #[NotBlank]
     public ?Uuid $layoutUuid = null;
+    public ?string $layoutTitle = null;
     #[NotBlank]
     public ?string $target = null;
     #[NotNull]
@@ -42,6 +43,7 @@ class ConfigDto
         $dto->code = $config->getCode();
         $dto->description = $config->getDescription();
         $dto->layoutUuid = $config->getLayout()->getUuid();
+        $dto->layoutTitle = $config->getLayout()->getDescription();
         $dto->target = $config->getTarget();
         $dto->editable = $config->isEditable();
         $dto->dates = $config->getDates();

@@ -36,7 +36,7 @@ root.render(
         <LocaleProvider locale={locale} locales={locales}>
           <Router basename={basename}/>
           <ToastContainer
-            autoClose={5000}
+            autoClose={3000}
             hideProgressBar
             position='top-center'
           />

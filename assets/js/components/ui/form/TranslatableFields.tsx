@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, ReactNode } from 'react'
 import { useLocales } from '../../../contexts/LocaleContext'
 import { Tab, Tabs, TabsProps } from 'react-bootstrap'
+import { clsx } from 'clsx'
 
 type TranslatableFieldsProps = {
   render: ({ locale }: { locale: string }) => ReactNode,
@@ -42,7 +43,7 @@ type FieldWithLocaleProps = { locale: string, className?: string } & PropsWithCh
 
 export function FieldWithLocale ({ children, locale, className }: FieldWithLocaleProps) {
   return (
-    <div className={`input-group ${className || ''}`}>
+    <div className={clsx('input-group', className)}>
       <div className="input-group-prepend">
         <div className="input-group-text h-100 rounded-0 text-uppercase" style={{ fontFamily: 'monospace' }}>
           {locale}

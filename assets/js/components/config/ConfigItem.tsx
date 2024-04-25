@@ -13,6 +13,7 @@ export function ConfigItem ({ config }: { config: ExistentConfig }) {
         <div className="text-opacity-75 text-dark">{showDescription && config.description}</div>
         <small className="d-block uuid-small user-select-all">{config.uuid}</small>
       </td>
+      <td>{config.layoutTitle}</td>
       <td>{config.target}</td>
       <td className="text-center">{config.editable ? 'Yes' : 'No'}</td>
       <td className="text-center">{stringAsDate(config.dates.createdAt)}</td>

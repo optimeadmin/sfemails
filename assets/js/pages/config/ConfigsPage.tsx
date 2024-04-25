@@ -18,6 +18,7 @@ export function ConfigsPage () {
         <thead>
           <tr>
             <th>Description</th>
+            <th>Layout</th>
             <th>Target</th>
             <th className='text-center'>Editable</th>
             <th className='text-center' style={{ width: 150 }}>Created At</th>

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef } from 'react'
-import { Form, FormGroupProps, FormLabelProps } from 'react-bootstrap'
+import { Form, FormGroupProps, FormLabelProps, Spinner } from 'react-bootstrap'
 import { get, useFormState } from 'react-hook-form'
+import { clsx } from 'clsx'
 
 type FormRowContextType = {
   name?: string
@@ -46,9 +47,16 @@ function useFormRow () {
   return context
 }
 
-export function FormLabel (props: FormLabelProps) {
+type FormLabelPropsWithLoader = FormLabelProps & {
+  showLoader?: boolean
+}
+
+export function FormLabel ({ showLoader, className, children, ...props }: FormLabelPropsWithLoader) {
   return (
-    <Form.Label {...props}/>
+    <Form.Label {...props} className={clsx(className, 'd-flex justify-content-between align-items-center gap-1')}>
+      {children}
+      {showLoader && <Spinner size="sm"/>}
+    </Form.Label>
   )
 }
 

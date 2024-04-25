@@ -19,8 +19,6 @@ export function AppModal (props: ModalProps) {
   function addListeners ($container: HTMLElement) {
     itemsCleaning.current = []
 
-    console.log($container.querySelectorAll('[data-bs-hide]'))
-
     $container.querySelectorAll('[data-bs-hide]').forEach(item => {
       item.addEventListener('click', hideModal)
       itemsCleaning.current.push(() => item.removeEventListener('click', hideModal))

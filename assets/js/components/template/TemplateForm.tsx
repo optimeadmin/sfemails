@@ -13,6 +13,7 @@ import { useGetEmailApps } from '../../hooks/apps.ts'
 import { TranslatableFieldsTabs } from '../ui/form/TranslatableFields.tsx'
 import { ControlledCodeMirror } from '../ui/CodeMirror.tsx'
 import { useGetConfigs } from '../../hooks/config.ts'
+import { clsx } from 'clsx'
 
 export function TemplateForm ({ emailTemplate }: { emailTemplate?: ExistentEmailTemplate }) {
   const { isPending, form, sendForm } = useTemplateForm(emailTemplate)
@@ -84,12 +85,12 @@ function LayoutPreview () {
 
 function ConfigField () {
   const { register } = useFormContext()
-  const { configs } = useGetConfigs()
+  const { configs, isLoading } = useGetConfigs()
 
   return (
     <FormRow className="mb-3" name="configUuid">
-      <FormLabel>Email Config</FormLabel>
-      <FormSelect {...register('configUuid', { required: true })}>
+      <FormLabel showLoader={isLoading}>Email Config</FormLabel>
+      <FormSelect key={configs?.length} {...register('configUuid', { required: true })} disabled={isLoading}>
         {configs?.map(({ uuid, code }) => (
           <option key={uuid} value={uuid}>{code}</option>
         ))}
@@ -100,7 +101,7 @@ function ConfigField () {
 }
 
 function CustomLayoutField () {
-  const { layouts, isLoading: isLoadingLayouts } = useGetLayouts()
+  const { layouts, isLoading } = useGetLayouts()
   const { register, setValue, clearErrors, getValues } = useFormContext()
   const [useCustomLayout, setUseCustomLayout] = useState(() => !!getValues('layoutUuid'))
 
@@ -120,8 +121,12 @@ function CustomLayoutField () {
         id="form_email_template_use_custom_layout_field"
         label="Use Custom Layout"
       />
-      <div className={`d-flex gap-1 ${!useCustomLayout ? 'opacity-50' : ''}`}>
-        <FormSelect {...register('layoutUuid', { required: useCustomLayout })} disabled={!useCustomLayout}>
+      <div className={clsx('d-flex gap-1', !useCustomLayout && 'opacity-50')}>
+        <FormSelect
+          key={layouts?.length}
+          {...register('layoutUuid', { required: useCustomLayout })}
+          disabled={!useCustomLayout || isLoading}
+        >
           <option value="">- Select -</option>
           {useCustomLayout && layouts?.map(({ uuid, description }) => (
             <option key={uuid} value={uuid}>{description}</option>
@@ -136,12 +141,12 @@ function CustomLayoutField () {
 
 function EmailAppField () {
   const { register } = useFormContext()
-  const { emailApps } = useGetEmailApps()
+  const { emailApps, isLoading } = useGetEmailApps()
 
   return (
     <FormRow className="mb-3" name="appId">
-      <FormLabel>Email App</FormLabel>
-      <FormSelect {...register('appId', { required: true })}>
+      <FormLabel showLoader={isLoading}>Email App</FormLabel>
+      <FormSelect key={emailApps?.length} {...register('appId', { required: true })} disabled={isLoading}>
         {emailApps?.map(({ id, title }) => (
           <option key={id} value={id}>{title}</option>
         ))}

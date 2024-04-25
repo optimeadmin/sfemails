@@ -28,15 +28,17 @@ export function LayoutForm ({ layout, fromModal = false, onSuccess }: LayoutForm
   async function sendForm (data: Layout) {
     try {
       await save(data)
-      if (!fromModal) {
+      if (!fromModal && !isEdit) {
         navigate('/layouts')
       }
 
       onSuccess?.(data)
 
-      toast.success(isEdit ? 'Layout saved successfully!' : 'Layout created successfully!')
+      toast.success(isEdit ? 'Layout saved successfully!' : 'Layout created successfully!', {
+        autoClose: isEdit ? 1000 : 3000
+      })
     } catch (e) {
-      toast.error('Ups, an error has occurred!')
+      toast.error('Ups, an error has occurred!', { autoClose: 1000 })
     }
   }
 

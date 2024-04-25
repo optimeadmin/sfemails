@@ -55,7 +55,7 @@ export function useGetConfigByUuid (uuid: string) {
 }
 
 export function useConfigForm (config?: ExistentConfig) {
-  const { layouts, isLoading: isLoadingLayouts } = useGetLayouts()
+  const { layouts } = useGetLayouts()
   const navigate = useNavigate()
   const form = useForm<Config>({ values: config })
   const isEdit = !!config
@@ -72,17 +72,17 @@ export function useConfigForm (config?: ExistentConfig) {
   async function sendForm (data: Config) {
     try {
       await save(data)
-      navigate('/')
-      toast.success(isEdit ? 'Config saved successfully!' : 'Config created successfully!')
+      !isEdit && navigate('/')
+      toast.success(isEdit ? 'Config saved successfully!' : 'Config created successfully!', {
+        autoClose: isEdit ? 1000 : 3000
+      })
     } catch (e) {
-      toast.error('Ups, an error has occurred!')
+      toast.error('Ups, an error has occurred!', { autoClose: 1000 })
     }
   }
 
   return {
-    isLoadingLayouts,
     isPending,
-    layouts,
     form,
     sendForm,
   }

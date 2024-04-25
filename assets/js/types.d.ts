@@ -21,6 +21,7 @@ export type Config = {
   code: string,
   description: string,
   layoutUuid: string,
+  layoutTitle?: string,
   editable: boolean,
   target: string,
 }
