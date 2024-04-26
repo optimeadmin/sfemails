@@ -8,6 +8,7 @@ import { ControlledCodeMirror } from '../ui/CodeMirror.tsx'
 import { FormLabel, FormRow } from '../ui/form/field.tsx'
 import { MinusIcon, PlusIcon } from '../icons/icons.tsx'
 import { ButtonWithLoading } from '../ui/ButtonWithLoading.tsx'
+import { useMutation } from '@tanstack/react-query'
 
 export function SendTest ({ uuid }: { uuid: string }) {
   const hideModal = useHideModal()
@@ -29,18 +30,29 @@ type EmailItemType = {
 }
 type TestValues = {
   vars: string,
+  emails: string[]
+}
+type TestValuesForm = {
+  vars: string,
   emails: EmailItemType[]
 }
 
 const firstEmailId = Date.now().toString()
 
 function TestForm ({ vars }: { vars: EmailTemplateVars }) {
-  const form = useForm<TestValues>({
+  const form = useForm<TestValuesForm>({
     defaultValues: { vars: vars.yaml, emails: [{ id: firstEmailId, email: '' }] }
   })
 
-  async function submit (data: TestValues) {
-    console.log(data)
+  const { isPending, mutateAsync } = useMutation({
+    async mutationFn (data: TestValues) {
+      console.log(data)
+    }
+  })
+
+  async function submit (formData: TestValuesForm) {
+    const data = { ...formData, emails: formData.emails.map(item => item.email) }
+    await mutateAsync(data)
   }
 
   return (
@@ -55,7 +67,7 @@ function TestForm ({ vars }: { vars: EmailTemplateVars }) {
         </Modal.Body>
         <Modal.Footer>
           <CloseModal>Close</CloseModal>
-          <ButtonWithLoading type='submit'>
+          <ButtonWithLoading type="submit">
             Send
           </ButtonWithLoading>
         </Modal.Footer>
@@ -76,7 +88,7 @@ function Recipients () {
           <FormControl
             type="email"
             placeholder="email@domain.com"
-            {...register(`emails.${index}.email`)}
+            {...register(`emails.${index}.email`, { required: true })}
           />
           <Button variant="outline-dark" onClick={() => append({
             id: Date.now().toString(),
