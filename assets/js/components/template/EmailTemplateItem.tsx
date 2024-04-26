@@ -37,7 +37,7 @@ function SendTestButton ({ uuid }: { uuid: string }) {
       <Button variant="outline-success" size="sm" className="text-nowrap" onClick={() => {
         setShowModal(true)
       }}>Send Test</Button>
-      <AppModal show={showModal} onHide={() => setShowModal(false)}>
+      <AppModal show={showModal} onHide={() => setShowModal(false)} size="xl">
         <SendTest uuid={uuid}/>
       </AppModal>
     </>

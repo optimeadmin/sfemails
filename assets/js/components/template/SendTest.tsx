@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, FormControl, Modal } from 'react-bootstrap'
+import { Button, Col, FormControl, Modal, Row } from 'react-bootstrap'
 import { CloseModal, useHideModal } from '../ui/AppModal.tsx'
 import { useGetTemplateVarsByUuid } from '../../hooks/templates.ts'
 import { EmailTemplateVars, EmailTestValues } from '../../types'
@@ -11,6 +11,8 @@ import { ButtonWithLoading } from '../ui/ButtonWithLoading.tsx'
 import { useMutation } from '@tanstack/react-query'
 import { sendEmailTest } from '../../api/templates.ts'
 import { toast } from 'react-toastify'
+import { useUrl } from '../../contexts/UrlContext.tsx'
+import { Preview } from '../preview/Preview.tsx'
 
 export function SendTest ({ uuid }: { uuid: string }) {
   const hideModal = useHideModal()
@@ -21,7 +23,7 @@ export function SendTest ({ uuid }: { uuid: string }) {
       <Modal.Header closeButton>
         <Modal.Title>Send Test</Modal.Title>
       </Modal.Header>
-      {isLoading && <h2 className='py-4 px-2'>Preparing Form...</h2>}
+      {isLoading && <h2 className="py-4 px-2">Preparing Form...</h2>}
       {!isLoading && !!vars && <TestForm uuid={uuid} vars={vars}/>}
     </>
   )
@@ -66,11 +68,18 @@ function TestForm ({ uuid, vars }: { uuid: string, vars: EmailTemplateVars }) {
     <form onSubmit={form.handleSubmit(submit)}>
       <FormProvider {...form}>
         <Modal.Body>
-          <FormRow className="mb-3" name="vars">
-            <FormLabel>Email Variables</FormLabel>
-            <ControlledCodeMirror name="vars" type="yaml"/>
-          </FormRow>
-          <Recipients/>
+          <Row>
+            <Col xl={7} className='d-none d-xl-block'>
+              <PreviewTemplate uuid={uuid}/>
+            </Col>
+            <Col>
+              <FormRow className="mb-3" name="vars">
+                <FormLabel>Email Variables</FormLabel>
+                <ControlledCodeMirror name="vars" type="yaml"/>
+              </FormRow>
+              <Recipients/>
+            </Col>
+          </Row>
         </Modal.Body>
         <Modal.Footer>
           <CloseModal>Close</CloseModal>
@@ -109,5 +118,14 @@ function Recipients () {
         </article>
       ))}
     </FormRow>
+  )
+}
+
+function PreviewTemplate ({ uuid }: { uuid: string }) {
+  const { apiUrl } = useUrl()
+  const previewUrl = `${apiUrl}/preview/template/${uuid}`
+
+  return (
+    <Preview url={previewUrl} minHeight='50vh'/>
   )
 }
