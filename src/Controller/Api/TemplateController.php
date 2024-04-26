@@ -95,6 +95,7 @@ class TemplateController extends AbstractController
         MailerFactory $mailerFactory,
     ): JsonResponse {
         $variables = $extractor->buildVarsFromYaml($dto->vars);
+        $variables = [...$variables, '_locale' => $dto->locale];
         $intent = $mailerFactory->createFromTemplate($emailTemplate);
 
         foreach ($dto->emails as $email) {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Col, FormControl, Modal, Row } from 'react-bootstrap'
+import { Button, Col, FormControl, FormSelect, Modal, Row } from 'react-bootstrap'
 import { CloseModal, useHideModal } from '../ui/AppModal.tsx'
 import { useGetTemplateVarsByUuid } from '../../hooks/templates.ts'
 import { EmailTemplateVars, EmailTestValues } from '../../types'
@@ -13,6 +13,7 @@ import { sendEmailTest } from '../../api/templates.ts'
 import { toast } from 'react-toastify'
 import { useUrl } from '../../contexts/UrlContext.tsx'
 import { Preview } from '../preview/Preview.tsx'
+import { useLocales } from '../../contexts/LocaleContext.tsx'
 
 export function SendTest ({ uuid }: { uuid: string }) {
   const hideModal = useHideModal()
@@ -34,6 +35,7 @@ type EmailItemType = {
   email: string
 }
 type TestValuesForm = {
+  locale: string,
   vars: string,
   emails: EmailItemType[]
 }
@@ -41,8 +43,13 @@ type TestValuesForm = {
 const firstEmailId = Date.now().toString()
 
 function TestForm ({ uuid, vars }: { uuid: string, vars: EmailTemplateVars }) {
+  const { locale } = useLocales()
   const form = useForm<TestValuesForm>({
-    defaultValues: { vars: vars.yaml, emails: [{ id: firstEmailId, email: '' }] }
+    defaultValues: {
+      locale,
+      vars: vars.yaml,
+      emails: [{ id: firstEmailId, email: '' }]
+    }
   })
 
   const { isPending, mutateAsync } = useMutation({
@@ -69,10 +76,11 @@ function TestForm ({ uuid, vars }: { uuid: string, vars: EmailTemplateVars }) {
       <FormProvider {...form}>
         <Modal.Body>
           <Row>
-            <Col xl={7} className='d-none d-xl-block'>
+            <Col xl={7} className="d-none d-xl-block">
               <PreviewTemplate uuid={uuid}/>
             </Col>
             <Col>
+              <SelectLocale />
               <FormRow className="mb-3" name="vars">
                 <FormLabel>Email Variables</FormLabel>
                 <ControlledCodeMirror name="vars" type="yaml"/>
@@ -121,11 +129,27 @@ function Recipients () {
   )
 }
 
+function SelectLocale () {
+  const { register } = useFormContext()
+  const { locale, locales } = useLocales()
+
+  return (
+    <FormRow name="emails" className='mb-3'>
+      <FormLabel>Locale</FormLabel>
+      <FormSelect {...register('locale', { required: true })}>
+        {locales.map(localeItem => (
+          <option key={localeItem} value={localeItem}>{localeItem.toUpperCase()}</option>
+        ))}
+      </FormSelect>
+    </FormRow>
+  )
+}
+
 function PreviewTemplate ({ uuid }: { uuid: string }) {
   const { apiUrl } = useUrl()
   const previewUrl = `${apiUrl}/preview/template/${uuid}`
 
   return (
-    <Preview url={previewUrl} minHeight='50vh'/>
+    <Preview url={previewUrl} minHeight="50vh"/>
   )
 }

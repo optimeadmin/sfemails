@@ -56,6 +56,7 @@ export type EmailTemplateVars = {
 }
 
 export type EmailTestValues = {
+  locale: string,
   vars: string,
   emails: string[]
 }
