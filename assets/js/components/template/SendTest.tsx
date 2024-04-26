@@ -2,13 +2,15 @@ import React from 'react'
 import { Button, FormControl, Modal } from 'react-bootstrap'
 import { CloseModal, useHideModal } from '../ui/AppModal.tsx'
 import { useGetTemplateVarsByUuid } from '../../hooks/templates.ts'
-import { EmailTemplateVars } from '../../types'
+import { EmailTemplateVars, EmailTestValues } from '../../types'
 import { FormProvider, useFieldArray, useForm, useFormContext } from 'react-hook-form'
 import { ControlledCodeMirror } from '../ui/CodeMirror.tsx'
 import { FormLabel, FormRow } from '../ui/form/field.tsx'
 import { MinusIcon, PlusIcon } from '../icons/icons.tsx'
 import { ButtonWithLoading } from '../ui/ButtonWithLoading.tsx'
 import { useMutation } from '@tanstack/react-query'
+import { sendEmailTest } from '../../api/templates.ts'
+import { toast } from 'react-toastify'
 
 export function SendTest ({ uuid }: { uuid: string }) {
   const hideModal = useHideModal()
@@ -19,7 +21,7 @@ export function SendTest ({ uuid }: { uuid: string }) {
       <Modal.Header closeButton>
         <Modal.Title>Send Test</Modal.Title>
       </Modal.Header>
-      {!isLoading && !!vars && <TestForm vars={vars}/>}
+      {!isLoading && !!vars && <TestForm uuid={uuid} vars={vars}/>}
     </>
   )
 }
@@ -28,10 +30,6 @@ type EmailItemType = {
   id: string,
   email: string
 }
-type TestValues = {
-  vars: string,
-  emails: string[]
-}
 type TestValuesForm = {
   vars: string,
   emails: EmailItemType[]
@@ -39,19 +37,27 @@ type TestValuesForm = {
 
 const firstEmailId = Date.now().toString()
 
-function TestForm ({ vars }: { vars: EmailTemplateVars }) {
+function TestForm ({ uuid, vars }: { uuid: string, vars: EmailTemplateVars }) {
   const form = useForm<TestValuesForm>({
     defaultValues: { vars: vars.yaml, emails: [{ id: firstEmailId, email: '' }] }
   })
 
   const { isPending, mutateAsync } = useMutation({
-    async mutationFn (data: TestValues) {
-      console.log(data)
+    async mutationFn (data: EmailTestValues) {
+      try {
+        await sendEmailTest(uuid, data)
+        toast.success('Email sent successfully!', { autoClose: 1500 })
+      } catch (error) {
+        toast.error('Ups, an error has occurred!', { autoClose: 2000 })
+      }
     }
   })
 
   async function submit (formData: TestValuesForm) {
-    const data = { ...formData, emails: formData.emails.map(item => item.email) }
+    const data = {
+      ...formData,
+      emails: formData.emails.map(item => item.email)
+    }
     await mutateAsync(data)
   }
 
@@ -67,7 +73,7 @@ function TestForm ({ vars }: { vars: EmailTemplateVars }) {
         </Modal.Body>
         <Modal.Footer>
           <CloseModal>Close</CloseModal>
-          <ButtonWithLoading type="submit">
+          <ButtonWithLoading type="submit" isLoading={isPending}>
             Send
           </ButtonWithLoading>
         </Modal.Footer>

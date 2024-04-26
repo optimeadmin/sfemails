@@ -54,3 +54,8 @@ export type EmailApp = {
 export type EmailTemplateVars = {
   yaml: string
 }
+
+export type EmailTestValues = {
+  vars: string,
+  emails: string[]
+}

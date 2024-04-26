@@ -1,4 +1,11 @@
-import { Config, EmailTemplate, EmailTemplateVars, ExistentConfig, ExistentEmailTemplate } from '../types'
+import {
+  Config,
+  EmailTemplate,
+  EmailTemplateVars,
+  EmailTestValues,
+  ExistentConfig,
+  ExistentEmailTemplate
+} from '../types'
 import { axiosApi } from './axiosInstances'
 
 export async function getTemplates (signal: AbortSignal): Promise<ExistentEmailTemplate[]> {
@@ -25,4 +32,8 @@ export async function saveEmailTemplate (emailTemplate: EmailTemplate | Existent
   } else {
     await axiosApi.post(`/templates`, emailTemplate)
   }
+}
+
+export async function sendEmailTest (uuid: string, testData: EmailTestValues): Promise<void> {
+    await axiosApi.post(`/templates/test/${uuid}`, testData)
 }

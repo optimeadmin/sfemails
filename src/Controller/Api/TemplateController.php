@@ -8,9 +8,12 @@ declare(strict_types=1);
 namespace Optime\Email\Bundle\Controller\Api;
 
 use Optime\Email\Bundle\Dto\EmailTemplateDto;
+use Optime\Email\Bundle\Dto\EmailTemplateTestDto;
 use Optime\Email\Bundle\Dto\Factory\EmailTemplateDtoFactory;
 use Optime\Email\Bundle\Entity\EmailTemplate;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
+use Optime\Email\Bundle\Service\Email\MailerFactory;
+use Optime\Email\Bundle\Service\Email\Recipient\EmailRecipient;
 use Optime\Email\Bundle\Service\Template\UseCase\PersistEmailTemplateUseCase;
 use Optime\Email\Bundle\Service\Template\VariablesExtractor;
 use Optime\Util\Exception\ValidationException;
@@ -19,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+use function dump;
 
 /**
  * @author Manuel Aguirre
@@ -80,6 +84,23 @@ class TemplateController extends AbstractController
         #[MapEntity] EmailTemplate $emailTemplate,
         VariablesExtractor $extractor,
     ): JsonResponse {
+        return $this->json(['yaml' => $extractor->extractAsYaml($emailTemplate)]);
+    }
+
+    #[Route('/test/{uuid}', methods: 'post')]
+    public function sendTest(
+        #[MapEntity] EmailTemplate $emailTemplate,
+        #[MapRequestPayload] EmailTemplateTestDto $dto,
+        VariablesExtractor $extractor,
+        MailerFactory $mailerFactory,
+    ): JsonResponse {
+        $variables = $extractor->buildVarsFromYaml($dto->vars);
+        $intent = $mailerFactory->createFromTemplate($emailTemplate);
+
+        foreach ($dto->emails as $email) {
+            $intent->send($variables, EmailRecipient::fromEmail($email));
+        }
+
         return $this->json(['yaml' => $extractor->extractAsYaml($emailTemplate)]);
     }
 }

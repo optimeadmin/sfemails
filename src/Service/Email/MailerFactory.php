@@ -6,6 +6,7 @@
 namespace Optime\Email\Bundle\Service\Email;
 
 use Optime\Email\Bundle\Entity\EmailAppInterface;
+use Optime\Email\Bundle\Entity\EmailTemplate;
 use Optime\Email\Bundle\Repository\EmailAppRepository;
 use Optime\Email\Bundle\Repository\EmailMasterRepository;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
@@ -65,6 +66,14 @@ class MailerFactory
             $this->templateRepository->byConfigAndApp($config, $app),
             $app
         ));
+    }
+
+    public function createFromTemplate(EmailTemplate $template): MailerIntent
+    {
+        return $this->create(
+            $template->getConfig()->getCode(),
+            $template->getApp(),
+        );
     }
 
     private function createMailerIntent(TemplateData $templateData): MailerIntent
