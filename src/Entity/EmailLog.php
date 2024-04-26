@@ -261,4 +261,20 @@ class EmailLog
 
         return $vars;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'uuid' => $this->getUuid(),
+            'locale' => $this->getLocale(),
+            'configCode' => $this->getEmailCode(),
+            'emailSubject' => $this->getSubject(),
+            'status' => $this->getStatus()->value,
+            'statusTitle' => $this->getStatus()->toString(),
+            'recipient' => $this->getRecipient(),
+            'sessionUser' => $this->getSessionUserIdentifier(),
+            'sendAt' => $this->getDates()->getCreatedAt(),
+            'vars' => $this->getVariables(),
+        ];
+    }
 }

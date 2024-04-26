@@ -10,6 +10,7 @@ import { EditConfigPage } from './pages/config/EditConfigPage.tsx'
 import { TemplatesPage } from './pages/templates/TemplatesPage.tsx'
 import { CreateTemplatePage } from './pages/templates/CreateTemplatePage.tsx'
 import { EditTemplatePage } from './pages/templates/EditTemplatePage.tsx'
+import { LogsPage } from './pages/logs/LogsPage.tsx'
 
 export function Router ({ basename }: { basename: string }) {
   const router = useMemo(() => createBrowserRouter([
@@ -36,7 +37,7 @@ export function Router ({ basename }: { basename: string }) {
             { path: 'edit/:uuid', element: <EditTemplatePage/> },
           ]
         },
-        { path: '/logs', element: <h3>Soy la ruta (logs)</h3> },
+        { path: '/logs', element: <LogsPage/> },
       ]
     },
     { path: '/*', element: <h1>Not found</h1> },

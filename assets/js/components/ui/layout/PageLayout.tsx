@@ -13,7 +13,7 @@ export function PageLayout ({ children }: PageLayoutType) {
 type PageHeaderType = {
   title: ReactNode,
   subtitle?: ReactNode,
-  actions: ReactNode,
+  actions?: ReactNode,
 }
 
 export function PageHeader ({ title, subtitle, actions }: PageHeaderType) {
