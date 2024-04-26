@@ -21,6 +21,7 @@ export function SendTest ({ uuid }: { uuid: string }) {
       <Modal.Header closeButton>
         <Modal.Title>Send Test</Modal.Title>
       </Modal.Header>
+      {isLoading && <h2 className='py-4 px-2'>Preparing Form...</h2>}
       {!isLoading && !!vars && <TestForm uuid={uuid} vars={vars}/>}
     </>
   )
