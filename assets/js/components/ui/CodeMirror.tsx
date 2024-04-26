@@ -5,13 +5,15 @@ import { Controller } from 'react-hook-form'
 const GlobalCodeMirror = window['CodeMirror']
 
 type OnChangeType = (value: any) => void
+type ModeType = 'twig' | 'yaml'
 
 type CodeMirrorProps = {
   value?: any,
-  onChange?: OnChangeType
+  onChange?: OnChangeType,
+  type?: ModeType
 }
 
-export function CodeMirror ({ onChange, value }: CodeMirrorProps) {
+export function CodeMirror ({ onChange, value, type = 'twig' }: CodeMirrorProps) {
   const $input = useRef<HTMLTextAreaElement | null>(null)
   const onChangeRef = useRef<OnChangeType | undefined>(undefined)
   const defaultValueRef = useRef<any>(value)
@@ -25,9 +27,17 @@ export function CodeMirror ({ onChange, value }: CodeMirrorProps) {
   useEffect(() => {
     if (!$input.current) return
 
+    let mode
+
+    if (type === 'yaml') {
+      mode = { name: 'yaml' }
+    } else {
+      mode = { name: 'twig', base: 'text/html' }
+    }
+
     const editor = GlobalCodeMirror.fromTextArea($input.current, {
       lineNumbers: true,
-      mode: { name: 'twig', base: 'text/html' },
+      mode,
       theme: 'idea',
     })
 
@@ -44,20 +54,26 @@ export function CodeMirror ({ onChange, value }: CodeMirrorProps) {
     return () => {
       editor.toTextArea()
     }
-  }, [$input, onChangeRef, defaultValueRef])
+  }, [$input, onChangeRef, defaultValueRef, type])
 
   return (
     <textarea ref={$input}></textarea>
   )
 }
 
-export function ControlledCodeMirror ({ name, rules }: { name: string, rules: any }) {
+type ControlledCodeMirrorProps = CodeMirrorProps & {
+  name: string,
+  rules?: any,
+  type?: ModeType
+}
+
+export function ControlledCodeMirror ({ name, rules = {}, type }: ControlledCodeMirrorProps) {
   return (
     <Controller
       rules={rules}
       name={name}
       render={({ field: { onChange, value } }) => (
-        <CodeMirror value={value} onChange={onChange}/>
+        <CodeMirror type={type} value={value} onChange={onChange}/>
       )}
     />
   )

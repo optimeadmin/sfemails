@@ -25,3 +25,8 @@
 .table-row-middle td, td.table-row-middle {
     vertical-align: middle;
 }
+svg.bi {
+    display: inline-block;
+    vertical-align: -.125em;
+    fill: currentcolor;
+}

@@ -5,7 +5,7 @@ import { AxiosError } from 'axios'
 import { useForm, UseFormSetError } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { getEmailTemplate, getTemplates, saveEmailTemplate } from '../api/templates.ts'
+import { getEmailTemplate, getEmailTemplateVars, getTemplates, saveEmailTemplate } from '../api/templates.ts'
 
 export function useSaveTemplate (addError?: UseFormSetError<EmailTemplate>) {
   const queryClient = useQueryClient()
@@ -77,5 +77,17 @@ export function useTemplateForm (emailTemplate?: ExistentEmailTemplate) {
     isPending,
     form,
     sendForm,
+  }
+}
+
+export function useGetTemplateVarsByUuid (uuid: string) {
+  const { isLoading, data: vars } = useQuery({
+    queryKey: ['templates', 'item', 'vars', uuid],
+    queryFn: ({ signal }) => getEmailTemplateVars(uuid, signal),
+  })
+
+  return {
+    isLoading,
+    vars,
   }
 }

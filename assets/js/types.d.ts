@@ -50,3 +50,7 @@ export type EmailApp = {
   id: number,
   title: string,
 }
+
+export type EmailTemplateVars = {
+  yaml: string
+}

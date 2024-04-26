@@ -12,6 +12,7 @@ use Optime\Email\Bundle\Dto\Factory\EmailTemplateDtoFactory;
 use Optime\Email\Bundle\Entity\EmailTemplate;
 use Optime\Email\Bundle\Repository\EmailTemplateRepository;
 use Optime\Email\Bundle\Service\Template\UseCase\PersistEmailTemplateUseCase;
+use Optime\Email\Bundle\Service\Template\VariablesExtractor;
 use Optime\Util\Exception\ValidationException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -72,5 +73,13 @@ class TemplateController extends AbstractController
         }
 
         return $this->json($this->dtoFactory->create($emailTemplate));
+    }
+
+    #[Route('/vars/{uuid}', methods: 'get')]
+    public function getVars(
+        #[MapEntity] EmailTemplate $emailTemplate,
+        VariablesExtractor $extractor,
+    ): JsonResponse {
+        return $this->json(['yaml' => $extractor->extractAsYaml($emailTemplate)]);
     }
 }
