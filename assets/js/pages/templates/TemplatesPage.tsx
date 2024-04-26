@@ -24,7 +24,7 @@ export function TemplatesPage () {
             <th className="text-center">Status</th>
             <th className="text-center" style={{ width: 150 }}>Created At</th>
             <th className="text-center" style={{ width: 150 }}>Updated At</th>
-            <th style={{ width: 200 }}>Actions</th>
+            <th className="text-center" style={{ width: 210 }}>Actions</th>
           </tr>
         </thead>
         <tbody>

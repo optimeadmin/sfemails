@@ -57,7 +57,7 @@ export function ConfigForm ({ config }: { config?: ExistentConfig }) {
         </FormProvider>
 
         <ActionsContainer>
-          <Link to="/" className="btn btn-outline-secondary" data-bs-hide>Cancel</Link>
+          <Link to="/" className="btn btn-outline-secondary">Cancel</Link>
           <ButtonWithLoading type="submit" isLoading={isPending}>{isEdit ? 'Save' : 'Create'}</ButtonWithLoading>
         </ActionsContainer>
       </form>

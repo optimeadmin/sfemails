@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormErrors, FormLabel, FormRow } from '../ui/form/field'
-import { Col, FormControl, Row } from 'react-bootstrap'
+import { Button, Col, FormControl, Row } from 'react-bootstrap'
 import { FieldWithLocale, TranslatableFields } from '../ui/form/TranslatableFields'
 import { ActionsContainer } from '../ui/form/ActionsContainer'
 import { Link, useNavigate } from 'react-router-dom'
@@ -10,6 +10,7 @@ import { useSaveLayout } from '../../hooks/layout'
 import { ButtonWithLoading } from '../ui/ButtonWithLoading'
 import { ControlledCodeMirror } from '../ui/CodeMirror'
 import { toast } from 'react-toastify'
+import { CloseModal, useHideModal } from '../ui/AppModal.tsx'
 
 type LayoutFormProps = {
   layout?: ExistentLayout
@@ -71,7 +72,10 @@ export function LayoutForm ({ layout, fromModal = false, onSuccess }: LayoutForm
       </FormProvider>
 
       <ActionsContainer>
-        <Link to="/layouts" className="btn btn-outline-secondary" data-bs-hide>Cancel</Link>
+        {fromModal
+          ? <CloseModal>Cancel</CloseModal>
+          : <Link to="/layouts" className="btn btn-outline-secondary">Cancel</Link>
+        }
         <ButtonWithLoading type="submit" isLoading={isPending}>{isEdit ? 'Save' : 'Create'}</ButtonWithLoading>
       </ActionsContainer>
     </form>

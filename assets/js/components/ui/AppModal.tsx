@@ -1,47 +1,43 @@
-import React, { useLayoutEffect, useRef } from 'react'
-import { Modal, ModalProps } from 'react-bootstrap'
+import React, { createContext, useContext, useRef } from 'react'
+import { Button, ButtonProps, Modal, ModalProps } from 'react-bootstrap'
+
+type ModalContextType = {
+  hide: () => void,
+}
+
+const ModalContext = createContext<ModalContextType | null>(null)
 
 export function AppModal (props: ModalProps) {
-  const { show, onHide, onEntered, onExiting } = props
+  const { show, onHide } = props
   const $modal = useRef(null)
-  const itemsCleaning = useRef<Array<() => void>>([])
-  const onHideRef = useRef(onHide)
 
-  useLayoutEffect(() => {
-    onHideRef.current = onHide
-  })
-
-  function hideModal (event: Event) {
-    event.preventDefault()
+  function hide () {
     onHide?.()
   }
 
-  function addListeners ($container: HTMLElement) {
-    itemsCleaning.current = []
-
-    $container.querySelectorAll('[data-bs-hide]').forEach(item => {
-      item.addEventListener('click', hideModal)
-      itemsCleaning.current.push(() => item.removeEventListener('click', hideModal))
-    })
-  }
-
-  function removeListeners () {
-    itemsCleaning.current.forEach(callback => callback())
-    itemsCleaning.current = []
-  }
-
   return (
-    <Modal
-      ref={$modal}
-      {...props}
-      onEntered={(node, isAppearing) => {
-        addListeners(node)
-        onEntered?.(node, isAppearing)
-      }}
-      onExiting={(node) => {
-        removeListeners()
-        onExiting?.(node)
-      }}
-    />
+    <ModalContext.Provider value={{ hide }}>
+      <Modal
+        ref={$modal}
+        {...props}
+      />
+    </ModalContext.Provider>
   )
+}
+
+export function useHideModal () {
+  const context = useContext(ModalContext)
+
+  if (!context) throw new Error('useHideModal must be used inside <AppModal />')
+
+  return context.hide
+}
+
+type CloseModalProps = Omit<ButtonProps, 'onClick'>
+
+export function CloseModal (props: CloseModalProps) {
+  const { variant, ...btnProps } = props
+  const hideModal = useHideModal()
+
+  return <Button variant={variant ?? 'outline-secondary'} onClick={hideModal} {...btnProps}/>
 }
