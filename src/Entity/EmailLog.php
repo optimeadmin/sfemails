@@ -275,6 +275,7 @@ class EmailLog
             'sessionUser' => $this->getSessionUserIdentifier(),
             'sendAt' => $this->getDates()->getCreatedAt(),
             'vars' => $this->getVariables(),
+            'error' => $this->getFailureMessage(),
         ];
     }
 }

@@ -60,3 +60,19 @@ export type EmailTestValues = {
   vars: string,
   emails: string[]
 }
+
+export type EmailStatus = 'send' | 'no_template' | 'pending' | 'error'
+
+export type EmailLog = {
+  uuid: string,
+  locale: string,
+  configCode: string,
+  emailSubject: string | null,
+  status: EmailStatus,
+  statusTitle: string,
+  recipient: string,
+  sessionUser: string,
+  sendAt: string,
+  error: string | null,
+  vars: Object<string, string | number>,
+}

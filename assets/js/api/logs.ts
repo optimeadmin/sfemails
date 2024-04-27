@@ -1,5 +1,5 @@
 import {
-  Config,
+  Config, EmailLog,
   EmailTemplate,
   EmailTemplateVars,
   EmailTestValues,
@@ -7,9 +7,10 @@ import {
   ExistentEmailTemplate
 } from '../types'
 import { axiosApi } from './axiosInstances'
+import { PaginationDataResult } from '../components/ui/pagination/types'
 
-export async function getLogs (signal: AbortSignal): Promise<ExistentEmailTemplate[]> {
+export async function getLogs (signal: AbortSignal): Promise<PaginationDataResult<EmailLog>> {
   const { data } = await axiosApi.get(`/logs`, { signal })
 
-  return data as ExistentEmailTemplate[]
+  return data as PaginationDataResult<EmailLog>
 }

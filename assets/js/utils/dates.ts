@@ -1,7 +1,14 @@
-const formatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' });
+const dateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' });
+const dateTimeFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' });
 
 export function stringAsDate (date: string): string {
   const obj = new Date(date)
 
-  return formatter.format(obj);
+  return dateFormatter.format(obj);
+}
+
+export function stringAsDateTime (date: string): string {
+  const obj = new Date(date)
+
+  return dateTimeFormatter.format(obj);
 }
