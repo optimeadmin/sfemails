@@ -62,6 +62,7 @@ export type EmailTestValues = {
 }
 
 export type EmailStatus = 'send' | 'no_template' | 'pending' | 'error'
+export type EmailLogVars = Object<string, any>
 
 export type EmailLog = {
   uuid: string,
@@ -74,5 +75,5 @@ export type EmailLog = {
   sessionUser: string,
   sendAt: string,
   error: string | null,
-  vars: Object<string, string | number>,
+  vars: EmailLogVars,
 }

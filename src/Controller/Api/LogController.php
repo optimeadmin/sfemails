@@ -14,6 +14,7 @@ use Optime\Email\Bundle\Repository\EmailLogRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
@@ -51,5 +52,11 @@ class LogController extends AbstractController
         ];
 
         return $this->json($data);
+    }
+
+    #[Route('/{uuid}', methods: 'get')]
+    public function getContent(EmailLog $emailLog): Response
+    {
+        return new Response($emailLog->getContent());
     }
 }

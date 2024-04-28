@@ -69,7 +69,7 @@ function LayoutPreview () {
   const layoutUuid = useWatch({ name: 'layoutUuid' })
 
   return (
-    <PreviewLayoutAction uuid={layoutUuid} title="Layout Preview"/>
+    <PreviewLayoutAction uuid={layoutUuid} title="Preview Layout"/>
   )
 }
 

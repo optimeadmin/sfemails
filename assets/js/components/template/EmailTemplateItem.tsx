@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ExistentEmailTemplate } from '../../types'
 import { stringAsDate } from '../../utils/dates'
 import { Link } from 'react-router-dom'
 import { PreviewEmailTemplateAction } from './PreviewEmailTemplateAction.tsx'
-import { Button } from 'react-bootstrap'
-import { AppModal } from '../ui/AppModal.tsx'
 import { SendTest } from './SendTest.tsx'
+import { ButtonModal } from '../ui/ButtonModal.tsx'
 
 export function EmailTemplateItem ({ emailTemplate }: { emailTemplate: ExistentEmailTemplate }) {
   return (
@@ -31,15 +30,14 @@ export function EmailTemplateItem ({ emailTemplate }: { emailTemplate: ExistentE
 }
 
 function SendTestButton ({ uuid }: { uuid: string }) {
-  const [showModal, setShowModal] = useState(false)
   return (
-    <>
-      <Button variant="outline-success" size="sm" className="text-nowrap" onClick={() => {
-        setShowModal(true)
-      }}>Send Test</Button>
-      <AppModal show={showModal} onHide={() => setShowModal(false)} size="xl">
-        <SendTest uuid={uuid}/>
-      </AppModal>
-    </>
+    <ButtonModal
+      modalContent={<SendTest uuid={uuid}/>}
+      modalProps={{ size: 'xl' }}
+      size="sm"
+      variant="outline-success"
+      className="text-nowrap">
+      Send Test
+    </ButtonModal>
   )
 }

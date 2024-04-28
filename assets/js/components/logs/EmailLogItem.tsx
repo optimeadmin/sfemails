@@ -1,9 +1,11 @@
 import React from 'react'
 import { EmailLog } from '../../types'
 import { stringAsDateTime } from '../../utils/dates'
-import { Link } from 'react-router-dom'
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap'
 import { ButtonVariant } from 'react-bootstrap/types'
+import { ShowVarsButton } from './actions/ShowVarsButton.tsx'
+import { ShowButton } from './actions/ShowButton.tsx'
+import { ResendButton } from './actions/ResendButton.tsx'
 
 export function EmailLogItem ({ emailLog }: { emailLog: EmailLog }) {
   return (
@@ -20,7 +22,9 @@ export function EmailLogItem ({ emailLog }: { emailLog: EmailLog }) {
       <td className="text-center">{stringAsDateTime(emailLog.sendAt)}</td>
       <td>
         <div className="d-flex gap-1">
-          <Link to={`/templates/edit/${emailLog.uuid}`} className="btn btn-sm btn-outline-primary">Edit</Link>
+          <ShowVarsButton vars={emailLog.vars}/>
+          <ShowButton uuid={emailLog.uuid} status={emailLog.status}/>
+          <ResendButton uuid={emailLog.uuid} status={emailLog.status}/>
         </div>
       </td>
     </tr>
@@ -32,7 +36,7 @@ function Status ({ emailLog }: { emailLog: EmailLog }) {
   const btnVariant: ButtonVariant = status === 'send' ? 'outline-secondary' : 'outline-danger'
 
   return (
-    <OverlayTrigger trigger='focus' overlay={<Popover><Popover.Body>{error}</Popover.Body></Popover>}>
+    <OverlayTrigger trigger="focus" overlay={<Popover><Popover.Body>{error}</Popover.Body></Popover>}>
       <Button className="w-100" size="sm" variant={btnVariant} disabled={status === 'send'}>
         {emailLog.statusTitle}
       </Button>

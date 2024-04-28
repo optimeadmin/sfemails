@@ -80,7 +80,7 @@ function TestForm ({ uuid, vars }: { uuid: string, vars: EmailTemplateVars }) {
               <PreviewTemplate uuid={uuid}/>
             </Col>
             <Col>
-              <SelectLocale />
+              <SelectLocale/>
               <FormRow className="mb-3" name="vars">
                 <FormLabel>Email Variables</FormLabel>
                 <ControlledCodeMirror name="vars" type="yaml"/>
@@ -134,7 +134,7 @@ function SelectLocale () {
   const { locale, locales } = useLocales()
 
   return (
-    <FormRow name="emails" className='mb-3'>
+    <FormRow name="emails" className="mb-3">
       <FormLabel>Locale</FormLabel>
       <FormSelect {...register('locale', { required: true })}>
         {locales.map(localeItem => (

@@ -26,7 +26,7 @@ export function LogsPage () {
             <th className="">Recipient</th>
             <th className="">Session User</th>
             <th className="text-center">Send At</th>
-            <th className="text-center" style={{ width: 210 }}>Actions</th>
+            <th className="text-center" style={{ width: 220 }}>Actions</th>
           </tr>
         </thead>
         <tbody>
