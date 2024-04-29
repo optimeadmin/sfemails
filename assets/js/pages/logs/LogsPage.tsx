@@ -8,8 +8,6 @@ import { EmailLogItem } from '../../components/logs/EmailLogItem.tsx'
 export function LogsPage () {
   const { logs, paginationData } = useGetLogs()
 
-  console.log(logs, paginationData)
-
   const pagination = <QueryDataPagination paginationData={paginationData}/>
 
   return (

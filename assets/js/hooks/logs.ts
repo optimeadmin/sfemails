@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
-import { getLogs } from '../api/logs.ts'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { getLogs, resendEmails } from '../api/logs.ts'
 
 export function useGetLogs () {
   const { isLoading, data } = useQuery({
@@ -15,5 +15,22 @@ export function useGetLogs () {
     isLoading,
     logs,
     paginationData,
+  }
+}
+
+export function useResendEmail (uuids: string[]) {
+  const queryClient = useQueryClient()
+  const { mutateAsync, isPending } = useMutation({
+    async mutationFn () {
+      return await resendEmails(uuids)
+    },
+    onSuccess () {
+      queryClient.invalidateQueries({ queryKey: ['logs'] })
+    }
+  })
+
+  return {
+    isPending,
+    resend: mutateAsync,
   }
 }

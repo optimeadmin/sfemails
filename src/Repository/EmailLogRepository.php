@@ -10,6 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Optime\Email\Bundle\Entity\EmailLog;
+use Symfony\Component\Uid\Uuid;
 use function array_map;
 use function count;
 use function is_string;
@@ -72,5 +73,10 @@ class EmailLogRepository extends ServiceEntityRepository
         }
 
         return $query;
+    }
+
+    public function byUuid(Uuid $uuid): ?EmailLog
+    {
+        return $this->findOneBy(['uuid' => $uuid]);
     }
 }
