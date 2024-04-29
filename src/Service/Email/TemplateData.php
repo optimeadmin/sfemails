@@ -16,11 +16,11 @@ use Optime\Email\Bundle\Entity\EmailTemplate;
 class TemplateData
 {
     public function __construct(
-        private string $emailCode,
-        private ?EmailMaster $config,
-        private ?EmailTemplate $template,
-        private ?EmailAppInterface $app,
-        private bool $appFromResolver = false,
+        private readonly string $emailCode,
+        private readonly ?EmailMaster $config,
+        private readonly ?EmailTemplate $template,
+        private readonly ?EmailAppInterface $app,
+        private readonly bool $appFromResolver = false,
     ) {
     }
 

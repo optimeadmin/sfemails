@@ -16,8 +16,8 @@ use Throwable;
 class MailerLog
 {
     public function __construct(
-        private Mailer $mailer,
-        private EntityManagerInterface $entityManager,
+        private readonly Mailer $mailer,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 

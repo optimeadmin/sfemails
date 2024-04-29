@@ -19,11 +19,11 @@ export function LogsPage () {
       <Table striped size="sm">
         <thead>
           <tr>
-            <th className="text-center" style={{ width: 140 }}>Status</th>
             <th>Email info</th>
             <th className="">Recipient</th>
             <th className="">Session User</th>
             <th className="text-center">Send At</th>
+            <th className="text-center" style={{ width: 140 }}>Status</th>
             <th className="text-center" style={{ width: 220 }}>Actions</th>
           </tr>
         </thead>

@@ -15,8 +15,8 @@ use Optime\Util\Translation\Translation;
 class DefaultLayoutCreator
 {
     public function __construct(
-        private EmailLayoutRepository $repository,
-        private Translation $translation,
+        private readonly EmailLayoutRepository $repository,
+        private readonly Translation $translation,
     ) {
     }
 

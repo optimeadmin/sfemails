@@ -17,7 +17,7 @@ use function strip_tags;
 class EmailFactory
 {
     public function __construct(
-        private TemplateRenderer $renderer,
+        private readonly TemplateRenderer $renderer,
     ) {
     }
 

@@ -17,7 +17,7 @@ use function dd;
 class ContentValidator
 {
     public function __construct(
-        private TemplateRenderer $renderer,
+        private readonly TemplateRenderer $renderer,
     ) {
     }
 

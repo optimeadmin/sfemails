@@ -10,7 +10,6 @@ import { ResendButton } from './actions/ResendButton.tsx'
 export function EmailLogItem ({ emailLog }: { emailLog: EmailLog }) {
   return (
     <tr className="table-row-middle">
-      <td className="text-center px-3"><Status emailLog={emailLog}/></td>
       <td>
         <small className="user-select-all d-block border-bottom pb-1">
           {emailLog.configCode} {`{${emailLog.locale}}`}
@@ -20,6 +19,7 @@ export function EmailLogItem ({ emailLog }: { emailLog: EmailLog }) {
       <td>{emailLog.recipient}</td>
       <td>{emailLog.sessionUser}</td>
       <td className="text-center">{stringAsDateTime(emailLog.sendAt)}</td>
+      <td className="text-center px-3"><Status emailLog={emailLog}/></td>
       <td>
         <div className="d-flex gap-1">
           <ShowVarsButton vars={emailLog.vars}/>

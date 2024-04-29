@@ -5,7 +5,6 @@ export function useGetLogs () {
   const { isLoading, data } = useQuery({
     queryKey: ['logs'],
     queryFn: ({ signal }) => getLogs(signal),
-    staleTime: 1000 * 60 * 5,
   })
 
   const paginationData = data?.paginationData || null

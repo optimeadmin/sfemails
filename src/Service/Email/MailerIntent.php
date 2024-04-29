@@ -18,9 +18,9 @@ class MailerIntent
     private EmailLog|null $lastLog = null;
 
     public function __construct(
-        private Mailer $mailer,
-        private MailerIntentUtils $utils,
-        private TemplateData $templateData,
+        private readonly Mailer $mailer,
+        private readonly MailerIntentUtils $utils,
+        private readonly TemplateData $templateData,
     ) {
     }
 

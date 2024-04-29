@@ -13,8 +13,8 @@ use Optime\Email\Bundle\Entity\EmailLog;
 class EmailRecipient implements EmailRecipientInterface
 {
     public function __construct(
-        private string $email,
-        private string $name,
+        private readonly string $email,
+        private readonly string $name,
         private ?string $id = null,
     ) {
         if (null === $this->id) {

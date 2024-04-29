@@ -21,9 +21,9 @@ class MailerIntentUtils
     private string|null|false $loggedUserIdentifier = false;
 
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private TemplateVarsNormalizer $varsNormalizer,
-        private ?Security $security,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly TemplateVarsNormalizer $varsNormalizer,
+        private readonly ?Security $security,
     ) {
     }
 

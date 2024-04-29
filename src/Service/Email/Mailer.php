@@ -20,9 +20,9 @@ class Mailer
     private string|null|false $loggedUserIdentifier = false;
 
     public function __construct(
-        private MailerInterface $mailer,
-        private EmailFactory $emailFactory,
-        private TemplateVarsNormalizer $varsNormalizer,
+        private readonly MailerInterface $mailer,
+        private readonly EmailFactory $emailFactory,
+        private readonly TemplateVarsNormalizer $varsNormalizer,
     ) {
     }
 

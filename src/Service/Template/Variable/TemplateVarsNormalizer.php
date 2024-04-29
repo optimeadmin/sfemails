@@ -18,8 +18,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TemplateVarsNormalizer
 {
     public function __construct(
-        private TranslatorInterface $translator,
-        private UrlGeneratorInterface $urlGenerator,
+        private readonly TranslatorInterface $translator,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

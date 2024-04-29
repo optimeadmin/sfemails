@@ -77,12 +77,6 @@ class LogController extends AbstractController
                 }
             }
         }
-        dump($uuids);
-//        if ($mailer->resend($emailLog)) {
-//            $this->addFlash('success', "Success Resend '{$emailLog->getUuid()}'!");
-//        } else {
-//            $this->addFlash('danger', "Failed Resend '{$emailLog->getUuid()}'!");
-//        }
 
         return $this->json($uuids, $error ? Response::HTTP_MULTI_STATUS : 200);
     }

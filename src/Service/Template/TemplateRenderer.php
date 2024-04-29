@@ -19,10 +19,10 @@ use Twig\TemplateWrapper;
 class TemplateRenderer
 {
     public function __construct(
-        private Environment $twig,
-        private ArrayLoader $twigLoader,
-        private TranslatorInterface $translator,
-        private LocalizedTemplateProvider $localizedTemplateProvider,
+        private readonly Environment $twig,
+        private readonly ArrayLoader $twigLoader,
+        private readonly TranslatorInterface $translator,
+        private readonly LocalizedTemplateProvider $localizedTemplateProvider,
     ) {
     }
 

@@ -20,9 +20,9 @@ use Optime\Util\Exception\ValidationException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
-use function dump;
 
 /**
  * @author Manuel Aguirre
@@ -98,10 +98,17 @@ class TemplateController extends AbstractController
         $variables = [...$variables, '_locale' => $dto->locale];
         $intent = $mailerFactory->createFromTemplate($emailTemplate);
 
+        $error = false;
+
         foreach ($dto->emails as $email) {
-            $intent->send($variables, EmailRecipient::fromEmail($email));
+            if (!$intent->send($variables, EmailRecipient::fromEmail($email))) {
+                $error = true;
+            }
         }
 
-        return $this->json(['yaml' => $extractor->extractAsYaml($emailTemplate)]);
+        return $this->json(
+            ['yaml' => $extractor->extractAsYaml($emailTemplate)],
+            $error ? Response::HTTP_MULTI_STATUS : 200
+        );
     }
 }

@@ -19,11 +19,11 @@ use Optime\Email\Bundle\Service\Email\App\EmailAppResolverInterface;
 class MailerFactory
 {
     public function __construct(
-        private Mailer $mailer,
-        private MailerIntentUtils $mailerIntentUtils,
-        private EmailMasterRepository $masterRepository,
-        private EmailTemplateRepository $templateRepository,
-        private DefaultEmailAppResolverInterface $defaultEmailAppResolver,
+        private readonly Mailer $mailer,
+        private readonly MailerIntentUtils $mailerIntentUtils,
+        private readonly EmailMasterRepository $masterRepository,
+        private readonly EmailTemplateRepository $templateRepository,
+        private readonly DefaultEmailAppResolverInterface $defaultEmailAppResolver,
     ) {
     }
 
