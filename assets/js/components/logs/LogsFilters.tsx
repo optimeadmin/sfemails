@@ -32,7 +32,16 @@ const emptyFilters: Filters = {
 export function LogsFilters () {
   const { setQueryData, queryData } = useQueryStringData()
 
-  const form = useForm<Filters>({ defaultValues: async () => ({ ...emptyFilters, ...queryData }) })
+  const form = useForm<Filters>({
+    defaultValues: async () => {
+      const data = { ...emptyFilters, ...queryData }
+      if (Array.isArray(data.recipients)) {
+        data.recipients = data.recipients.join('\n')
+      }
+
+      return data
+    }
+  })
   const [defaultOpenFilters] = useState(() => !!queryData && Object.keys(queryData).length > 0)
   const { appsCount } = useApps()
   const $form = useRef<HTMLFormElement | null>(null)

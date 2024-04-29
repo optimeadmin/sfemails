@@ -33,7 +33,6 @@ class EmailLogRepository extends ServiceEntityRepository
         Filter::build($query, $filters['logId'] ?? null)->like('l.uuid')->where('id');
         Filter::build($query, $filters['subject'] ?? null)->like('l.subject');
         Filter::build($query, $filters['recipients'] ?? null)->where('l.recipient');
-//        Filter::build($query, $filters['send_at'] ?? null)->where('l.recipient');
         Filter::build($query, $filters['statuses'] ?? null)->where('l.status');
         Filter::build($query, $filters['configs'] ?? null)->join('t.config', 'config')->where('config.uuid');
 

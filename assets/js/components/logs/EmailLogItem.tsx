@@ -11,12 +11,14 @@ export function EmailLogItem ({ emailLog }: { emailLog: EmailLog }) {
   return (
     <tr className="table-row-middle">
       <td>
-        <small className="user-select-all d-block border-bottom pb-1">
-          {emailLog.configCode} {`{${emailLog.locale}}`}
-        </small>
+        <div className="border-bottom pb-1">
+          <small className="user-select-all">{emailLog.configCode}</small>
+          <small> {`{${emailLog.locale}}`}</small>
+          {emailLog.resend && <small className="fst-italic"> [Resend]</small>}
+        </div>
         {emailLog.emailSubject}
       </td>
-      <td className='user-select-all'>{emailLog.recipient}</td>
+      <td className="user-select-all">{emailLog.recipient}</td>
       <td>{emailLog.sessionUser}</td>
       <td className="text-center">{stringAsDateTime(emailLog.sendAt)}</td>
       <td className="text-center px-3"><Status emailLog={emailLog}/></td>
@@ -24,7 +26,7 @@ export function EmailLogItem ({ emailLog }: { emailLog: EmailLog }) {
         <div className="d-flex gap-1">
           <ShowVarsButton vars={emailLog.vars}/>
           <ShowButton uuid={emailLog.uuid} status={emailLog.status}/>
-          <ResendButton uuid={emailLog.uuid} status={emailLog.status}/>
+          <ResendButton uuid={emailLog.uuid} disabled={!emailLog.canResend}/>
         </div>
       </td>
     </tr>

@@ -76,4 +76,6 @@ export type EmailLog = {
   sendAt: string,
   error: string | null,
   vars: EmailLogVars,
+  resend: boolean,
+  canResend: boolean,
 }

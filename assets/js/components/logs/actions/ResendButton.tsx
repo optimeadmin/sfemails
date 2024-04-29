@@ -9,12 +9,10 @@ import { toast } from 'react-toastify'
 
 type ResendProps = {
   uuid: string,
-  status: EmailStatus
+  disabled?: boolean,
 }
 
-export function ResendButton ({ uuid, status }: ResendProps) {
-  const disabled = ['pending', 'no_template'].includes(status)
-
+export function ResendButton ({ uuid, disabled = false }: ResendProps) {
   const popover = (
     <Popover>
       <PopoverContent uuid={uuid}/>

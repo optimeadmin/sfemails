@@ -160,10 +160,10 @@ class EmailLog
     public function confirmSend(): void
     {
         if ($this->status == EmailLogStatus::error) {
-            $this->resend = true;
             $this->failureMessage = '';
         }
 
+        $this->resend = true;
         $this->status = EmailLogStatus::send;
     }
 
@@ -277,6 +277,8 @@ class EmailLog
             'sendAt' => $this->getDates()->getCreatedAt(),
             'vars' => $this->getVariables(),
             'error' => $this->getFailureMessage(),
+            'resend' => $this->isResend(),
+            'canResend' => $this->canResend(),
         ];
     }
 }
