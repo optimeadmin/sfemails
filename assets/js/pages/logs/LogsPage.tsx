@@ -5,19 +5,21 @@ import { useGetLogs } from '../../hooks/logs.ts'
 import { QueryDataPagination } from '../../components/ui/pagination/QueryDataPagination.tsx'
 import { EmailLogItem } from '../../components/logs/EmailLogItem.tsx'
 import { LogsFilters } from '../../components/logs/LogsFilters.tsx'
+import { useApps } from '../../contexts/AppsContext.tsx'
 
 export function LogsPage () {
-  const { logs, paginationData } = useGetLogs()
+  const { isLoading, logs, paginationData } = useGetLogs()
+  const { appsCount } = useApps()
 
   const pagination = <div className="d-flex justify-content-end mb-2">
-    <QueryDataPagination paginationData={paginationData} className='pagination-sm'/>
+    <QueryDataPagination paginationData={paginationData} className="pagination-sm"/>
   </div>
 
   return (
     <PageLayout>
       <PageHeader title={'Emails Logs'}/>
 
-      <LogsFilters />
+      <LogsFilters/>
 
       {pagination}
 
@@ -27,6 +29,7 @@ export function LogsPage () {
             <th>Email info</th>
             <th className="">Recipient</th>
             <th className="">Session User</th>
+            {appsCount > 1 && <th className="">Application</th>}
             <th className="text-center">Send At</th>
             <th className="text-center" style={{ width: 140 }}>Status</th>
             <th className="text-center" style={{ width: 220 }}>Actions</th>
@@ -36,6 +39,15 @@ export function LogsPage () {
           {logs?.map(log => (
             <EmailLogItem key={log.uuid} emailLog={log}/>
           ))}
+          {!isLoading && (logs?.length ?? 0) === 0 && (
+            <tr>
+              <td colSpan={10} className="text-center">
+                <div className="py-2">
+                  No items found
+                </div>
+              </td>
+            </tr>
+          )}
         </tbody>
       </Table>
 

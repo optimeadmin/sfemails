@@ -19,6 +19,10 @@ enum EmailLogStatus: string
 
     public function toString(): string
     {
+        if ($this === self::send) {
+            return 'Sent';
+        }
+
         return u($this->value)->replace('_', ' ')->title();
     }
 

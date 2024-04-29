@@ -265,10 +265,13 @@ class EmailLog
 
     public function toArray(): array
     {
+        $app = $this->getTemplate()?->getApp() ?? $this->getVariables()[self::EMAIL_APP_VARIABLE] ?? '';
+
         return [
             'uuid' => $this->getUuid(),
             'locale' => $this->getLocale(),
             'configCode' => $this->getEmailCode(),
+            'application' => (string)$app,
             'emailSubject' => $this->getSubject(),
             'status' => $this->getStatus()->value,
             'statusTitle' => $this->getStatus()->toString(),

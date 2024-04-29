@@ -48,12 +48,12 @@ export function LogsFilters () {
 
   function submit (data: Filters) {
     const mappedData = { ...data, recipients: data.recipients?.split('\n').filter(Boolean) ?? [] }
-    setQueryData({ ...queryData, ...mappedData })
+    setQueryData({ ...queryData, ...mappedData, page: '1' })
   }
 
   function clear () {
     form.reset(emptyFilters)
-    setQueryData({ ...queryData, ...emptyFilters })
+    setQueryData({ ...queryData, ...emptyFilters, page: '1' })
   }
 
   return (

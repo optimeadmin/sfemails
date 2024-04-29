@@ -6,8 +6,11 @@ import { ButtonVariant } from 'react-bootstrap/types'
 import { ShowVarsButton } from './actions/ShowVarsButton.tsx'
 import { ShowButton } from './actions/ShowButton.tsx'
 import { ResendButton } from './actions/ResendButton.tsx'
+import { useApps } from '../../contexts/AppsContext.tsx'
 
 export function EmailLogItem ({ emailLog }: { emailLog: EmailLog }) {
+  const { appsCount } = useApps()
+
   return (
     <tr className="table-row-middle">
       <td>
@@ -20,6 +23,7 @@ export function EmailLogItem ({ emailLog }: { emailLog: EmailLog }) {
       </td>
       <td className="user-select-all">{emailLog.recipient}</td>
       <td>{emailLog.sessionUser}</td>
+      {appsCount > 1 && <td>{emailLog.application || '--'}</td>}
       <td className="text-center">{stringAsDateTime(emailLog.sendAt)}</td>
       <td className="text-center px-3"><Status emailLog={emailLog}/></td>
       <td>

@@ -68,6 +68,7 @@ export type EmailLog = {
   uuid: string,
   locale: string,
   configCode: string,
+  application?: string,
   emailSubject: string | null,
   status: EmailStatus,
   statusTitle: string,

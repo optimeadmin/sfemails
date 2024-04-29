@@ -27,7 +27,9 @@ class EmailLogRepository extends ServiceEntityRepository
     public function queryAll(array $filters = null): QueryBuilder
     {
         $query = $this->createQueryBuilder('l')
+            ->select('l, t, app')
             ->leftJoin('l.template', 't')
+            ->leftJoin('t.app', 'app')
             ->orderBy('l.id', 'DESC');
 
         Filter::build($query, $filters['logId'] ?? null)->like('l.uuid')->where('id');
@@ -40,7 +42,7 @@ class EmailLogRepository extends ServiceEntityRepository
 
         if (count($apps) > 0) {
             $resolvedApps = array_map(fn($index) => $this->appProvider->getByIndex($index), $apps);
-            Filter::build($query, $resolvedApps)->join('t.app', 'app')->where('app');
+            Filter::build($query, $resolvedApps)->where('app');
         }
 
 //            if (($filters['send_at'] ?? null) instanceof DateTimeInterface) {
