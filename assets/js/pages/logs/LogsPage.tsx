@@ -4,15 +4,20 @@ import { Table } from 'react-bootstrap'
 import { useGetLogs } from '../../hooks/logs.ts'
 import { QueryDataPagination } from '../../components/ui/pagination/QueryDataPagination.tsx'
 import { EmailLogItem } from '../../components/logs/EmailLogItem.tsx'
+import { LogsFilters } from '../../components/logs/LogsFilters.tsx'
 
 export function LogsPage () {
   const { logs, paginationData } = useGetLogs()
 
-  const pagination = <QueryDataPagination paginationData={paginationData}/>
+  const pagination = <div className="d-flex justify-content-end mb-2">
+    <QueryDataPagination paginationData={paginationData} className='pagination-sm'/>
+  </div>
 
   return (
     <PageLayout>
       <PageHeader title={'Emails Logs'}/>
+
+      <LogsFilters />
 
       {pagination}
 

@@ -2,12 +2,14 @@ import React from 'react'
 import { KnpPagination } from './KnpPagination'
 import { useQueryStringData } from '../../../hooks/queryStringData'
 import { KnpPaginationData } from './types'
+import { PaginationProps } from 'react-bootstrap'
 
 type Props = {
   paginationData: KnpPaginationData | null
+  className?: string,
 }
 
-export function QueryDataPagination ({ paginationData }: Props) {
+export function QueryDataPagination ({ paginationData, className }: Props) {
   const { queryData, setQueryData } = useQueryStringData()
 
   function setPage (page: number) {
@@ -15,6 +17,6 @@ export function QueryDataPagination ({ paginationData }: Props) {
   }
 
   return (
-    <KnpPagination paginationData={paginationData} setPage={setPage}/>
+    <KnpPagination paginationData={paginationData} setPage={setPage} className={className}/>
   )
 }

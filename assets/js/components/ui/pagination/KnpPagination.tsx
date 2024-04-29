@@ -1,14 +1,16 @@
-import React, { useId, useRef } from 'react'
-import { FormControl, FormLabel, Pagination as RP } from 'react-bootstrap'
+import React from 'react'
+import { Pagination as RP } from 'react-bootstrap'
 import { KnpPaginationData } from './types'
+import { clsx } from 'clsx'
 
 type KnpPaginationProps = {
   paginationData?: KnpPaginationData | null,
   setPage: (page: number) => void,
-  pageParamName?: string
+  pageParamName?: string,
+  className?: string,
 }
 
-export function KnpPagination ({ paginationData, setPage, pageParamName = 'page' }: KnpPaginationProps) {
+export function KnpPagination ({ paginationData, setPage, pageParamName = 'page', className }: KnpPaginationProps) {
   if (!paginationData) return null
 
   const { first, last, current } = paginationData
@@ -18,7 +20,7 @@ export function KnpPagination ({ paginationData, setPage, pageParamName = 'page'
 
   return (
     <div className="d-flex gap-2 align-items-center">
-      <RP className="mb-0">
+      <RP className={clsx('mb-0', className)}>
         <RP.Item disabled={current === 1} onClick={() => setPage(current - 1)}>&laquo;</RP.Item>
 
         {first < firstPageInRange && (

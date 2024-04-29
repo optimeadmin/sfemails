@@ -8,12 +8,16 @@ import { LocaleProvider } from './contexts/LocaleContext'
 import { axiosApi } from './api/axiosInstances'
 import { UrlProvider } from './contexts/UrlContext'
 import { ToastContainer } from 'react-toastify'
+import { AppsProvider } from './contexts/AppsContext.tsx'
 
 const $container = document.getElementById('emails_config_root') as HTMLElement
 const basename = $container.dataset.basename ?? '/'
 const endpointApi = $container.dataset.apiUrl ?? '/'
 const locale = $container.dataset.locale ?? 'en'
 const locales = JSON.parse($container.dataset.locales ?? '[]')
+const appsCount = JSON.parse($container.dataset.appsCount ?? '0')
+
+console.log({ appsCount })
 
 const root = createRoot($container)
 
@@ -34,11 +38,13 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <UrlProvider basename={basename} apiUrl={endpointApi}>
         <LocaleProvider locale={locale} locales={locales}>
-          <Router basename={basename}/>
+          <AppsProvider appsCount={appsCount}>
+            <Router basename={basename}/>
+          </AppsProvider>
           <ToastContainer
             autoClose={3000}
             hideProgressBar
-            position='top-center'
+            position="top-center"
           />
         </LocaleProvider>
       </UrlProvider>
