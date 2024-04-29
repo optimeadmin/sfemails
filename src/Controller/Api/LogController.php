@@ -39,7 +39,7 @@ class LogController extends AbstractController
     {
         /** @var SlidingPagination $items */
         $items = $this->paginator->paginate(
-            $this->repository->queryAll([]),
+            $this->repository->queryAll($request->query->all()),
             $request->query->getInt('page', 1),
             $request->query->getInt('perPage', 100),
         );

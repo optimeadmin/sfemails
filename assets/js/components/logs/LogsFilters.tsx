@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useId, useRef } from 'react'
+import React, { PropsWithChildren, useId, useRef, useState } from 'react'
 import { FormLabel, FormRow } from '../ui/form/field.tsx'
 import { Accordion, Button, Col, FormCheck, FormControl, Row } from 'react-bootstrap'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
@@ -10,29 +10,45 @@ import { useApps } from '../../contexts/AppsContext.tsx'
 import { useQueryStringData } from '../../hooks/queryStringData.ts'
 
 type Filters = {
-  apps: string[],
-  configs: string[],
-  logId: string,
-  recipients: string,
-  sendAt: string,
-  statuses: string[],
-  subject: string,
+  apps?: string[],
+  configs?: string[],
+  logId?: string,
+  recipients?: string,
+  sendAt?: string,
+  statuses?: string[],
+  subject?: string,
+}
+
+const emptyFilters: Filters = {
+  apps: [],
+  configs: [],
+  logId: '',
+  recipients: '',
+  sendAt: '',
+  statuses: [],
+  subject: '',
 }
 
 export function LogsFilters () {
   const { setQueryData, queryData } = useQueryStringData()
-  const form = useForm<Filters>({ defaultValues: queryData })
+
+  const form = useForm<Filters>({ defaultValues: async () => ({ ...emptyFilters, ...queryData }) })
+  const [defaultOpenFilters] = useState(() => !!queryData && Object.keys(queryData).length > 0)
   const { appsCount } = useApps()
   const $form = useRef<HTMLFormElement | null>(null)
 
   function submit (data: Filters) {
-    const mappedData = { ...data, recipients: data.recipients.split('\n').filter(Boolean) }
-    console.log(mappedData)
+    const mappedData = { ...data, recipients: data.recipients?.split('\n').filter(Boolean) ?? [] }
     setQueryData({ ...queryData, ...mappedData })
   }
 
+  function clear () {
+    form.reset(emptyFilters)
+    setQueryData({ ...queryData, ...emptyFilters })
+  }
+
   return (
-    <FiltersContainer>
+    <FiltersContainer defaultOpen={defaultOpenFilters}>
       <FormProvider {...form}>
         <form ref={$form} className="mb-4" onSubmit={form.handleSubmit(submit)}>
           <Row className="border-bottom">
@@ -81,7 +97,7 @@ export function LogsFilters () {
             )}
             <Col className="d-flex gap-2 flex-column">
               <ButtonWithLoading type="submit" variant="dark">Search</ButtonWithLoading>
-              <Button variant="outline-secondary">Clear</Button>
+              <Button variant="outline-secondary" onClick={clear}>Clear</Button>
             </Col>
           </Row>
         </form>
@@ -90,12 +106,16 @@ export function LogsFilters () {
   )
 }
 
-function FiltersContainer ({ children }: PropsWithChildren) {
+type FiltersContainerProps = PropsWithChildren & {
+  defaultOpen?: boolean
+}
+
+function FiltersContainer ({ children, defaultOpen = false }: FiltersContainerProps) {
   const $conatiner = useRef<HTMLDivElement | null>(null)
 
   return (
     <div className="mb-4">
-      <Accordion ref={$conatiner}>
+      <Accordion ref={$conatiner} defaultActiveKey={defaultOpen ? '0' : null}>
         <Accordion.Item eventKey={'0'}>
           <Accordion.Header><span className="fs-5">Filters</span></Accordion.Header>
           <Accordion.Body onEntered={() => {

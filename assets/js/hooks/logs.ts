@@ -4,7 +4,6 @@ import { useGetQueryStringData } from './queryStringData.ts'
 
 export function useGetLogs () {
   const queryData = useGetQueryStringData()
-  console.log({ queryData })
 
   const { isLoading, data } = useQuery({
     queryKey: ['logs', queryData],

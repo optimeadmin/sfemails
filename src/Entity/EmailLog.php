@@ -29,6 +29,7 @@ class EmailLog
     use ExternalUuidTrait, DatesTrait;
 
     public const UUID_VARIABLE = '_email_id';
+    public const EMAIL_APP_VARIABLE = '__app__';
 
     #[ORM\Id]
     #[ORM\Column]

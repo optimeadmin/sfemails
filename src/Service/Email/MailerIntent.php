@@ -31,6 +31,10 @@ class MailerIntent
         $templateVars = $this->utils->normalizeVariables($templateVars);
         $locale = $templateVars['_locale'];
 
+        if ($this->templateData->getApp()) {
+            $templateVars[EmailLog::EMAIL_APP_VARIABLE] = (string)$this->templateData->getApp();
+        }
+
         $this->lastLog = $log = EmailLog::create(
             $locale,
             $this->templateData,

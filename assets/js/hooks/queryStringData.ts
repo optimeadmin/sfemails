@@ -1,16 +1,17 @@
 import { useSearchParams } from 'react-router-dom'
+import {parse} from 'qs'
 
 export function useGetQueryStringData () {
   const [searchParams] = useSearchParams({})
 
-  return Object.fromEntries(searchParams.entries())
+  return parse(searchParams.toString())
 }
 
 export function useQueryStringData () {
   const [searchParams, setQueryData] = useSearchParams({})
 
   return {
-    queryData: Object.fromEntries(searchParams.entries()),
+    queryData: parse(searchParams.toString()),
     setQueryData,
   }
 }

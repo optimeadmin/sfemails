@@ -16,7 +16,7 @@ export function EmailLogItem ({ emailLog }: { emailLog: EmailLog }) {
         </small>
         {emailLog.emailSubject}
       </td>
-      <td>{emailLog.recipient}</td>
+      <td className='user-select-all'>{emailLog.recipient}</td>
       <td>{emailLog.sessionUser}</td>
       <td className="text-center">{stringAsDateTime(emailLog.sendAt)}</td>
       <td className="text-center px-3"><Status emailLog={emailLog}/></td>
