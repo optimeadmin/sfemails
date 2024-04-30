@@ -60,6 +60,15 @@ const emptyFilters: Filters = {
   subject: '',
 }
 
+function setFormData (data: Filters) {
+  const newData = { ...data }
+  if (Array.isArray(data.recipients)) {
+    newData.recipients = data.recipients.join('\n')
+  }
+
+  return newData
+}
+
 export function useLogsFilter () {
   const isFetching = useIsFetching({ queryKey: ['logs'] }) > 0
   const { setQueryData, queryData } = useQueryStringData()
@@ -68,14 +77,13 @@ export function useLogsFilter () {
 
   const form = useForm<Filters>({
     defaultValues: async () => {
-      const data = { ...emptyFilters, ...queryData }
-      if (Array.isArray(data.recipients)) {
-        data.recipients = data.recipients.join('\n')
-      }
-
-      return data
+      return setFormData({ ...emptyFilters, ...queryData })
     }
   })
+
+  // useEffect(() => {
+  //   form.reset(setFormData({ ...form.getValues(), ...queryData }))
+  // }, [queryData, form])
 
   function submit (data: Filters) {
     setStatus('searching')

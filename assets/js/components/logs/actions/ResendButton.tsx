@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, Popover } from 'react-bootstrap'
-import { EmailStatus } from '../../../types'
 import { clsx } from 'clsx'
 import { AppOverlayTrigger, HidePopoverButton, useHidePopover } from '../../ui/AppOverlayTrigger.tsx'
 import { useResendEmail } from '../../../hooks/logs.ts'
@@ -8,14 +7,14 @@ import { ButtonWithLoading } from '../../ui/ButtonWithLoading.tsx'
 import { toast } from 'react-toastify'
 
 type ResendProps = {
-  uuid: string,
+  uuids: string[],
   disabled?: boolean,
 }
 
-export function ResendButton ({ uuid, disabled = false }: ResendProps) {
+export function ResendButton ({ uuids, disabled = false }: ResendProps) {
   const popover = (
     <Popover>
-      <PopoverContent uuid={uuid}/>
+      <PopoverContent uuids={uuids}/>
     </Popover>
   )
 
@@ -34,8 +33,8 @@ export function ResendButton ({ uuid, disabled = false }: ResendProps) {
   )
 }
 
-function PopoverContent ({ uuid }: { uuid: string }) {
-  const { isPending, resend } = useResendEmail([uuid])
+function PopoverContent ({ uuids }: { uuids: string[] }) {
+  const { isPending, resend } = useResendEmail(uuids)
   const hidePopover = useHidePopover()
 
   async function confirm () {
@@ -44,9 +43,9 @@ function PopoverContent ({ uuid }: { uuid: string }) {
       hidePopover()
 
       if (status === 207) {
-        toast.warn('Email failed to resend')
+        toast.warn(uuids.length > 1 ? 'Emails failed to resend' : 'Email failed to resend')
       } else {
-        toast.success('Email sent successfully!', {
+        toast.success(uuids.length > 1 ? 'Emails sent successfully!' : 'Email sent successfully!', {
           autoClose: 1500
         })
       }
@@ -58,7 +57,7 @@ function PopoverContent ({ uuid }: { uuid: string }) {
   return (
     <Popover.Body>
       <p>
-        Are you sure to resend this email?
+        Are you sure to resend {uuids.length > 1 ? 'the emails' : 'this email'}?
       </p>
       <div className="d-flex gap-2 justify-content-center">
         {!isPending && <HidePopoverButton size="sm" variant="outline-secondary">No</HidePopoverButton>}
