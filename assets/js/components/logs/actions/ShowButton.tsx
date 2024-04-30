@@ -12,7 +12,7 @@ type PreviewProps = {
   status: EmailStatus
 }
 
-export function ShowButton ({ uuid, status }: PreviewProps) {
+export const ShowButton = React.memo(({ uuid, status }: PreviewProps) => {
   const disabled = status === 'no_template'
   return (
     <ButtonModal
@@ -26,7 +26,7 @@ export function ShowButton ({ uuid, status }: PreviewProps) {
       Show
     </ButtonModal>
   )
-}
+})
 
 function ShowContent ({ uuid, status }: PreviewProps) {
   const { apiUrl } = useUrl()

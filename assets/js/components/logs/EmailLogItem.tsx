@@ -38,7 +38,6 @@ export function EmailLogItem ({ emailLog, toggleSelected, selected }: EmailLogIt
         </div>
         {emailLog.emailSubject}
       </td>
-      <td className="user-select-all">{emailLog.recipient}</td>
       <td className="user-select-all"><Recipient recipient={emailLog.recipient}/></td>
       <td>{emailLog.sessionUser}</td>
       {appsCount > 1 && <td>{emailLog.application || '--'}</td>}
@@ -71,6 +70,6 @@ function Status ({ emailLog }: { emailLog: EmailLog }) {
 function Recipient ({ recipient }: { recipient: string }) {
   const url = `/logs?${stringify({ recipients: recipient })}`
   return (
-    <Link to={url} reloadDocument>{recipient}</Link>
+    <Link to={url} state={{ selectedRecipient: recipient }}>{recipient}</Link>
   )
 }

@@ -4,19 +4,19 @@ import { EmailLogVars } from '../../../types'
 import { Modal, Table } from 'react-bootstrap'
 import { CloseModal } from '../../ui/AppModal.tsx'
 
-export function ShowVarsButton ({ vars }: { vars: EmailLogVars }) {
+export const ShowVarsButton = React.memo(({ vars }: { vars: EmailLogVars }) => {
   return (
     <ButtonModal
       modalProps={{ size: 'lg' }}
       modalContent={<VarsContent vars={vars}/>}
       variant="outline-secondary"
       size="sm"
-      className='text-nowrap'
+      className="text-nowrap"
     >
       Show Vars
     </ButtonModal>
   )
-}
+})
 
 function VarsContent ({ vars }: { vars: EmailLogVars }) {
   const mappedVars = Object.entries(vars).map(([key, value]) => ({

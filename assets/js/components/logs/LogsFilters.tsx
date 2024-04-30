@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useId, useRef } from 'react'
+import React, { PropsWithChildren, useEffect, useId, useRef } from 'react'
 import { FormLabel, FormRow } from '../ui/form/field.tsx'
 import { Accordion, Col, FormCheck, FormControl, Row } from 'react-bootstrap'
 import { FormProvider, useFormContext } from 'react-hook-form'
@@ -8,6 +8,7 @@ import { ButtonWithLoading } from '../ui/ButtonWithLoading.tsx'
 import { EmailStatus } from '../../types'
 import { useApps } from '../../contexts/AppsContext.tsx'
 import { useLogsFilter } from '../../hooks/logs.ts'
+import { useLocation } from 'react-router-dom'
 
 type Filters = {
   apps?: string[],
@@ -30,6 +31,19 @@ const emptyFilters: Filters = {
 }
 
 export function LogsFilters () {
+  const { state } = useLocation()
+  const key = state?.selectedRecipient
+
+  useEffect(() => {
+    console.log('{ key }', key)
+  }, [key])
+
+  return (
+    <LogsFiltersForm key={key}/>
+  )
+}
+
+function LogsFiltersForm () {
   const { form, submit, clear, defaultOpenFilters, status } = useLogsFilter()
   const { appsCount } = useApps()
   const $form = useRef<HTMLFormElement | null>(null)

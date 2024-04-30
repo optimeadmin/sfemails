@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense, useDeferredValue } from 'react'
 import { PageHeader, PageLayout } from '../../components/ui/layout/PageLayout.tsx'
 import { Table } from 'react-bootstrap'
 import { useGetLogs } from '../../hooks/logs.ts'
@@ -20,6 +20,7 @@ export function LogsPage () {
     logs,
     (item: EmailLog) => item.canResend ? item.uuid : false
   )
+  const deferredLogs = useDeferredValue(logs)
 
   const pagination = <div className="ms-auto d-flex justify-content-end mb-2">
     <QueryDataPagination paginationData={paginationData} className="pagination-sm"/>
@@ -52,16 +53,18 @@ export function LogsPage () {
           </tr>
         </thead>
         <tbody>
-          {isLoading && <TableLoading/>}
-          <NoItems isLoading={isLoading} items={logs}/>
-          {logs?.map(log => (
-            <EmailLogItem
-              key={log.uuid}
-              emailLog={log}
-              toggleSelected={toggleSelectedItem}
-              selected={isItemSelected(log)}
-            />
-          ))}
+          <Suspense fallback={<TableLoading/>}>
+            {isLoading && <TableLoading/>}
+            <NoItems isLoading={isLoading} items={deferredLogs}/>
+            {deferredLogs?.map(log => (
+              <EmailLogItem
+                key={log.uuid}
+                emailLog={log}
+                toggleSelected={toggleSelectedItem}
+                selected={isItemSelected(log)}
+              />
+            ))}
+          </Suspense>
         </tbody>
       </Table>
 
