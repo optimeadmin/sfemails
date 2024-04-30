@@ -1,13 +1,13 @@
-import React, { PropsWithChildren, useId, useRef, useState } from 'react'
+import React, { PropsWithChildren, useId, useRef } from 'react'
 import { FormLabel, FormRow } from '../ui/form/field.tsx'
-import { Accordion, Button, Col, FormCheck, FormControl, Row } from 'react-bootstrap'
-import { FormProvider, useForm, useFormContext } from 'react-hook-form'
+import { Accordion, Col, FormCheck, FormControl, Row } from 'react-bootstrap'
+import { FormProvider, useFormContext } from 'react-hook-form'
 import { useGetConfigs } from '../../hooks/config.ts'
 import { useGetEmailApps } from '../../hooks/apps.ts'
 import { ButtonWithLoading } from '../ui/ButtonWithLoading.tsx'
 import { EmailStatus } from '../../types'
 import { useApps } from '../../contexts/AppsContext.tsx'
-import { useQueryStringData } from '../../hooks/queryStringData.ts'
+import { useLogsFilter } from '../../hooks/logs.ts'
 
 type Filters = {
   apps?: string[],
@@ -30,31 +30,9 @@ const emptyFilters: Filters = {
 }
 
 export function LogsFilters () {
-  const { setQueryData, queryData } = useQueryStringData()
-
-  const form = useForm<Filters>({
-    defaultValues: async () => {
-      const data = { ...emptyFilters, ...queryData }
-      if (Array.isArray(data.recipients)) {
-        data.recipients = data.recipients.join('\n')
-      }
-
-      return data
-    }
-  })
-  const [defaultOpenFilters] = useState(() => !!queryData && Object.keys(queryData).length > 0)
+  const { form, submit, clear, defaultOpenFilters, status } = useLogsFilter()
   const { appsCount } = useApps()
   const $form = useRef<HTMLFormElement | null>(null)
-
-  function submit (data: Filters) {
-    const mappedData = { ...data, recipients: data.recipients?.split('\n').filter(Boolean) ?? [] }
-    setQueryData({ ...queryData, ...mappedData, page: '1' })
-  }
-
-  function clear () {
-    form.reset(emptyFilters)
-    setQueryData({ ...queryData, ...emptyFilters, page: '1' })
-  }
 
   return (
     <FiltersContainer defaultOpen={defaultOpenFilters}>
@@ -105,8 +83,12 @@ export function LogsFilters () {
               </Col>
             )}
             <Col className="d-flex gap-2 flex-column">
-              <ButtonWithLoading type="submit" variant="dark">Search</ButtonWithLoading>
-              <Button variant="outline-secondary" onClick={clear}>Clear</Button>
+              <ButtonWithLoading type="submit" variant="dark" isLoading={status === 'searching'}>
+                Search
+              </ButtonWithLoading>
+              <ButtonWithLoading variant="outline-secondary" onClick={clear} isLoading={status === 'clearing'}>
+                Clear
+              </ButtonWithLoading>
             </Col>
           </Row>
         </form>

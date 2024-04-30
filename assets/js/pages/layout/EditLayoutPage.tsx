@@ -3,6 +3,7 @@ import { PageHeader, PageLayout } from '../../components/ui/layout/PageLayout'
 import { Link, useParams } from 'react-router-dom'
 import { LayoutForm } from '../../components/layout/LayoutForm'
 import { useGetLayoutByUuid } from '../../hooks/layout'
+import { FormLoading } from '../../components/ui/loading.tsx'
 
 export function EditLayoutPage () {
   const { uuid } = useParams()
@@ -10,11 +11,13 @@ export function EditLayoutPage () {
 
   return (
     <PageLayout>
-      <PageHeader title='Edit Layout' subtitle={uuid} actions={
+      <PageHeader title="Edit Layout" subtitle={uuid} actions={
         <Link to="/layouts" className="btn btn-outline-secondary">Back</Link>
       }/>
 
-      <LayoutForm key={layout?.id} layout={layout}/>
+      {isLoading
+        ? <FormLoading/>
+        : <LayoutForm key={layout?.id} layout={layout}/>}
     </PageLayout>
   )
 }

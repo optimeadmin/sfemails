@@ -5,6 +5,7 @@ import { TemplateForm } from '../../components/template/TemplateForm.tsx'
 import { useGetEmailApps } from '../../hooks/apps.ts'
 import { useGetConfigs } from '../../hooks/config.ts'
 import { useGetLayouts } from '../../hooks/layout.ts'
+import { FormLoading } from '../../components/ui/loading.tsx'
 
 export function CreateTemplatePage () {
   const { isLoading: isLoadingEmailApps } = useGetEmailApps()
@@ -19,7 +20,7 @@ export function CreateTemplatePage () {
       }/>
 
       {showLoading
-        ? <h1>Loading...</h1>
+        ? <FormLoading/>
         : <TemplateForm/>
       }
     </PageLayout>

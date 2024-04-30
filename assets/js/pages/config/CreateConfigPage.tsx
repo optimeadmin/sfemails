@@ -3,6 +3,7 @@ import { PageHeader, PageLayout } from '../../components/ui/layout/PageLayout'
 import { Link } from 'react-router-dom'
 import { ConfigForm } from '../../components/config/ConfigForm.tsx'
 import { useGetLayouts } from '../../hooks/layout.ts'
+import { FormLoading } from '../../components/ui/loading.tsx'
 
 export function CreateConfigPage () {
   const { isLoading: isLoadingLayouts } = useGetLayouts()
@@ -15,7 +16,7 @@ export function CreateConfigPage () {
       }/>
 
       {showLoading
-        ? <h1>Loading...</h1>
+        ? <FormLoading/>
         : <ConfigForm/>
       }
     </PageLayout>

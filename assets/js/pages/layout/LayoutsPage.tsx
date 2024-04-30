@@ -4,9 +4,11 @@ import { Table } from 'react-bootstrap'
 import { LayoutItem } from '../../components/layout/LayoutItem'
 import { Link } from 'react-router-dom'
 import { useGetLayouts } from '../../hooks/layout'
+import { TableLoading } from '../../components/ui/loading.tsx'
+import { NoItems } from '../../components/ui/table/NoItems.tsx'
 
 export function LayoutsPage () {
-  const { layouts } = useGetLayouts()
+  const { isLoading, layouts } = useGetLayouts()
 
   return (
     <PageLayout>
@@ -14,7 +16,7 @@ export function LayoutsPage () {
         <Link to="/layouts/create" className="btn btn-primary">Create</Link>
       }/>
 
-      <Table>
+      <Table striped responsive>
         <thead>
           <tr>
             <th>ID</th>
@@ -25,6 +27,8 @@ export function LayoutsPage () {
           </tr>
         </thead>
         <tbody>
+          {isLoading && <TableLoading/>}
+          <NoItems isLoading={isLoading} items={layouts}/>
           {layouts?.map(layout => (
             <LayoutItem key={layout.id} layout={layout}/>
           ))}

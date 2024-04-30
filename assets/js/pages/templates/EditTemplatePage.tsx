@@ -6,6 +6,7 @@ import { useGetTemplateByUuid } from '../../hooks/templates.ts'
 import { useGetEmailApps } from '../../hooks/apps.ts'
 import { useGetConfigs } from '../../hooks/config.ts'
 import { useGetLayouts } from '../../hooks/layout.ts'
+import { FormLoading } from '../../components/ui/loading.tsx'
 
 export function EditTemplatePage () {
   const { uuid } = useParams()
@@ -23,7 +24,7 @@ export function EditTemplatePage () {
 
 
       {showLoading
-        ? <h1>Loading...</h1>
+        ? <FormLoading/>
         : <TemplateForm emailTemplate={template} key={template?.uuid}/>
       }
     </PageLayout>

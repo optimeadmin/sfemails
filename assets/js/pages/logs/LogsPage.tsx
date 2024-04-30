@@ -6,6 +6,8 @@ import { QueryDataPagination } from '../../components/ui/pagination/QueryDataPag
 import { EmailLogItem } from '../../components/logs/EmailLogItem.tsx'
 import { LogsFilters } from '../../components/logs/LogsFilters.tsx'
 import { useApps } from '../../contexts/AppsContext.tsx'
+import { TableLoading } from '../../components/ui/loading.tsx'
+import { NoItems } from '../../components/ui/table/NoItems.tsx'
 
 export function LogsPage () {
   const { isLoading, logs, paginationData } = useGetLogs()
@@ -23,7 +25,7 @@ export function LogsPage () {
 
       {pagination}
 
-      <Table striped size="sm">
+      <Table striped size="sm" responsive>
         <thead>
           <tr>
             <th>Email info</th>
@@ -36,18 +38,11 @@ export function LogsPage () {
           </tr>
         </thead>
         <tbody>
+          {isLoading && <TableLoading/>}
+          <NoItems isLoading={isLoading} items={logs}/>
           {logs?.map(log => (
             <EmailLogItem key={log.uuid} emailLog={log}/>
           ))}
-          {!isLoading && (logs?.length ?? 0) === 0 && (
-            <tr>
-              <td colSpan={10} className="text-center">
-                <div className="py-2">
-                  No items found
-                </div>
-              </td>
-            </tr>
-          )}
         </tbody>
       </Table>
 

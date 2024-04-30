@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import { ConfigForm } from '../../components/config/ConfigForm.tsx'
 import { useGetConfigByUuid } from '../../hooks/config.ts'
 import { useGetLayouts } from '../../hooks/layout.ts'
+import { FormLoading } from '../../components/ui/loading.tsx'
 
 export function EditConfigPage () {
   const { uuid } = useParams()
@@ -20,7 +21,7 @@ export function EditConfigPage () {
       />
 
       {showLoading
-        ? <h1>Loading...</h1>
+        ? <FormLoading/>
         : <ConfigForm config={config} key={config?.uuid}/>
       }
     </PageLayout>
