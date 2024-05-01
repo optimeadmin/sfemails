@@ -5,6 +5,7 @@
 
 namespace Optime\Email\Bundle\Repository;
 
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,12 +46,14 @@ class EmailLogRepository extends ServiceEntityRepository
             Filter::build($query, $resolvedApps)->where('app');
         }
 
-//            if (($filters['send_at'] ?? null) instanceof DateTimeInterface) {
-//                $query
-//                    ->andWhere('l.dates.createdAt BETWEEN :date_start AND :date_end')
-//                    ->setParameter('date_start', $filters['send_at']->format('Y-m-d 00:00:00'))
-//                    ->setParameter('date_end', $filters['send_at']->format('Y-m-d 23:59:59'));
-//            }
+        if (!empty($filters['sendAt'])) {
+            $sendAt = DateTimeImmutable::createFromFormat('Y-m-d', $filters['sendAt']);
+            $start = $sendAt->modify('midnight');
+            $end = $start->modify('next day, -1 second');
+            $query->andWhere('l.dates.createdAt BETWEEN :date_start AND :date_end')
+                ->setParameter('date_start', $start)
+                ->setParameter('date_end', $end);
+        }
 
         return $query;
     }
