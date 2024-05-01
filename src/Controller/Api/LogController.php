@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+use function set_time_limit;
 
 /**
  * @author Manuel Aguirre
@@ -70,6 +71,7 @@ class LogController extends AbstractController
         $error = false;
 
         foreach ($uuids->uuids as $uuid) {
+            set_time_limit(10);
             if ($log = $this->repository->byUuid($uuid)) {
                 if (!$this->mailerLog->resend($log)) {
                     $error = true;
