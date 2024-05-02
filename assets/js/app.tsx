@@ -17,8 +17,6 @@ const locale = $container.dataset.locale ?? 'en'
 const locales = JSON.parse($container.dataset.locales ?? '[]')
 const appsCount = JSON.parse($container.dataset.appsCount ?? '0')
 
-console.log({ appsCount })
-
 const root = createRoot($container)
 
 if (endpointApi.length > 1) {
