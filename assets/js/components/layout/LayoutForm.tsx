@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormErrors, FormLabel, FormRow } from '../ui/form/field'
-import { Button, Col, FormControl, Row } from 'react-bootstrap'
+import { Col, FormControl, FormText, Row } from 'react-bootstrap'
 import { FieldWithLocale, TranslatableFields } from '../ui/form/TranslatableFields'
 import { ActionsContainer } from '../ui/form/ActionsContainer'
 import { Link, useNavigate } from 'react-router-dom'
@@ -10,7 +10,7 @@ import { useSaveLayout } from '../../hooks/layout'
 import { ButtonWithLoading } from '../ui/ButtonWithLoading'
 import { ControlledCodeMirror } from '../ui/CodeMirror'
 import { toast } from 'react-toastify'
-import { CloseModal, useHideModal } from '../ui/AppModal.tsx'
+import { CloseModal } from '../ui/AppModal.tsx'
 
 type LayoutFormProps = {
   layout?: ExistentLayout
@@ -54,6 +54,14 @@ export function LayoutForm ({ layout, fromModal = false, onSuccess }: LayoutForm
 
         <FormRow>
           <FormLabel>Content</FormLabel>
+          <FormText className='mb-2 d-inline-block'>
+            Available variables: <br/>
+            <span className='user-select-all fw-semibold'>{'{{ _show_url }}'}</span>
+            {' '}URL to view the email from the app. (Example:
+            {' '}<span className='user-select-all'>{'<a href="{{ _show_url }}">View in App</a>'})</span><br/>
+            <span className='user-select-all fw-semibold'>{'{{ _locale }}'}</span> Email content Language<br/>
+            <span className='user-select-all fw-semibold'>{'{{ __app__ }}'}</span> Email Application Title<br/>
+          </FormText>
           <Row>
             <TranslatableFields
               render={({ locale }) => (
