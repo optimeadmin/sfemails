@@ -7,9 +7,11 @@ namespace Optime\Email\Bundle\Service\Template;
 
 use Optime\Email\Bundle\Entity\EmailLayout;
 use Optime\Email\Bundle\Entity\EmailTemplate;
-use Symfony\Contracts\Translation\LocaleAwareInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\LocaleSwitcher;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Loader\ArrayLoader;
 use Twig\TemplateWrapper;
 
@@ -21,7 +23,7 @@ class TemplateRenderer
     public function __construct(
         private readonly Environment $twig,
         private readonly ArrayLoader $twigLoader,
-        private readonly TranslatorInterface $translator,
+        private readonly LocaleSwitcher $localeSwitcher,
         private readonly LocalizedTemplateProvider $localizedTemplateProvider,
     ) {
     }
@@ -54,38 +56,21 @@ class TemplateRenderer
         return new RenderedTemplate($subject, $allContent, $templateContent);
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     private function doRender(string|TemplateWrapper $template, array $vars): string
     {
-        $originalLocale = $this->setLocaleIfApply($vars['_locale'] ?? null);
-        $content = $this->twig->render($template, $vars);
-        $this->restoreLocaleIfApply($originalLocale);
-
-        return $content;
-    }
-
-    private function setLocaleIfApply(?string $locale): string
-    {
-        $originalLocale = $this->translator->getLocale();
-        if (null == $locale || $locale === $originalLocale) {
-            return $originalLocale;
-        }
-
-        if ($this->translator instanceof LocaleAwareInterface) {
-            $this->translator->setLocale($locale);
-        }
-
-        return $originalLocale;
+        $locale = $this->getLocale($vars);
+        return $this->localeSwitcher->runWithLocale($locale, function () use ($template, $vars) {
+            return $this->twig->render($template, $vars);
+        });
     }
 
     private function getLocale(array $templateVars): string
     {
-        return $templateVars['_locale'] ?? $this->translator->getLocale();
-    }
-
-    private function restoreLocaleIfApply(string $locale): void
-    {
-        if ($this->translator instanceof LocaleAwareInterface) {
-            $this->translator->setLocale($locale);
-        }
+        return $templateVars['_locale'] ?? $this->localeSwitcher->getLocale();
     }
 }
