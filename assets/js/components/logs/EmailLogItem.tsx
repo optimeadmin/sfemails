@@ -45,7 +45,7 @@ export function EmailLogItem ({ emailLog, toggleSelected, selected }: EmailLogIt
       <td className="text-center px-3"><Status emailLog={emailLog}/></td>
       <td>
         <div className="d-flex gap-1">
-          <ShowVarsButton vars={emailLog.vars}/>
+          <ShowVarsButton uuid={emailLog.uuid} vars={emailLog.vars}/>
           <ShowButton uuid={emailLog.uuid} status={emailLog.status}/>
           <ResendButton uuids={[emailLog.uuid]} disabled={!emailLog.canResend}/>
         </div>

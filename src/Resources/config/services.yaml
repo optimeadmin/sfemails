@@ -41,3 +41,6 @@ services:
         arguments:
             - '@Optime\Email\Bundle\Service\Template\Twig\Sandbox\SecurityPolicy'
             - true
+
+#    Optime\Email\Bundle\Listener\RoutingExceptionListener:
+

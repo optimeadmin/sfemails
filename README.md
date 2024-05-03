@@ -32,9 +32,9 @@ Crear el archivo `config/routes/optime_emails.yaml`:
 
 ```yaml
 optime_emails:
-    resource: "@OptimeEmailBundle/Controller/"
-    type:     annotation
-    prefix:   /{_locale}/admin/emails
+  resource: "@OptimeEmailBundle/Controller/"
+  prefix:   /{_locale}/admin/emails
+  type:     attribute
 ```
 
 #### Crear entidad EmailApp

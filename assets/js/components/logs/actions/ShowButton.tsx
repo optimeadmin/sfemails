@@ -40,6 +40,7 @@ function ShowContent ({ uuid, status }: PreviewProps) {
         </Badge>
         <Modal.Title className="fs-5">
           Log Content
+          <small className='fs-6 text-muted fst-italic ms-3 user-select-all'>{uuid}</small>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

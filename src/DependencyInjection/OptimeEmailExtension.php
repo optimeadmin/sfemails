@@ -22,7 +22,7 @@ class OptimeEmailExtension extends Extension
 //        $configuration = new Configuration();
 //        $config = $this->processConfiguration($configuration, $configs);
 
-//        $container->addResource(new DirectoryResource(dirname(__DIR__)));
+        $container->addResource(new DirectoryResource(dirname(__DIR__)));
 
         $loader = new YamlFileLoader(
             $container,

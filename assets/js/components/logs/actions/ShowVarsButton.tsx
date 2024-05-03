@@ -4,11 +4,11 @@ import { EmailLogVars } from '../../../types'
 import { Modal, Table } from 'react-bootstrap'
 import { CloseModal } from '../../ui/AppModal.tsx'
 
-export const ShowVarsButton = React.memo(({ vars }: { vars: EmailLogVars }) => {
+export const ShowVarsButton = React.memo(({ uuid, vars }: { uuid: string, vars: EmailLogVars }) => {
   return (
     <ButtonModal
       modalProps={{ size: 'lg' }}
-      modalContent={<VarsContent vars={vars}/>}
+      modalContent={<VarsContent uuid={uuid} vars={vars}/>}
       variant="outline-secondary"
       size="sm"
       className="text-nowrap"
@@ -18,7 +18,7 @@ export const ShowVarsButton = React.memo(({ vars }: { vars: EmailLogVars }) => {
   )
 })
 
-function VarsContent ({ vars }: { vars: EmailLogVars }) {
+function VarsContent ({ uuid, vars }: { uuid: string, vars: EmailLogVars }) {
   const mappedVars = Object.entries(vars).map(([key, value]) => ({
     key,
     value: typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value),
@@ -27,7 +27,10 @@ function VarsContent ({ vars }: { vars: EmailLogVars }) {
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title className="fs-5">Email Variables</Modal.Title>
+        <Modal.Title className="fs-5">
+          Email Variables
+          <small className='fs-6 text-muted fst-italic ms-3 user-select-all'>{uuid}</small>
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Table bordered>
