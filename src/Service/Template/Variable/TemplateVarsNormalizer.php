@@ -25,7 +25,7 @@ class TemplateVarsNormalizer
 
     public function normalize(array $variables): array
     {
-        foreach ($variables as $index => &$variable) {
+        foreach ($variables as &$variable) {
             if ($variable instanceof Url) {
                 $variable = $variable->generate($this->urlGenerator);
             }

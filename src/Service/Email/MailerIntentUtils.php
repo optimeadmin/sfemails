@@ -10,7 +10,7 @@ namespace Optime\Email\Bundle\Service\Email;
 use Doctrine\ORM\EntityManagerInterface;
 use Optime\Email\Bundle\Entity\EmailLog;
 use Optime\Email\Bundle\Service\Template\Variable\TemplateVarsNormalizer;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use function method_exists;
 
 /**
