@@ -10,7 +10,7 @@ import { PreviewLayoutAction } from '../layout/PreviewLayoutAction.tsx'
 import { useTemplateForm } from '../../hooks/templates.ts'
 import { useGetLayouts } from '../../hooks/layout.ts'
 import { useGetEmailApps } from '../../hooks/apps.ts'
-import { TranslatableFieldsTabs } from '../ui/form/TranslatableFields.tsx'
+import { TabTitleWithErrorsIndicator, TranslatableFieldsTabs } from '../ui/form/TranslatableFields.tsx'
 import { ControlledCodeMirror } from '../ui/CodeMirror.tsx'
 import { useGetConfigs } from '../../hooks/config.ts'
 import { clsx } from 'clsx'
@@ -49,6 +49,10 @@ export function TemplateForm ({ emailTemplate }: { emailTemplate?: ExistentEmail
           variant="pills"
           mountOnEnter
           unmountOnExit
+          tabTitleRender={(locale) => <TabTitleWithErrorsIndicator
+            locale={locale}
+            fieldNames={[`subject.${locale}`, `content.${locale}`]}
+          />}
           render={({ locale }) => (
             <div className="pt-4">
               <FormRow className="mb-3" name={`subject.${locale}`}>

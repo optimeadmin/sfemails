@@ -2,6 +2,7 @@ import React, { PropsWithChildren, ReactNode } from 'react'
 import { useLocales } from '../../../contexts/LocaleContext'
 import { Tab, Tabs, TabsProps } from 'react-bootstrap'
 import { clsx } from 'clsx'
+import { get, useFormContext } from 'react-hook-form'
 
 type TranslatableFieldsProps = {
   render: ({ locale }: { locale: string }) => ReactNode,
@@ -21,17 +22,21 @@ export function TranslatableFields ({ render }: TranslatableFieldsProps) {
   )
 }
 
-type TranslatableFieldsTabsProps = TranslatableFieldsProps & TabsProps
+type TranslatableFieldsTabsProps = TranslatableFieldsProps & TabsProps & {
+  tabTitleRender?: (locale: string) => ReactNode,
+}
 
-export function TranslatableFieldsTabs ({ render, ...tabProps }: TranslatableFieldsTabsProps) {
+export function TranslatableFieldsTabs ({ render, tabTitleRender, ...tabProps }: TranslatableFieldsTabsProps) {
   const { locales, locale } = useLocales()
 
   if (locales.length <= 1) return render({ locale })
 
+  let renderTitle = tabTitleRender ?? ((locale) => locale.toUpperCase())
+
   return (
     <Tabs {...tabProps} defaultActiveKey={locales.at(0)}>
       {locales.map(localeItem => (
-        <Tab key={localeItem} eventKey={localeItem} title={localeItem.toUpperCase()}>
+        <Tab key={localeItem} eventKey={localeItem} title={renderTitle(localeItem)}>
           {render({ locale: localeItem })}
         </Tab>
       ))}
@@ -51,5 +56,17 @@ export function FieldWithLocale ({ children, locale, className }: FieldWithLocal
       </div>
       {children}
     </div>
+  )
+}
+
+export function TabTitleWithErrorsIndicator ({ locale, fieldNames }: { locale: string, fieldNames: string[] }) {
+  const { formState: { errors }, getValues } = useFormContext()
+  const hasErrors = fieldNames.some(name => Boolean(get(errors, name)))
+
+  return (
+    <span className='d-inline-block position-relative'>
+      {locale.toUpperCase()}
+      {hasErrors && <span className="tab-item-with-errors"/>}
+    </span>
   )
 }

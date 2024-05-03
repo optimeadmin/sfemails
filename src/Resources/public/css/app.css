@@ -30,3 +30,12 @@ svg.bi {
     vertical-align: -.125em;
     fill: currentcolor;
 }
+
+.tab-item-with-errors {
+    position: absolute;
+    bottom: -13px;
+    right: -12px;
+    left: -12px;
+    border-bottom: 2px solid red;
+    display: inline-block;
+}
