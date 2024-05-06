@@ -60,17 +60,13 @@ export function useTemplateForm (emailTemplate?: ExistentEmailTemplate) {
   const { save, isPending } = useSaveTemplate(form.setError)
 
   async function sendForm (data: EmailTemplate) {
-    try {
-      await save(data)
-      if (!isEdit) {
-        navigate('/templates')
-      }
-      toast.success(isEdit ? 'Email Template saved successfully!' : 'Email Template created successfully!', {
-        autoClose: isEdit ? 1000 : 3000
-      })
-    } catch (e) {
-      toast.error('Ups, an error has occurred!', { autoClose: 1000 })
+    await save(data)
+    if (!isEdit) {
+      navigate('/templates')
     }
+    toast.success(isEdit ? 'Email Template saved successfully!' : 'Email Template created successfully!', {
+      autoClose: isEdit ? 1000 : 3000
+    })
   }
 
   return {

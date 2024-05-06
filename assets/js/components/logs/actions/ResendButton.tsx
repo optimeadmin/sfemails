@@ -38,19 +38,15 @@ function PopoverContent ({ uuids }: { uuids: string[] }) {
   const hidePopover = useHidePopover()
 
   async function confirm () {
-    try {
-      const status = await resend()
-      hidePopover()
+    const status = await resend()
+    hidePopover()
 
-      if (status === 207) {
-        toast.warn(uuids.length > 1 ? 'Emails failed to resend' : 'Email failed to resend')
-      } else {
-        toast.success(uuids.length > 1 ? 'Emails sent successfully!' : 'Email sent successfully!', {
-          autoClose: 1500
-        })
-      }
-    } catch (e) {
-      toast.error('Ups, an error has occurred!', { autoClose: 1000 })
+    if (status === 207) {
+      toast.warn(uuids.length > 1 ? 'Emails failed to resend' : 'Email failed to resend')
+    } else {
+      toast.success(uuids.length > 1 ? 'Emails sent successfully!' : 'Email sent successfully!', {
+        autoClose: 1500
+      })
     }
   }
 

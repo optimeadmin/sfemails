@@ -55,7 +55,7 @@ function TestForm ({ uuid, vars }: { uuid: string, vars: EmailTemplateVars }) {
   const { isPending, mutateAsync } = useMutation({
     async mutationFn (data: EmailTestValues) {
       return await sendEmailTest(uuid, data)
-    }
+    },
   })
 
   async function submit (formData: TestValuesForm) {
@@ -63,14 +63,11 @@ function TestForm ({ uuid, vars }: { uuid: string, vars: EmailTemplateVars }) {
       ...formData,
       emails: formData.emails.map(item => item.email)
     }
-    try {
-      const status = await mutateAsync(data)
-      status === 207
-        ? toast.warning('Failed to send', { autoClose: 1500 })
-        : toast.success('Email sent successfully!', { autoClose: 1500 })
-    } catch (error) {
-      toast.error('Ups, an error has occurred!', { autoClose: 2000 })
-    }
+
+    const status = await mutateAsync(data)
+    status === 207
+      ? toast.warning('Failed to send', { autoClose: 1500 })
+      : toast.success('Email sent successfully!', { autoClose: 1500 })
   }
 
   return (

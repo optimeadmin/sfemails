@@ -27,20 +27,16 @@ export function LayoutForm ({ layout, fromModal = false, onSuccess }: LayoutForm
   const { save, isPending } = useSaveLayout(form.setError)
 
   async function sendForm (data: Layout) {
-    try {
-      await save(data)
-      if (!fromModal && !isEdit) {
-        navigate('/layouts')
-      }
-
-      onSuccess?.(data)
-
-      toast.success(isEdit ? 'Layout saved successfully!' : 'Layout created successfully!', {
-        autoClose: isEdit ? 1000 : 3000
-      })
-    } catch (e) {
-      toast.error('Ups, an error has occurred!', { autoClose: 1000 })
+    await save(data)
+    if (!fromModal && !isEdit) {
+      navigate('/layouts')
     }
+
+    onSuccess?.(data)
+
+    toast.success(isEdit ? 'Layout saved successfully!' : 'Layout created successfully!', {
+      autoClose: isEdit ? 1000 : 3000
+    })
   }
 
   return (
@@ -54,13 +50,13 @@ export function LayoutForm ({ layout, fromModal = false, onSuccess }: LayoutForm
 
         <FormRow>
           <FormLabel>Content</FormLabel>
-          <FormText className='mb-2 d-inline-block'>
+          <FormText className="mb-2 d-inline-block">
             Available variables: <br/>
-            <span className='user-select-all fw-semibold'>{'{{ _show_url }}'}</span>
+            <span className="user-select-all fw-semibold">{'{{ _show_url }}'}</span>
             {' '}URL to view the email from the app. (Example:
-            {' '}<span className='user-select-all'>{'<a href="{{ _show_url }}">View in App</a>'})</span><br/>
-            <span className='user-select-all fw-semibold'>{'{{ _locale }}'}</span> Email content Language<br/>
-            <span className='user-select-all fw-semibold'>{'{{ __app__ }}'}</span> Email Application Title<br/>
+            {' '}<span className="user-select-all">{'<a href="{{ _show_url }}">View in App</a>'})</span><br/>
+            <span className="user-select-all fw-semibold">{'{{ _locale }}'}</span> Email content Language<br/>
+            <span className="user-select-all fw-semibold">{'{{ __app__ }}'}</span> Email Application Title<br/>
           </FormText>
           <Row>
             <TranslatableFields

@@ -70,15 +70,11 @@ export function useConfigForm (config?: ExistentConfig) {
   const { save, isPending } = useSaveConfig(form.setError)
 
   async function sendForm (data: Config) {
-    try {
-      await save(data)
-      !isEdit && navigate('/')
-      toast.success(isEdit ? 'Config saved successfully!' : 'Config created successfully!', {
-        autoClose: isEdit ? 1000 : 3000
-      })
-    } catch (e) {
-      toast.error('Ups, an error has occurred!', { autoClose: 1000 })
-    }
+    await save(data)
+    !isEdit && navigate('/')
+    toast.success(isEdit ? 'Config saved successfully!' : 'Config created successfully!', {
+      autoClose: isEdit ? 1000 : 3000
+    })
   }
 
   return {
