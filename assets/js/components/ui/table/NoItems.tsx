@@ -7,8 +7,8 @@ type NoItemsProps = {
 }
 
 export function NoItems ({ isLoading, items, colSpan = 100 }: NoItemsProps) {
-  if (!isLoading) return null
-  if (!items || items.length === 0) return null
+  if (isLoading) return null
+  if (items && items.length > 0) return null
 
   return (
     <tr>
