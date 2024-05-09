@@ -3,8 +3,12 @@ Bundle para manejo de envio y contenido de correos.
 
 ## Instalación
 
+**Se debe instalar y configurar el bundle de** [sf-utils](https://github.com/optimeadmin/sf_utils)
+
+Luego ejecutar:
+
 ```
-composer require "optimeconsulting/sf-emails" "^4.1@dev"
+composer require "optimeconsulting/sf-emails" "~4.1@dev"
 ```
 
 ## Configuración 
