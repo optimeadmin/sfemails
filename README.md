@@ -41,6 +41,10 @@ optime_emails:
   type:     attribute
 ```
 
+### IMPORTANTE
+
+Configurar variable de entorno `MAILER_DSN` si no se tiene el valor real para esta variable usar `MAILER_DSN=null://null`
+
 #### Crear entidad EmailApp
 
 La clase EmailApp debe implementar Optime\Email\Bundle\Entity\EmailAppInterface:
