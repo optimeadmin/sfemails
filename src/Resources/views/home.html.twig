@@ -4,31 +4,5 @@
 {% block page_header_container '' %}
 
 {% block body_content %}
-    <div class="container-fluid mt-4 px-4 mb-5 pb-3">
-        <div id="emails_config_root"
-             data-locale="{{ app.locale }}"
-             data-locales="{{ locales|json_encode }}"
-             data-basename="{{ path('optime_emails_home') }}"
-             data-api-url="{{ path('optime_emails_api_url') }}"
-             data-apps-count="{{ appsCount }}"
-        ></div>
-    </div>
-
-    {{ include('@OptimeEmail/_import_codemirror_for_react.html.twig') }}
-
-    {% if false %}
-        <script type="module">
-          import RefreshRuntime from 'http://localhost:5173/@react-refresh'
-
-          RefreshRuntime.injectIntoGlobalHook(window)
-          window.$RefreshReg$ = () => {}
-          window.$RefreshSig$ = () => (type) => type
-          window.__vite_plugin_react_preamble_installed__ = true
-        </script>
-        <script defer type="module" src="http://localhost:5173/@vite/client"></script>
-        <script defer type="module" src="http://localhost:5173/assets/js/app.tsx"></script>
-    {% else %}
-        <link rel="stylesheet" href="{{ asset('bundles/optimeemail/build/app.css') }}">
-        <script defer src="{{ asset('bundles/optimeemail/build/app.js') }}"></script>
-    {% endif %}
+    {{ include('@OptimeEmail/_content.html.twig') }}
 {% endblock %}
