@@ -162,8 +162,10 @@ class EmailLog
         if ($this->status == EmailLogStatus::error) {
             $this->failureMessage = '';
         }
+        if ($this->status != EmailLogStatus::pending && $this->getId()) {
+            $this->resend = true;
+        }
 
-        $this->resend = true;
         $this->status = EmailLogStatus::send;
     }
 
