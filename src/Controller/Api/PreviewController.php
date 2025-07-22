@@ -11,7 +11,7 @@ use Optime\Email\Bundle\Entity\EmailLayout;
 use Optime\Email\Bundle\Entity\EmailTemplate;
 use Optime\Email\Bundle\Service\Template\TemplateRenderer;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @author Manuel Aguirre
